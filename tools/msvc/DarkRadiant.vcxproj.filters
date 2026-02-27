@@ -334,6 +334,9 @@
     <ClCompile Include="..\..\radiant\ui\patch\PatchCreateDialog.cpp">
       <Filter>src\ui\patch</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\radiant\ui\patch\PatchPrefabDialog.cpp">
+      <Filter>src\ui\patch</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\radiant\ui\patch\PatchInspector.cpp">
       <Filter>src\ui\patch</Filter>
     </ClCompile>
@@ -892,6 +895,9 @@
       <Filter>src\ui\patch</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\patch\PatchCreateDialog.h">
+      <Filter>src\ui\patch</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\radiant\ui\patch\PatchPrefabDialog.h">
       <Filter>src\ui\patch</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\patch\PatchInspector.h">
