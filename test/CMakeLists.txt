@@ -52,6 +52,7 @@ add_executable(drtest
                SelectionAlgorithm.cpp
                Selection.cpp
                Settings.cpp
+               StairsGenerator.cpp
                SoundManager.cpp
                TextureManipulation.cpp
                TestOrthoViewManager.cpp
@@ -69,6 +70,7 @@ find_package(Threads REQUIRED)
 get_filename_component(TEST_BASE_PATH "./" ABSOLUTE)
 add_compile_definitions(TEST_BASE_PATH="${TEST_BASE_PATH}")
 
+target_include_directories(drtest PRIVATE ${CMAKE_SOURCE_DIR}/radiant)
 target_link_libraries(drtest PUBLIC
                       math xmlutil scene module
                       ${GTEST_LIBRARIES} ${GTEST_MAIN_LIBRARIES}
