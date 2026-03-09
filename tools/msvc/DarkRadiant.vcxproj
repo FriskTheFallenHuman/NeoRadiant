@@ -341,6 +341,7 @@
     <ClCompile Include="..\..\radiant\ui\patch\BulgePatchDialog.cpp" />
     <ClCompile Include="..\..\radiant\ui\patch\CapDialog.cpp" />
     <ClCompile Include="..\..\radiant\ui\patch\PatchCreateDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\patch\PatchPrefabDialog.cpp" />
     <ClCompile Include="..\..\radiant\ui\patch\PatchInspector.cpp" />
     <ClCompile Include="..\..\radiant\ui\patch\PatchThickenDialog.cpp" />
     <ClCompile Include="..\..\radiant\ui\PointFileChooser.cpp" />
@@ -377,6 +378,7 @@
     <ClCompile Include="..\..\radiant\ui\mainframe\ScreenUpdateBlocker.cpp" />
     <ClCompile Include="..\..\radiant\ui\brush\QuerySidesDialog.cpp" />
     <ClCompile Include="..\..\radiant\ui\transform\TransformPanel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\terrain\TerrainGeneratorDialog.cpp" />
     <ClCompile Include="..\..\radiant\ui\UserInterfaceModule.cpp" />
     <ClCompile Include="..\..\radiant\xyview\GlobalXYWnd.cpp" />
     <ClCompile Include="..\..\radiant\xyview\OrthoView.cpp" />
@@ -586,6 +588,7 @@
     <ClInclude Include="..\..\radiant\ui\patch\BulgePatchDialog.h" />
     <ClInclude Include="..\..\radiant\ui\patch\CapDialog.h" />
     <ClInclude Include="..\..\radiant\ui\patch\PatchCreateDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\patch\PatchPrefabDialog.h" />
     <ClInclude Include="..\..\radiant\ui\patch\PatchInspector.h" />
     <ClInclude Include="..\..\radiant\ui\patch\PatchInspectorControl.h" />
     <ClInclude Include="..\..\radiant\ui\patch\PatchThickenDialog.h" />
@@ -630,6 +633,7 @@
     <ClInclude Include="..\..\radiant\ui\brush\QuerySidesDialog.h" />
     <ClInclude Include="..\..\radiant\ui\transform\TransformPanel.h" />
     <ClInclude Include="..\..\radiant\ui\transform\TransformPanelControl.h" />
+    <ClInclude Include="..\..\radiant\ui\terrain\TerrainGeneratorDialog.h" />
     <ClInclude Include="..\..\radiant\ui\UserInterfaceModule.h" />
     <ClInclude Include="..\..\radiant\xyview\GlobalXYWnd.h" />
     <ClInclude Include="..\..\radiant\xyview\OrthoView.h" />

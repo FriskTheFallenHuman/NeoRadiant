@@ -54,6 +54,7 @@ add_executable(drtest
                Settings.cpp
                StairsGenerator.cpp
                SoundManager.cpp
+               TerrainGenerator.cpp
                TextureManipulation.cpp
                TestOrthoViewManager.cpp
                TextureTool.cpp
