@@ -48,7 +48,7 @@ inline const std::unordered_map<std::string, CommandInfo>& getCommandMetadata()
 		{"RegionSetBrush",              {"Region: Set to Brush",            "Set the export region to the selected brush bounds", CmdCategory::Map}},
 		{"RegionSetXY",                 {"Region: Set to XY View",          "Set the export region to the visible XY area", CmdCategory::Map}},
 		{"RegionOff",                   {"Region: Clear",                   "Remove any active region", CmdCategory::Map}},
-		{"Exit",                        {"Exit",                            "Quit HellForge"}},
+		{"Exit",                        {"Exit",                            "Quit NeoRadiant"}},
 
 		// Edit operations
 		{"Undo",                        {"Undo",                            "Undo the last operation"}},
@@ -282,7 +282,7 @@ inline const std::unordered_map<std::string, CommandInfo>& getCommandMetadata()
 		{"CommandPalette",              {"Command Palette",                 "Search and execute commands"}},
 		{"MouseToolMappingDialog",      {"Mouse Bindings",                  "View and edit mouse tool bindings"}},
 		{"EntityClassTree",             {"Entity Class Tree",               "Browse all available entity classes", CmdCategory::Entity}},
-		{"About",                       {"About HellForge",                 "Show version and credits"}},
+		{"About",                       {"About NeoRadiant",                "Show version and credits"}},
 		{"ShowUserGuide",               {"User Guide",                      "Open the online user documentation"}},
 		{"ShowOfflineUserGuide",        {"User Guide (Offline)",            "Open the offline user documentation"}},
 		{"OpenForumUrl",                {"Community Forum",                 "Open the community forum in a browser"}},

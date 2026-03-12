@@ -7,9 +7,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\plugins\sound\OggFileStream.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\plugins\sound\SoundManager.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -25,6 +22,9 @@
     <ClInclude Include="..\..\plugins\sound\OggFileLoader.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\plugins\sound\stb_vorbis.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\plugins\sound\sound.cpp">
@@ -37,6 +37,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="..\..\plugins\sound\SoundShader.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\plugins\sound\stbvorbis_impl.c">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

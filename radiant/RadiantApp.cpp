@@ -61,7 +61,7 @@ wxDEFINE_EVENT(EV_RadiantStartup, wxCommandEvent);
 /**
  * Implements wxWidget's ArtProvider interface to allow custom stock item IDs for
  * bitmaps used in toolbars and other controls. The schema for these custom ArtIDs
- * is "darkradiant:filename.png" where filename.png is a file in DR's bitmap folder.
+ * is "neoradiant:filename.png" where filename.png is a file in DR's bitmap folder.
  * This schema is also valid when specified in XRC files.
  */
 class RadiantApp::ArtProvider final: public wxArtProvider
@@ -81,7 +81,7 @@ public:
         auto filename = id.ToStdString();
         const auto& prefix = ArtIdPrefix();
 
-        // We listen only to "darkradiant" art IDs
+        // We listen only to "neoradiant" art IDs
         if (string::starts_with(filename, prefix))
         {
             auto name = filename.substr(prefix.length());
@@ -104,7 +104,7 @@ public:
 
     static const std::string& ArtIdPrefix()
     {
-        static std::string _artIdPrefix = "darkradiant:";
+        static std::string _artIdPrefix = "neoradiant:";
         return _artIdPrefix;
     }
 };
@@ -126,11 +126,11 @@ RadiantApp::RadiantApp()
     std::string themePath;
     const char* xdg = getenv("XDG_CONFIG_HOME");
     if (xdg && *xdg)
-        themePath = std::string(xdg) + "/hellforge/theme";
+        themePath = std::string(xdg) + "/neoradiant/theme";
     else
     {
         const char* home = getenv("HOME");
-        themePath = std::string(home ? home : "") + "/.config/hellforge/theme";
+        themePath = std::string(home ? home : "") + "/.config/neoradiant/theme";
     }
 
     std::ifstream themeFile(themePath);
@@ -327,7 +327,7 @@ bool RadiantApp::OnExceptionInMainLoop()
     }
     catch (const std::exception& ex) {
         rError() << "Unhandled Exception: " << ex.what() << std::endl;
-        radiant::PopupErrorHandler::HandleError(_("Real Hard HellForge Failure"),
+        radiant::PopupErrorHandler::HandleError(_("Oh Snap! A Big Failure"),
             std::string(ex.what()) + "\n\n" + _("Break into the debugger?"));
     }
     return wxApp::OnExceptionInMainLoop();

@@ -19,7 +19,7 @@ namespace script
 
 namespace
 {
-    constexpr const char* ModuleName = "darkradiant";
+    constexpr const char* ModuleName = "neoradiant";
 }
 
 PythonModule::PythonModule() :
@@ -53,7 +53,7 @@ void PythonModule::initialise()
 
     try
     {
-        // Import the darkradiant module
+        // Import the NeoRadiant module
         // This is triggering the call to InitModule as passed to the inittab
         // so we need to set the static _instance pointer right before and clear it afterwards
         _instance = this;
@@ -84,10 +84,10 @@ void PythonModule::initialise()
 
 void PythonModule::registerModule()
 {
-    rMessage() << "Registering darkradiant module to Python using pybind11 version " <<
+    rMessage() << "Registering NeoRadiant module to Python using pybind11 version " <<
         PYBIND11_VERSION_STR << std::endl;
 
-    // Register the darkradiant module to Python, the InitModule function
+    // Register the NeoRadiant module to Python, the InitModule function
     // will be called as soon as the module is imported
     int result = PyImport_AppendInittab(ModuleName, InitModule);
 
@@ -198,7 +198,7 @@ PyObject* PythonModule::initialiseModule()
 	try
 	{
         _moduleDef = std::make_unique<py::module::module_def>();
-        _module = py::module::create_extension_module(ModuleName, "DarkRadiant Main Module", _moduleDef.get());
+        _module = py::module::create_extension_module(ModuleName, "NeoRadiant Main Module", _moduleDef.get());
 
         // Add the registered interfaces
         for (const auto& i : _namedInterfaces)

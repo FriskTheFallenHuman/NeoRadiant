@@ -282,7 +282,7 @@ Matrix3 LegacyBrushDefParser::calculateTextureMatrix(const std::string& shader, 
     // Call the Q3 texture matrix calculation code as used in GtkRadiant
     auto transform = quake3::calculateTextureMatrix(normal, ssr, imageWidth, imageHeight);
 
-    // DarkRadiant's texture emission algorithm is applying a base transform before
+    // NeoRadiant's texture emission algorithm is applying a base transform before
     // projecting the vertices to UV space - this is something performed in the
     // idTech4 dmap compiler too, so we have to keep that behaviour.
     // To compensate that effect we're applying an inverse base transformation matrix
@@ -290,7 +290,7 @@ Matrix3 LegacyBrushDefParser::calculateTextureMatrix(const std::string& shader, 
     // This fix will only work effectively for axis-aligned faces, everything else
     // will not be stored in the 6 floats forming DR's TextureProjections.
     auto axisBase = getBasisTransformForNormal(normal);
-    
+
     // The axis base matrix is orthonormal, so we can invert it by transposing
     transform.multiplyBy(axisBase.getTransposed());
 

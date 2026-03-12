@@ -33,10 +33,10 @@ void writeVariableIndex(std::ostream& stream, std::size_t index)
 // Writes an S0 datatype to the given stream
 void writeString(std::ostream& stream, const std::string& str)
 {
-	// LWO2 requires the following "Names or other character strings 
-	// are written as a series of ASCII character values followed by 
-	// a zero (or null) byte. If the length of the string including the 
-	// null terminating byte is odd, an extra null is added so that the 
+	// LWO2 requires the following "Names or other character strings
+	// are written as a series of ASCII character values followed by
+	// a zero (or null) byte. If the length of the string including the
+	// null terminating byte is odd, an extra null is added so that the
 	// data that follows will begin on an even byte boundary."
 	std::size_t len = str.length();
 
@@ -101,7 +101,7 @@ void Lwo2Exporter::exportToStream(std::ostream& stream)
 
 	// TAGS
 	Lwo2Chunk::Ptr tags = fileChunk.addChunk("TAGS");
-	
+
 	// Export all material names as tags
 	if (!_surfaces.empty())
 	{
@@ -147,7 +147,7 @@ void Lwo2Exporter::exportToStream(std::ostream& stream)
 	// VMAP { type[ID4], dimension[U2], name[S0], ...) }
 	vmap->stream.write("TXUV", 4);		// "TXUV"
 	stream::writeBigEndian<uint16_t>(vmap->stream, 2); // dimension (2 vector components)
-	
+
 	std::string uvmapName = "UVMap";
 	stream::writeString(vmap->stream, uvmapName);
 
@@ -198,9 +198,9 @@ void Lwo2Exporter::exportToStream(std::ostream& stream)
 
 		int16_t numVerts = 3; // we export triangles
 
-		// LWO2 sez: "When writing POLS, the vertex list for each polygon should begin 
+		// LWO2 sez: "When writing POLS, the vertex list for each polygon should begin
 		// at a convex vertex and proceed clockwise as seen from the visible side of the polygon"
-		// DarkRadiant uses CCW windings, so reverse the index ordering
+		// NeoRadiant uses CCW windings, so reverse the index ordering
 
 		for (std::size_t i = 0; i + 2 < surface.indices.size(); i += 3)
 		{
@@ -226,7 +226,7 @@ void Lwo2Exporter::exportToStream(std::ostream& stream)
 
 		// Define the base surface colour as <1.0, 1.0, 1.0>
 		Lwo2Chunk::Ptr colr = surf->addSubChunk("COLR");
-		
+
 		stream::writeBigEndian<float>(colr->stream, 1.0f);
 		stream::writeBigEndian<float>(colr->stream, 1.0f);
 		stream::writeBigEndian<float>(colr->stream, 1.0f);
@@ -277,7 +277,7 @@ void Lwo2Exporter::exportToStream(std::ostream& stream)
 		Lwo2Chunk::Ptr blokAxis = blok->addSubChunk("AXIS");
 		stream::writeBigEndian<uint16_t>(blokAxis->stream, 2); // Z axis
 
-		// VMAP 
+		// VMAP
 		Lwo2Chunk::Ptr blokVmap = blok->addSubChunk("VMAP");
 		stream::writeString(blokVmap->stream, uvmapName);
 

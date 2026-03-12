@@ -1,13 +1,13 @@
 param (
     [Parameter(Mandatory, ValueFromPipeline)]
-    [string]$Platform, 
+    [string]$Platform,
 
     [Parameter(Mandatory=$false)]
     [string]$OutputFolder,
 
     [Parameter(Mandatory=$false)]
     [switch]$SkipBuild,
-    
+
     [Parameter(Mandatory=$false)]
     [switch]$GenerateSetupPackage = $true,
 
@@ -65,9 +65,9 @@ $target = $Platform
 
 Write-Host ("Compiling for target: {0}" -f $target)
 
-$portableFilenameTemplate = "hellforge-{0}-$target.portable.7z"
-$pdbFilenameTemplate = "hellforge-{0}-$target.pdb.7z"
-$innoSetupFilenameTemplate = "hellforge-{0}-$target.exe"
+$portableFilenameTemplate = "neoradiant-{0}-$target.portable.7z"
+$pdbFilenameTemplate = "neoradiant-{0}-$target.pdb.7z"
+$innoSetupFilenameTemplate = "neoradiant-{0}-$target.exe"
 
 $versionRegex = '#define RADIANT_VERSION "(.+)"'
 $versionIncludeFile = "..\..\include\version.h"
@@ -81,7 +81,7 @@ foreach ($line in $content)
 {
     if ($line -match $versionRegex)
     {
-        $foundVersionString = $matches[1] 
+        $foundVersionString = $matches[1]
         Write-Host ("Version is {0}" -f $matches[1])
         break
     }
@@ -99,9 +99,9 @@ if ($null -eq $vcRedistFolder)
     if ($null -ne $candidate)
     {
         $candidate = Join-Path $candidate.FullName "MSVC"
-        
+
         $candidate = Get-ChildItem -Recurse -Path $candidate -Filter $target -Depth 1 | ? { (Get-ChildItem -Path $_.FullName -Filter "Microsoft.VC143.CRT") } | Select -First 1
-        
+
         $vcRedistFolder = $candidate.Parent.FullName
         Write-Host "Guessed this path: $vcRedistFolder"
     }
@@ -110,21 +110,21 @@ if ($null -eq $vcRedistFolder)
 if ($target -eq "x86")
 {
     $platform = "Win32"
-    $issFile = "..\innosetup\darkradiant.iss"
-    $portablePath = "DarkRadiant_install"
+    $issFile = "..\innosetup\NeoRadiant.iss"
+    $portablePath = "NeoRadiant_install"
 	$redistSource = Join-Path $vcRedistFolder "x86\Microsoft.VC143.CRT"
-} 
+}
 else
 {
     $platform = "x64"
-    $issFile = "..\innosetup\darkradiant.x64.iss"
-    $portablePath = "DarkRadiant_install.x64"
+    $issFile = "..\innosetup\NeoRadiant.x64.iss"
+    $portablePath = "NeoRadiant_install.x64"
 	$redistSource = Join-Path $vcRedistFolder "x64\Microsoft.VC143.CRT"
 }
 
 if (-not $SkipBuild)
 {
-	Start-Process "msbuild" -ArgumentList ("..\..\DarkRadiant.sln", "/p:configuration=release", "/t:rebuild", "/p:platform=$platform", "/maxcpucount:4", "/nodeReuse:false", "/p:UseSharedConfiguration=false") -NoNewWindow -Wait
+	Start-Process "msbuild" -ArgumentList ("..\..\NeoRadiant.sln", "/p:configuration=release", "/t:rebuild", "/p:platform=$platform", "/maxcpucount:4", "/nodeReuse:false", "/p:UseSharedConfiguration=false") -NoNewWindow -Wait
 }
 
 # Copy files to portable files folder
@@ -170,7 +170,7 @@ if ($GenerateSetupPackage)
     # Write the version to the innosetup source file
     Write-Host ("Writing version {0} to InnoSetup file" -f $foundVersionString)
     $issContent = Get-Content $issFile
-    $issContent = $issContent -replace '#define DarkRadiantVersion "(.+)"', ('#define DarkRadiantVersion "{0}"' -f $foundVersionString)
+    $issContent = $issContent -replace '#define NeoRadiantVersion "(.+)"', ('#define NeoRadiantVersion "{0}"' -f $foundVersionString)
     Write-Host ("Writing redist folder {0} to InnoSetup file" -f $vcRedistFolder)
     $issContent = $issContent -replace '#define VCRedistDir "(.+)"', ('#define VCRedistDir "{0}"' -f $vcRedistFolder)
     Set-Content -Path $issFile -Value $issContent
@@ -183,7 +183,7 @@ if ($GeneratePortablePackage)
 {
     $pathTo7z = "..\7z\7za.exe"
 
-    # Compress to portable 7z package 
+    # Compress to portable 7z package
     if ($null -ne (Get-ChildItem -Path $portableFilename -ErrorAction SilentlyContinue))
     {
         Remove-Item -Path $portableFilename

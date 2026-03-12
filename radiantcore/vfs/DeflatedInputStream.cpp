@@ -1,6 +1,6 @@
 #include "DeflatedInputStream.h"
 
-#include <zlib.h>
+#include "miniz/miniz.h"
 
 namespace archive
 {

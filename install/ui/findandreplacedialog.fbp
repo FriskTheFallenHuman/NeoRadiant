@@ -210,7 +210,7 @@
                                 <property name="aui_row"></property>
                                 <property name="best_size"></property>
                                 <property name="bg"></property>
-                                <property name="bitmap">Load From Art Provider; darkradiant:folder16.png; </property>
+                                <property name="bitmap">Load From Art Provider; neoradiant:folder16.png; </property>
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
@@ -282,7 +282,7 @@
                                 <property name="aui_row"></property>
                                 <property name="best_size"></property>
                                 <property name="bg"></property>
-                                <property name="bitmap">Load From Art Provider; darkradiant:texture_pick.png; </property>
+                                <property name="bitmap">Load From Art Provider; neoradiant:texture_pick.png; </property>
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
@@ -479,7 +479,7 @@
                                 <property name="aui_row"></property>
                                 <property name="best_size"></property>
                                 <property name="bg"></property>
-                                <property name="bitmap">Load From Art Provider; darkradiant:folder16.png; </property>
+                                <property name="bitmap">Load From Art Provider; neoradiant:folder16.png; </property>
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>
@@ -551,7 +551,7 @@
                                 <property name="aui_row"></property>
                                 <property name="best_size"></property>
                                 <property name="bg"></property>
-                                <property name="bitmap">Load From Art Provider; darkradiant:texture_pick.png; </property>
+                                <property name="bitmap">Load From Art Provider; neoradiant:texture_pick.png; </property>
                                 <property name="caption"></property>
                                 <property name="caption_visible">1</property>
                                 <property name="center_pane">0</property>

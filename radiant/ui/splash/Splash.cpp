@@ -14,23 +14,23 @@ namespace ui
 
 namespace
 {
-	const char* const SPLASH_FILENAME = "darksplash.png";
+	const char* const SPLASH_FILENAME = "splash.png";
 }
 
-class wxImagePanel : 
+class wxImagePanel :
 	public wxPanel
 {
 private:
     wxBitmap _image;
 	wxString _text;
- 
+
 public:
     wxImagePanel(wxFrame* parent, const wxString& file, wxBitmapType format);
- 
+
     void paintEvent(wxPaintEvent & evt);
 
 	void setText(const wxString& text);
- 
+
     void render(wxDC& dc);
 };
 
@@ -38,7 +38,7 @@ void wxImagePanel::setText(const wxString& text)
 {
 	_text = text;
 }
- 
+
 wxImagePanel::wxImagePanel(wxFrame* parent, const wxString& file, wxBitmapType format) :
 	wxPanel(parent)
 {
@@ -56,7 +56,7 @@ void wxImagePanel::paintEvent(wxPaintEvent & evt)
     wxAutoBufferedPaintDC dc(this);
     render(dc);
 }
- 
+
 void wxImagePanel::render(wxDC&  dc)
 {
     dc.DrawBitmap(_image, 0, 0, false);
@@ -66,7 +66,7 @@ void wxImagePanel::render(wxDC&  dc)
 }
 
 Splash::Splash() :
-	wxFrame(nullptr, wxID_ANY, wxT("HellForge"), wxDefaultPosition, wxDefaultSize, wxCENTRE),
+	wxFrame(nullptr, wxID_ANY, wxT("NeoRadiant"), wxDefaultPosition, wxDefaultSize, wxCENTRE),
 	_progressBar(nullptr)
 {
     const auto& ctx = module::GlobalModuleRegistry().getApplicationContext();
@@ -88,7 +88,7 @@ Splash::Splash() :
 
     // Subscribe to the post-module init event to destroy ourselves
     module::GlobalModuleRegistry().signal_allModulesInitialised().connect([this]
-    { 
+    {
       _moduleProgressConnection.disconnect();
       Destroy();
     });

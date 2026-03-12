@@ -206,7 +206,7 @@
                                             <property name="aui_row"></property>
                                             <property name="best_size"></property>
                                             <property name="bg"></property>
-                                            <property name="bitmap">Load From Art Provider; darkradiant:incoming_commits.png; </property>
+                                            <property name="bitmap">Load From Art Provider; neoradiant:incoming_commits.png; </property>
                                             <property name="caption"></property>
                                             <property name="caption_visible">1</property>
                                             <property name="center_pane">0</property>
@@ -325,7 +325,7 @@
                                             <property name="aui_row"></property>
                                             <property name="best_size"></property>
                                             <property name="bg"></property>
-                                            <property name="bitmap">Load From Art Provider; darkradiant:outgoing_commits.png; </property>
+                                            <property name="bitmap">Load From Art Provider; neoradiant:outgoing_commits.png; </property>
                                             <property name="caption"></property>
                                             <property name="caption_visible">1</property>
                                             <property name="center_pane">0</property>
@@ -505,7 +505,7 @@
                                             <property name="aui_row"></property>
                                             <property name="best_size"></property>
                                             <property name="bg"></property>
-                                            <property name="bitmap">Load From Art Provider; darkradiant:arrow_up.png; </property>
+                                            <property name="bitmap">Load From Art Provider; neoradiant:arrow_up.png; </property>
                                             <property name="caption"></property>
                                             <property name="caption_visible">1</property>
                                             <property name="center_pane">0</property>

@@ -1,5 +1,9 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Project
+    DefaultTargets="Build"
+    ToolsVersion="15.0"
+    xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -25,22 +29,34 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+  <PropertyGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+        Label="Configuration"
+    >
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+  <PropertyGroup
+        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+        Label="Configuration"
+    >
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+  <PropertyGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+        Label="Configuration"
+    >
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+  <PropertyGroup
+        Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
+        Label="Configuration"
+    >
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
@@ -48,59 +64,114 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="properties\DarkRadiant Base Release Win32.props" />
+  <ImportGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+        Label="PropertySheets"
+    >
+    <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform"
+        />
+    <Import Project="properties\NeoRadiant Base Release Win32.props" />
     <Import Project="properties\GLEW.props" />
     <Import Project="properties\ftgl.props" />
     <Import Project="properties\wxWidgets.props" />
-    <Import Project="properties\DarkRadiant Static Library.props" />
+    <Import Project="properties\NeoRadiant Static Library.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="properties\DarkRadiant Base Debug Win32.props" />
+  <ImportGroup
+        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+        Label="PropertySheets"
+    >
+    <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform"
+        />
+    <Import Project="properties\NeoRadiant Base Debug Win32.props" />
     <Import Project="properties\GLEW.props" />
     <Import Project="properties\ftgl.props" />
     <Import Project="properties\wxWidgets.props" />
-    <Import Project="properties\DarkRadiant Static Library.props" />
+    <Import Project="properties\NeoRadiant Static Library.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="properties\DarkRadiant Base Release x64.props" />
+  <ImportGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+        Label="PropertySheets"
+    >
+    <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform"
+        />
+    <Import Project="properties\NeoRadiant Base Release x64.props" />
     <Import Project="properties\GLEW.props" />
     <Import Project="properties\ftgl.props" />
     <Import Project="properties\wxWidgets.props" />
-    <Import Project="properties\DarkRadiant Static Library.props" />
+    <Import Project="properties\NeoRadiant Static Library.props" />
   </ImportGroup>
-  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="properties\DarkRadiant Base Debug x64.props" />
+  <ImportGroup
+        Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
+        Label="PropertySheets"
+    >
+    <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform"
+        />
+    <Import Project="properties\NeoRadiant Base Debug x64.props" />
     <Import Project="properties\GLEW.props" />
     <Import Project="properties\ftgl.props" />
     <Import Project="properties\wxWidgets.props" />
-    <Import Project="properties\DarkRadiant Static Library.props" />
+    <Import Project="properties\NeoRadiant Static Library.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
-    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
-    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <CodeAnalysisRuleSet
+            Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+        >AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules
+            Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+        />
+    <CodeAnalysisRuleAssemblies
+            Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+        />
+    <CodeAnalysisRuleSet
+            Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
+        >AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules
+            Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
+        />
+    <CodeAnalysisRuleAssemblies
+            Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
+        />
+    <CodeAnalysisRuleSet
+            Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+        >AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules
+            Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+        />
+    <CodeAnalysisRuleAssemblies
+            Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+        />
+    <CodeAnalysisRuleSet
+            Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+        >AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules
+            Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+        />
+    <CodeAnalysisRuleAssemblies
+            Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+        />
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup
+        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+    >
     <ClCompile />
     <Lib />
     <Lib>
-      <AdditionalDependencies>scenelib.lib;mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies
+            >scenelib.lib;mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,24 +181,31 @@
     <ClCompile />
     <Lib />
     <Lib>
-      <AdditionalDependencies>scenelib.lib;mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies
+            >scenelib.lib;mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+    >
     <ClCompile />
     <Lib />
     <Lib>
-      <AdditionalDependencies>scenelib.lib;mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies
+            >scenelib.lib;mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ItemDefinitionGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+    >
     <Midl>
       <TargetEnvironment>X64</TargetEnvironment>
     </Midl>
     <ClCompile />
     <Lib />
     <Lib>
-      <AdditionalDependencies>scenelib.lib;mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies
+            >scenelib.lib;mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -143,8 +221,12 @@
     <ClInclude Include="..\..\libs\wxutil\dataview\KeyValueTable.h" />
     <ClInclude Include="..\..\libs\wxutil\dataview\ResourceTreeView.h" />
     <ClInclude Include="..\..\libs\wxutil\dataview\ResourceTreeViewToolbar.h" />
-    <ClInclude Include="..\..\libs\wxutil\dataview\ThreadedDeclarationTreePopulator.h" />
-    <ClInclude Include="..\..\libs\wxutil\dataview\ThreadedResourceTreePopulator.h" />
+    <ClInclude
+            Include="..\..\libs\wxutil\dataview\ThreadedDeclarationTreePopulator.h"
+        />
+    <ClInclude
+            Include="..\..\libs\wxutil\dataview\ThreadedResourceTreePopulator.h"
+        />
     <ClInclude Include="..\..\libs\wxutil\dataview\TreeModel.h" />
     <ClInclude Include="..\..\libs\wxutil\dataview\TreeModelFilter.h" />
     <ClInclude Include="..\..\libs\wxutil\dataview\TreeView.h" />
@@ -160,7 +242,9 @@
     <ClInclude Include="..\..\libs\wxutil\dialog\DialogBase.h" />
     <ClInclude Include="..\..\libs\wxutil\dialog\DialogElements.h" />
     <ClInclude Include="..\..\libs\wxutil\dialog\MessageBox.h" />
-    <ClInclude Include="..\..\libs\wxutil\dialog\ScrollEventPropagationFilter.h" />
+    <ClInclude
+            Include="..\..\libs\wxutil\dialog\ScrollEventPropagationFilter.h"
+        />
     <ClInclude Include="..\..\libs\wxutil\DirChooser.h" />
     <ClInclude Include="..\..\libs\wxutil\DockablePanel.h" />
     <ClInclude Include="..\..\libs\wxutil\EntityClassChooser.h" />
@@ -216,8 +300,12 @@
     <ClCompile Include="..\..\libs\wxutil\dataview\DeclarationTreeView.cpp" />
     <ClCompile Include="..\..\libs\wxutil\dataview\KeyValueTable.cpp" />
     <ClCompile Include="..\..\libs\wxutil\dataview\ResourceTreeView.cpp" />
-    <ClCompile Include="..\..\libs\wxutil\dataview\ResourceTreeViewToolbar.cpp" />
-    <ClCompile Include="..\..\libs\wxutil\dataview\ThreadedResourceTreePopulator.cpp" />
+    <ClCompile
+            Include="..\..\libs\wxutil\dataview\ResourceTreeViewToolbar.cpp"
+        />
+    <ClCompile
+            Include="..\..\libs\wxutil\dataview\ThreadedResourceTreePopulator.cpp"
+        />
     <ClCompile Include="..\..\libs\wxutil\dataview\TreeModel.cpp" />
     <ClCompile Include="..\..\libs\wxutil\dataview\TreeModelFilter.cpp" />
     <ClCompile Include="..\..\libs\wxutil\dataview\TreeView.cpp" />
@@ -247,7 +335,9 @@
     <ClCompile Include="..\..\libs\wxutil\preview\ParticlePreview.cpp" />
     <ClCompile Include="..\..\libs\wxutil\preview\RenderPreview.cpp" />
     <ClCompile Include="..\..\libs\wxutil\SerialisableWidgets.cpp" />
-    <ClCompile Include="..\..\libs\wxutil\sourceview\DeclarationSourceView.cpp" />
+    <ClCompile
+            Include="..\..\libs\wxutil\sourceview\DeclarationSourceView.cpp"
+        />
     <ClCompile Include="..\..\libs\wxutil\sourceview\DefinitionView.cpp" />
     <ClCompile Include="..\..\libs\wxutil\sourceview\SourceView.cpp" />
     <ClCompile Include="..\..\libs\wxutil\Splitter.cpp" />

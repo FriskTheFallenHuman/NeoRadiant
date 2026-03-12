@@ -56,7 +56,7 @@
 										<vgap>0</vgap>
 										<hgap>0</hgap>
 										<growablecols>0,2</growablecols>
-										<growablerows></growablerows>
+										<growablerows />
 										<object class="sizeritem">
 											<option>0</option>
 											<flag>wxBOTTOM</flag>
@@ -69,7 +69,7 @@
 										</object>
 										<object class="sizeritem">
 											<option>0</option>
-											<flag></flag>
+											<flag />
 											<border>5</border>
 											<object class="wxBoxSizer">
 												<orient>wxVERTICAL</orient>
@@ -90,7 +90,7 @@
 											<border>0</border>
 											<object class="wxTextCtrl" name="MergeMapFilename">
 												<tooltip>The map file to merge into the target map</tooltip>
-												<value></value>
+												<value />
 											</object>
 										</object>
 										<object class="sizeritem">
@@ -98,7 +98,10 @@
 											<flag>wxALIGN_CENTER_VERTICAL|wxLEFT|wxRIGHT</flag>
 											<border>3</border>
 											<object class="wxStaticBitmap" name="m_bitmap2">
-												<bitmap stock_id="darkradiant:merge_arrow.png" stock_client="">undefined.png</bitmap>
+												<bitmap
+                                                    stock_id="neoradiant:merge_arrow.png"
+                                                    stock_client=""
+                                                >undefined.png</bitmap>
 											</object>
 										</object>
 										<object class="sizeritem">
@@ -107,7 +110,7 @@
 											<border>0</border>
 											<object class="wxTextCtrl" name="TargetMapFilename">
 												<tooltip>The target map (this is the currently loaded one)</tooltip>
-												<value></value>
+												<value />
 											</object>
 										</object>
 									</object>
@@ -125,7 +128,10 @@
 												<flag>wxALIGN_CENTER|wxALL</flag>
 												<border>0</border>
 												<object class="wxStaticBitmap" name="m_bitmap1">
-													<bitmap stock_id="darkradiant:merge_fork.png" stock_client="">undefined.png</bitmap>
+													<bitmap
+                                                        stock_id="neoradiant:merge_fork.png"
+                                                        stock_client=""
+                                                    >undefined.png</bitmap>
 												</object>
 											</object>
 											<object class="sizeritem">
@@ -133,8 +139,9 @@
 												<flag>wxEXPAND</flag>
 												<border>0</border>
 												<object class="wxTextCtrl" name="BaseMapFilename">
-													<tooltip>A common base map both maps have started from, makes detecting merge conflicts much easier.</tooltip>
-													<value></value>
+													<tooltip
+                                                    >A common base map both maps have started from, makes detecting merge conflicts much easier.</tooltip>
+													<value />
 												</object>
 											</object>
 											<object class="sizeritem">
@@ -142,7 +149,8 @@
 												<flag>wxALIGN_CENTER|wxTOP</flag>
 												<border>6</border>
 												<object class="wxStaticText" name="BaseMapLabel">
-													<tooltip>A common base map both maps have started from, makes detecting merge conflicts much easier.</tooltip>
+													<tooltip
+                                                    >A common base map both maps have started from, makes detecting merge conflicts much easier.</tooltip>
 													<label>Common Ancestor</label>
 													<wrap>-1</wrap>
 												</object>
@@ -199,7 +207,8 @@
 								<weight>bold</weight>
 								<underlined>0</underlined>
 							</font>
-							<tooltip>Apply the visible set of changes to the current map and finish the merge operation.</tooltip>
+							<tooltip
+                            >Apply the visible set of changes to the current map and finish the merge operation.</tooltip>
 							<label>Finish Merge</label>
 							<default>0</default>
 							<markup>0</markup>
@@ -252,7 +261,7 @@
 												<vgap>6</vgap>
 												<hgap>0</hgap>
 												<growablecols>1,3</growablecols>
-												<growablerows></growablerows>
+												<growablerows />
 												<object class="sizeritem">
 													<option>0</option>
 													<flag>wxALIGN_CENTER_VERTICAL|wxALIGN_RIGHT|wxRIGHT</flag>
@@ -561,7 +570,8 @@
 												<flag>wxBOTTOM|wxTOP</flag>
 												<border>6</border>
 												<object class="wxCheckBox" name="KeepSelectionGroupsIntact">
-													<tooltip>With this option checked, HellForge will attempt to keep all links between selection groups intact. There&apos;s no guarantee that this will work 100%, since it&apos;s usually problematic when both maps have seen changes to the same elements and their grouping.</tooltip>
+													<tooltip
+                                                    >With this option checked, NeoRadiant will attempt to keep all links between selection groups intact. There&apos;s no guarantee that this will work 100%, since it&apos;s usually problematic when both maps have seen changes to the same elements and their grouping.</tooltip>
 													<label>Merge Selection Group Information</label>
 													<checked>0</checked>
 												</object>
@@ -571,7 +581,8 @@
 												<flag>wxTOP</flag>
 												<border>6</border>
 												<object class="wxCheckBox" name="MergeLayers">
-													<tooltip>With this option checked the layers in this map are going to be adjusted to fit the incoming map, i.e. any changes made to layers in the merged map are applied to this map. New layers in the imported map are going to be created here. Layers in this map that are not present in the incoming map will be removed.\nLeave this option unchecked to reject any layer changes from the incoming map, all newly created elements will be placed in the active layer in this case.</tooltip>
+													<tooltip
+                                                    >With this option checked the layers in this map are going to be adjusted to fit the incoming map, i.e. any changes made to layers in the merged map are applied to this map. New layers in the imported map are going to be created here. Layers in this map that are not present in the incoming map will be removed.\nLeave this option unchecked to reject any layer changes from the incoming map, all newly created elements will be placed in the active layer in this case.</tooltip>
 													<label>Merge Layers (cannot be undone!)</label>
 													<checked>0</checked>
 												</object>

@@ -1,6 +1,0 @@
-skin ivy_onesided
-{
-	model "models/twosided_ivy.lwo"
-
-	textures/darkmod/decals/vegetation/ivy_mixed_pieces textures/darkmod/decals/vegetation/ivy_mixed_pieces_onesided
-}

@@ -52,34 +52,34 @@
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="properties\DarkRadiant Base Release Win32.props" />
-    <Import Project="properties\DarkRadiant Module DLL.props" />
+    <Import Project="properties\NeoRadiant Base Release Win32.props" />
+    <Import Project="properties\NeoRadiant Module DLL.props" />
     <Import Project="properties\GLEW.props" />
-    <Import Project="properties\OpenAL + Vorbis.props" />
+    <Import Project="properties\OpenAL.props" />
     <Import Project="properties\wxWidgets.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="properties\DarkRadiant Base Debug Win32.props" />
-    <Import Project="properties\DarkRadiant Module DLL.props" />
+    <Import Project="properties\NeoRadiant Base Debug Win32.props" />
+    <Import Project="properties\NeoRadiant Module DLL.props" />
     <Import Project="properties\GLEW.props" />
-    <Import Project="properties\OpenAL + Vorbis.props" />
+    <Import Project="properties\OpenAL.props" />
     <Import Project="properties\wxWidgets.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="properties\DarkRadiant Base Release x64.props" />
-    <Import Project="properties\DarkRadiant Module DLL.props" />
+    <Import Project="properties\NeoRadiant Base Release x64.props" />
+    <Import Project="properties\NeoRadiant Module DLL.props" />
     <Import Project="properties\GLEW.props" />
-    <Import Project="properties\OpenAL + Vorbis.props" />
+    <Import Project="properties\OpenAL.props" />
     <Import Project="properties\wxWidgets.props" />
   </ImportGroup>
   <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="properties\DarkRadiant Base Debug x64.props" />
-    <Import Project="properties\DarkRadiant Module DLL.props" />
+    <Import Project="properties\NeoRadiant Base Debug x64.props" />
+    <Import Project="properties\NeoRadiant Module DLL.props" />
     <Import Project="properties\GLEW.props" />
-    <Import Project="properties\OpenAL + Vorbis.props" />
+    <Import Project="properties\OpenAL.props" />
     <Import Project="properties\wxWidgets.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
@@ -221,10 +221,10 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\plugins\sound\OggFileLoader.h" />
-    <ClInclude Include="..\..\plugins\sound\OggFileStream.h" />
     <ClInclude Include="..\..\plugins\sound\SoundManager.h" />
     <ClInclude Include="..\..\plugins\sound\SoundPlayer.h" />
     <ClInclude Include="..\..\plugins\sound\SoundShader.h" />
+    <ClInclude Include="..\..\plugins\sound\stb_vorbis.h" />
     <ClInclude Include="..\..\plugins\sound\WavFileLoader.h" />
   </ItemGroup>
   <ItemGroup>
@@ -232,6 +232,12 @@
     <ClCompile Include="..\..\plugins\sound\SoundManager.cpp" />
     <ClCompile Include="..\..\plugins\sound\SoundPlayer.cpp" />
     <ClCompile Include="..\..\plugins\sound\SoundShader.cpp" />
+    <ClCompile Include="..\..\plugins\sound\stbvorbis_impl.c">
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Full</Optimization>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Full</Optimization>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Full</Optimization>
+      <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="wxutillib.vcxproj">

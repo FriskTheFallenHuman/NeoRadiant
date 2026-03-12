@@ -7,7 +7,9 @@
 #define RADIANT_VERSION "1.0.0"
 #endif
 
-#define RADIANT_APPNAME "HellForge"
+#define RADIANT_APPNAME "NeoRadiant"
+#define RADIANT_APPURL "https://github.com/FriskTheFallenHuman/NeoRadiant"
+#define RADIANT_APPFILE_DESCRIPTION "NeoRadiant, Level Editor for Idtech4 game engines"
 #define RADIANT_BLANK " "
 
 #if defined(_M_X64) || defined(__amd64__) || defined(_WIN64)

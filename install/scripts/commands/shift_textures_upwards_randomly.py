@@ -1,35 +1,38 @@
-# Set the command name so that DarkRadiant recognises this file
-__commandName__ = 'ShiftTexturesUpwardsRandomly'
-__commandDisplayName__ = 'Shift Textures randomly upwards'
+# Set the command name so that NeoRadiant recognises this file
+__commandName__ = "ShiftTexturesUpwardsRandomly"
+__commandDisplayName__ = "Shift Textures randomly upwards"
 
-# The actual algorithm called by DarkRadiant
+# The actual algorithm called by NeoRadiant
 # is contained in the execute() function
 
+
 def execute():
-	import random
-	import darkradiant as dr
+    import random
 
-	class FaceVisitor(dr.SelectedFaceVisitor) :
-		def visitFace(self, face):
-			t = random.randint(0, 100) / 100
-			face.shiftTexdef(0, t)
+    import neoradiant as dr
 
-	visitor = FaceVisitor()
-	GlobalSelectionSystem.foreachSelectedFace(visitor)
+    class FaceVisitor(dr.SelectedFaceVisitor):
+        def visitFace(self, face):
+            t = random.randint(0, 100) / 100
+            face.shiftTexdef(0, t)
 
-	class PatchVisitor(dr.SelectionVisitor) :
-		def visit(self, node):
-			patch = node.getPatch()
-			if not patch.isNull():
-				t = random.randint(0, 100)
-				patch.translateTexture(0, t)
+    visitor = FaceVisitor()
+    GlobalSelectionSystem.foreachSelectedFace(visitor)
 
-	patchVisitor = PatchVisitor()
-	GlobalSelectionSystem.foreachSelected(patchVisitor)
+    class PatchVisitor(dr.SelectionVisitor):
+        def visit(self, node):
+            patch = node.getPatch()
+            if not patch.isNull():
+                t = random.randint(0, 100)
+                patch.translateTexture(0, t)
 
-	GlobalCameraManager.getActiveView().refresh()
+    patchVisitor = PatchVisitor()
+    GlobalSelectionSystem.foreachSelected(patchVisitor)
+
+    GlobalCameraManager.getActiveView().refresh()
+
 
 # The variable __executeCommand__ evaluates to true
-# when DarkRadiant executes this command
+# when NeoRadiant executes this command
 if __executeCommand__:
-	execute()
+    execute()

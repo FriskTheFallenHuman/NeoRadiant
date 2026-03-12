@@ -1,29 +1,33 @@
 # Some interface tests
-import darkradiant as dr
+import neoradiant as dr
 
 # Test the Registry interface
-value = GlobalRegistry.get('user/paths/appPath')
+value = GlobalRegistry.get("user/paths/appPath")
 print(value)
 
 worldspawn = Radiant.findEntityByClassname("worldspawn")
-worldspawn.setKeyValue('test', 'success')
-print('Worldspawn edited')
+worldspawn.setKeyValue("test", "success")
+print("Worldspawn edited")
 
 worldspawn = Radiant.findEntityByName("world")
-worldspawn.setKeyValue('test', 'another success')
-print('Worldspawn edited')
+worldspawn.setKeyValue("test", "another success")
+print("Worldspawn edited")
+
 
 # Test the DeclarationManager interface
-class TestDeclarationVisitor(dr.DeclarationVisitor) :
+class TestDeclarationVisitor(dr.DeclarationVisitor):
     def visit(self, decl):
         print(str(decl.getDeclType()) + ": " + decl.getDeclName())
+
 
 visitor = TestDeclarationVisitor()
 
 # Visit all skins
 GlobalDeclarationManager.foreachDeclaration(Declaration.Type.Skin, visitor)
 
-caulk = GlobalDeclarationManager.findDeclaration(Declaration.Type.Material, "textures/common/caulk")
+caulk = GlobalDeclarationManager.findDeclaration(
+    Declaration.Type.Material, "textures/common/caulk"
+)
 print("Name: " + caulk.getDeclName())
 print("Type: " + str(caulk.getDeclType()))
 print("Defined in: " + str(caulk.getDeclFilePath()))
@@ -62,7 +66,9 @@ if not fx.isNull():
     print("Action #1 has TrackOrigin: " + str(action.getTrackOrigin()))
     print("Action #1 has Restart: " + str(action.getRestart()))
     print("Action #1 has FadeInTimeInSeconds: " + str(action.getFadeInTimeInSeconds()))
-    print("Action #1 has FadeOutTimeInSeconds: " + str(action.getFadeOutTimeInSeconds()))
+    print(
+        "Action #1 has FadeOutTimeInSeconds: " + str(action.getFadeOutTimeInSeconds())
+    )
     print("Action #1 has DecalSize: " + str(action.getDecalSize()))
     print("Action #1 has Offset: " + str(action.getOffset()))
     print("Action #1 has Axis: " + str(action.getAxis()))
@@ -77,12 +83,16 @@ if not fx.isNull():
     print("Action #1 has LightRadius: " + str(action.getLightRadius()))
     print("Action #1 has ModelName: " + str(action.getModelName()))
     print("Action #1 has DecalMaterialName: " + str(action.getDecalMaterialName()))
-    print("Action #1 has ParticleTrackVelocity: " + str(action.getParticleTrackVelocity()))
+    print(
+        "Action #1 has ParticleTrackVelocity: " + str(action.getParticleTrackVelocity())
+    )
     print("Action #1 has SoundShaderName: " + str(action.getSoundShaderName()))
     print("Action #1 has ShockwaveDefName: " + str(action.getShockwaveDefName()))
 
 # Create a new material
-myOwnMaterial = GlobalDeclarationManager.findOrCreateDeclaration(Declaration.Type.Material, "textures/myown_material")
+myOwnMaterial = GlobalDeclarationManager.findOrCreateDeclaration(
+    Declaration.Type.Material, "textures/myown_material"
+)
 
 syntax = myOwnMaterial.getDeclSource()
 syntax.contents = "diffusemap _white"
@@ -93,96 +103,101 @@ myOwnMaterial.setDeclFilePath("materials/", "script_test.mtr")
 GlobalDeclarationManager.saveDeclaration(myOwnMaterial)
 
 # Test the EClassManager interface
-eclass = GlobalEntityClassManager.findClass('atdm:func_shooter')
-print(eclass.getAttribute('editor_usage').getValue())
+eclass = GlobalEntityClassManager.findClass("atdm:func_shooter")
+print(eclass.getAttribute("editor_usage").getValue())
 
 # Try creating a func_shooter entity
 if not eclass.isNull():
-	shooter = GlobalEntityCreator.createEntity(eclass)
+    shooter = GlobalEntityCreator.createEntity(eclass)
 
-modelDef = GlobalEntityClassManager.findModel('tdm_ai_citywatch')
-print('ModelDef mesh for tdm_ai_citywatch = ' + modelDef.mesh)
+modelDef = GlobalEntityClassManager.findModel("tdm_ai_citywatch")
+print("ModelDef mesh for tdm_ai_citywatch = " + modelDef.mesh)
 
 # Test iterating over C++ std::map
 for anim in modelDef.anims:
-	print(anim + " = " + modelDef.anims[anim])
+    print(anim + " = " + modelDef.anims[anim])
 
 # Test implementing a eclass visitor interface
-#class TestVisitor(EntityClassVisitor) :
-#	def visit(self, eclass):
-#		print(eclass.getAttribute('editor_usage').getValue())
+# class TestVisitor(EntityClassVisitor) :
+# def visit(self, eclass):
+# print(eclass.getAttribute('editor_usage').getValue())
 
-#eclassVisitor = TestVisitor()
-#GlobalEntityClassManager.forEachEntityClass(eclassVisitor)
+# eclassVisitor = TestVisitor()
+# GlobalEntityClassManager.forEachEntityClass(eclassVisitor)
 
 # Test implementing a model def visitor interface
-#class TestModelDefVisitor(ModelDefVisitor) :
-#	def visit(self, modelDef):
-#		print(modelDef.mesh)
+# class TestModelDefVisitor(ModelDefVisitor) :
+# def visit(self, modelDef):
+# print(modelDef.mesh)
 #
-#modelDefVisitor = TestModelDefVisitor()
-#GlobalEntityClassManager.forEachModelDef(modelDefVisitor)
+# modelDefVisitor = TestModelDefVisitor()
+# GlobalEntityClassManager.forEachModelDef(modelDefVisitor)
+
 
 # Test traversing the scenegraph
-class SceneWalker(dr.SceneNodeVisitor) :
-	def pre(self, node):
-		print(node.getNodeType())
+class SceneWalker(dr.SceneNodeVisitor):
+    def pre(self, node):
+        print(node.getNodeType())
 
-		# Try to get a model from this node
-		model = node.getModel()
+        # Try to get a model from this node
+        model = node.getModel()
 
-		if not model.isNull():
-			print('Node is a model')
-		else:
-			print('Node is not a model')
+        if not model.isNull():
+            print("Node is a model")
+        else:
+            print("Node is not a model")
 
-		return 1
+        return 1
+
 
 walker = SceneWalker()
 GlobalSceneGraph.root().traverse(walker)
 
+
 # Test traversing the current selection
-class Walker(dr.SelectionVisitor) :
-	def visit(self, node):
-		# Try to "cast" the node to a brush
-		brush = node.getBrush()
+class Walker(dr.SelectionVisitor):
+    def visit(self, node):
+        # Try to "cast" the node to a brush
+        brush = node.getBrush()
 
-		# If the Brush is not NULL the cast succeeded
-		if not brush.isNull():
-			print(brush.getNumFaces())
-		else:
-			print('Node is not a brush')
+        # If the Brush is not NULL the cast succeeded
+        if not brush.isNull():
+            print(brush.getNumFaces())
+        else:
+            print("Node is not a brush")
 
-		# Try to cast the node to a patch
-		patch = node.getPatch()
+        # Try to cast the node to a patch
+        patch = node.getPatch()
 
-		# If the Patch is not NULL the cast succeeded
-		if not patch.isNull():
-			print('Node is a patch')
-		else:
-			print('Node is not a patch')
+        # If the Patch is not NULL the cast succeeded
+        if not patch.isNull():
+            print("Node is a patch")
+        else:
+            print("Node is not a patch")
 
-		# Try to get a model from this node
-		model = node.getModel()
+        # Try to get a model from this node
+        model = node.getModel()
 
-		if not model.isNull():
-			print('Node is a model')
-		else:
-			print('Node is not a model')
+        if not model.isNull():
+            print("Node is a model")
+        else:
+            print("Node is not a model")
 
 
 visitor = Walker()
 GlobalSelectionSystem.foreachSelected(visitor)
 
+
 # Visit every selected face
-class FaceVisitor(dr.SelectedFaceVisitor) :
-	def visitFace(self, face):
-		print(face.getShader())
+class FaceVisitor(dr.SelectedFaceVisitor):
+    def visitFace(self, face):
+        print(face.getShader())
+
 
 visitor = FaceVisitor()
 GlobalSelectionSystem.foreachSelectedFace(visitor)
 
-print('Map name is ' + GlobalMap.getMapName())
+print("Map name is " + GlobalMap.getMapName())
 
 print(GlobalMap.getEditMode())
 
@@ -198,165 +213,194 @@ print(GlobalMap.isPointTraceVisible())
 print("Point files found: " + str(len(GlobalMap.getPointFileList())))
 
 for path in GlobalMap.getPointFileList:
-	print("Pointfile: " + path)
+    print("Pointfile: " + path)
 
 # Try to find the map's worldspawn
 worldspawn = GlobalMap.getWorldSpawn()
 
 if not worldspawn.isNull():
-	# Cast the node onto an entity
-	worldspawnent = worldspawn.getEntity()
-	if not worldspawnent.isNull():
-		print('Spawnclass of worldspawn: ' + worldspawnent.getKeyValue('spawnclass'))
+    # Cast the node onto an entity
+    worldspawnent = worldspawn.getEntity()
+    if not worldspawnent.isNull():
+        print("Spawnclass of worldspawn: " + worldspawnent.getKeyValue("spawnclass"))
 else:
-	print('There is no worldspawn in this map yet')
+    print("There is no worldspawn in this map yet")
+
 
 # Test the entity visitor interface
-class TestEntityVisitor(dr.EntityVisitor) :
-	def visit(self, key, value):
-		print('Worldspawn has spawnarg: ' + key + ' = ' + value)
+class TestEntityVisitor(dr.EntityVisitor):
+    def visit(self, key, value):
+        print("Worldspawn has spawnarg: " + key + " = " + value)
+
 
 if not worldspawn.isNull():
-	tev = TestEntityVisitor()
+    tev = TestEntityVisitor()
 
-	# Cast the node onto an entity
-	worldspawnent = worldspawn.getEntity()
+    # Cast the node onto an entity
+    worldspawnent = worldspawn.getEntity()
 
-	worldspawnent.forEachKeyValue(tev)
+    worldspawnent.forEachKeyValue(tev)
 
-	# Try to retrieve all keyvalues starting with "n"
-	keyvalues = worldspawnent.getKeyValuePairs('t')
+    # Try to retrieve all keyvalues starting with "n"
+    keyvalues = worldspawnent.getKeyValuePairs("t")
 
-	for kv in keyvalues:
-		print('Keyvalue ' + kv[0] + ' = ' + kv[1])
+    for kv in keyvalues:
+        print("Keyvalue " + kv[0] + " = " + kv[1])
 
 # Test the commandsystem
 GlobalCommandSystem.execute('texscale "0 0.1"')
 
 # Test the GameManager interface
-print('Mod path = ' + GlobalGameManager.getModPath())
+print("Mod path = " + GlobalGameManager.getModPath())
 
 game = GlobalGameManager.currentGame()
-print('Current game type: ' + game.getKeyValue('type'))
+print("Current game type: " + game.getKeyValue("type"))
 
-print('VFS Search paths:')
+print("VFS Search paths:")
 vfsPaths = GlobalGameManager.getVFSSearchPaths()
 
 for path in vfsPaths:
-	print(path)
+    print(path)
+
 
 # Test FileSystem (VFS)
-class TestFileVisitor(dr.FileVisitor) :
-	def visit(self, filename):
-		print('Found file: ' + filename)
+class TestFileVisitor(dr.FileVisitor):
+    def visit(self, filename):
+        print("Found file: " + filename)
+
 
 filevisitor = TestFileVisitor()
-GlobalFileSystem.forEachFile('skins/', 'skin', filevisitor, 99)
+GlobalFileSystem.forEachFile("skins/", "skin", filevisitor, 99)
 
-filecontents = GlobalFileSystem.readTextFile('skins/tdm_ai_guard_citywatch.skin');
+filecontents = GlobalFileSystem.readTextFile("skins/tdm_ai_guard_citywatch.skin")
 print(filecontents)
 
 # Test the Grid Interface
-print('Current grid size = ' + str(GlobalGrid.getGridSize()))
+print("Current grid size = " + str(GlobalGrid.getGridSize()))
+
 
 # Test the ShaderSystem interface
-class TestMaterialVisitor(dr.MaterialVisitor) :
-	def visit(self, shader):
-		if not shader.isNull():
-			print('Found shader: ' + shader.getName() + ' defined in ' + shader.getShaderFileName())
+class TestMaterialVisitor(dr.MaterialVisitor):
+    def visit(self, shader):
+        if not shader.isNull():
+            print(
+                "Found shader: "
+                + shader.getName()
+                + " defined in "
+                + shader.getShaderFileName()
+            )
+
 
 # Disabled code, takes very long in TDM
 # materialVisitor = TestMaterialVisitor()
 # GlobalMaterialManager.foreachMaterial(materialVisitor)
 
-material = GlobalMaterialManager.getMaterialForName('bc_rat')
+material = GlobalMaterialManager.getMaterialForName("bc_rat")
 
 if not material.isNull():
-	print('Material ' + material.getName() + ' is defined in ' + material.getShaderFileName())
+    print(
+        "Material "
+        + material.getName()
+        + " is defined in "
+        + material.getShaderFileName()
+    )
+
 
 # Test finding a model
-class ModelFinder(dr.SceneNodeVisitor) :
-	def pre(self, node):
-		# Try to get a model from this node
-		model = node.getModel()
+class ModelFinder(dr.SceneNodeVisitor):
+    def pre(self, node):
+        # Try to get a model from this node
+        model = node.getModel()
 
-		if not model.isNull():
-			print('Model information:')
-			print('Filename: ' + model.getFilename())
-			print('Model path: ' + model.getModelPath())
-			print('Surface count: ' + str(model.getSurfaceCount()))
-			print('Vertex count: ' + str(model.getVertexCount()))
-			print('Poly count: ' + str(model.getPolyCount()))
+        if not model.isNull():
+            print("Model information:")
+            print("Filename: " + model.getFilename())
+            print("Model path: " + model.getModelPath())
+            print("Surface count: " + str(model.getSurfaceCount()))
+            print("Vertex count: " + str(model.getVertexCount()))
+            print("Poly count: " + str(model.getPolyCount()))
 
-			materials = model.getActiveMaterials()
+            materials = model.getActiveMaterials()
 
-			print('Active Materials:')
-			for material in materials:
-				print(material)
+            print("Active Materials:")
+            for material in materials:
+                print(material)
 
-			for i in range(0, model.getSurfaceCount()):
-				surface = model.getSurface(i)
-				print('Surface: ' + str(i))
-				print('  Default Shader: ' + surface.getDefaultMaterial())
-				print('  Active Shader: ' + surface.getActiveMaterial())
-				print('  PolyCount: ' + str(surface.getNumTriangles()))
-				print('  Vertex Count: ' + str(surface.getNumVertices()))
+            for i in range(0, model.getSurfaceCount()):
+                surface = model.getSurface(i)
+                print("Surface: " + str(i))
+                print("  Default Shader: " + surface.getDefaultMaterial())
+                print("  Active Shader: " + surface.getActiveMaterial())
+                print("  PolyCount: " + str(surface.getNumTriangles()))
+                print("  Vertex Count: " + str(surface.getNumVertices()))
 
-				s = Vector3(0,0,0)
-				numverts = surface.getNumVertices()
-				for v in range(0, numverts):
-					meshvertex = surface.getVertex(v)
-					s += meshvertex.vertex
+                s = Vector3(0, 0, 0)
+                numverts = surface.getNumVertices()
+                for v in range(0, numverts):
+                    meshvertex = surface.getVertex(v)
+                    s += meshvertex.vertex
 
-				print('  Sum of all vertices: ' + str(s.x()) + ',' + str(s.y()) + ',' + str(s.z()))
+                print(
+                    "  Sum of all vertices: "
+                    + str(s.x())
+                    + ","
+                    + str(s.y())
+                    + ","
+                    + str(s.z())
+                )
 
-		return 1
+        return 1
+
 
 walker = ModelFinder()
 GlobalSceneGraph.root().traverse(walker)
 
 # Test the ModelSkinCache interface
-#allSkins = GlobalModelSkinCache.getAllSkins()
+# allSkins = GlobalModelSkinCache.getAllSkins()
 #
-#for skin in allSkins:
-#	modelskin = GlobalModelSkinCache.capture(skin)
-#	print('Skin found: ' + modelskin.getName())
+# for skin in allSkins:
+# modelskin = GlobalModelSkinCache.capture(skin)
+# print('Skin found: ' + modelskin.getName())
 
-v = dr.Vector3(6,6,6)
-v += dr.Vector3(10,10,10)
+v = dr.Vector3(6, 6, 6)
+v += dr.Vector3(10, 10, 10)
 print(v)
 
+
 # Test patch manipulation
-class PatchManipulator(dr.SceneNodeVisitor) :
-	def pre(self, node):
-		# Try to get a patch from this node
-		patch = node.getPatch()
+class PatchManipulator(dr.SceneNodeVisitor):
+    def pre(self, node):
+        # Try to get a patch from this node
+        patch = node.getPatch()
 
-		if not patch.isNull():
-			print('Patch information:')
-			print('Dimensions: ' + str(patch.getWidth()) + 'x' + str(patch.getHeight()))
+        if not patch.isNull():
+            print("Patch information:")
+            print("Dimensions: " + str(patch.getWidth()) + "x" + str(patch.getHeight()))
 
-			w = 0
-			while w < patch.getWidth():
-				h = 0
-				while h < patch.getHeight():
-					# Push the vertex around a bit
-					ctrl = patch.ctrlAt(h,w)
-					ctrl.vertex += dr.Vector3(0,0,10*(h-w))
-					h += 1
-				w += 1
+            w = 0
+            while w < patch.getWidth():
+                h = 0
+                while h < patch.getHeight():
+                    # Push the vertex around a bit
+                    ctrl = patch.ctrlAt(h, w)
+                    ctrl.vertex += dr.Vector3(0, 0, 10 * (h - w))
+                    h += 1
+                w += 1
 
-			patch.controlPointsChanged()
+            patch.controlPointsChanged()
 
-		return 1
+        return 1
+
 
 walker = PatchManipulator()
 GlobalSceneGraph.root().traverse(walker)
 
+
 # Test the SelectionSetManager interface
-class SelectionSetWalker(dr.SelectionSetVisitor) :
-	def visit(self, selectionset):
-		print(selectionset.getName())
+class SelectionSetWalker(dr.SelectionSetVisitor):
+    def visit(self, selectionset):
+        print(selectionset.getName())
+
 
 walker = SelectionSetWalker()
 GlobalSelectionSetManager.foreachSelectionSet(walker)
@@ -370,65 +414,72 @@ selSet.select()
 selSet.clear()
 
 if selSet.empty():
-	GlobalSelectionSetManager.deleteSelectionSet("TestSelectionSet")
+    GlobalSelectionSetManager.deleteSelectionSet("TestSelectionSet")
 
-print('')
+print("")
 
-soundshader = GlobalSoundManager.getSoundShader('tdm_ai_lady_alertdown_to_idle')
+soundshader = GlobalSoundManager.getSoundShader("tdm_ai_lady_alertdown_to_idle")
 
 if not soundshader.isNull():
-	print('Name of this sound shader: ' + soundshader.getName())
+    print("Name of this sound shader: " + soundshader.getName())
 
-	radii = soundshader.getRadii()
+    radii = soundshader.getRadii()
 
-	print('Minimum radius in meters: ' + str(radii.getMin(1)))
-	print('Maximum radius in meters: ' + str(radii.getMax(1)))
+    print("Minimum radius in meters: " + str(radii.getMin(1)))
+    print("Maximum radius in meters: " + str(radii.getMax(1)))
 
-	fileList = soundshader.getSoundFileList()
-	for i in range(0, len(fileList)):
-		print(' Sound file used by this shader: ' + fileList[i])
+    fileList = soundshader.getSoundFileList()
+    for i in range(0, len(fileList)):
+        print(" Sound file used by this shader: " + fileList[i])
 
-	if (len(fileList) > 0):
-		GlobalSoundManager.playSound(fileList[0])
+    if len(fileList) > 0:
+        GlobalSoundManager.playSound(fileList[0])
 
 # Test SelectionGroup interface
 group = GlobalSelectionGroupManager.createSelectionGroup()
 
-print('Created group with ID: ' + str(group.getId()))
+print("Created group with ID: " + str(group.getId()))
+
 
 # Test traversing the current selection
-class GroupAdder(dr.SelectionVisitor) :
-	def visit(self, node):
-		group.addNode(node)
+class GroupAdder(dr.SelectionVisitor):
+    def visit(self, node):
+        group.addNode(node)
+
 
 visitor = Walker()
 GlobalSelectionSystem.foreachSelected(visitor)
 
-print('The group contains now ' + str(group.size()) + ' items')
+print("The group contains now " + str(group.size()) + " items")
 
 # Deselect the group
 GlobalSelectionGroupManager.setGroupSelected(group.getId(), 0)
 
-# List nodes in this group
-class SelectionGroupWalker(dr.SelectionGroupVisitor) :
-	def visit(self, node):
-		print('Group Member: ' + node.getNodeType())
 
-gropWalker = SelectionGroupWalker();
+# List nodes in this group
+class SelectionGroupWalker(dr.SelectionGroupVisitor):
+    def visit(self, node):
+        print("Group Member: " + node.getNodeType())
+
+
+gropWalker = SelectionGroupWalker()
 group.foreachNode(gropWalker)
 
 camview = GlobalCameraManager.getActiveView()
 print(camview.getCameraOrigin())
-camview.setCameraOrigin(dr.Vector3(50,0,50))
+camview.setCameraOrigin(dr.Vector3(50, 0, 50))
+
 
 # Layer Functionality
 def printLayers():
     class LayerPrinter(dr.LayerVisitor):
         def visit(self, layerID, layerName):
             print(layerID, layerName)
+
     layerPrinter = LayerPrinter()
     GlobalLayerManager.foreachLayer(layerPrinter)
     print("=================")
+
 
 print("Layers:")
 printLayers()

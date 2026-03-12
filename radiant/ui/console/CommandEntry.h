@@ -13,7 +13,7 @@ namespace ui
 
 /**
  * greebo: This class encapsulates a Command entry field, which can be used
- * to issue statements to DarkRadiant's command system.
+ * to issue statements to NeoRadiant's command system.
  *
  * The entry field supports a basic "command history" functionality to retrieve
  * previously typed commands. The buffer is of variable size, default is 100 commands.

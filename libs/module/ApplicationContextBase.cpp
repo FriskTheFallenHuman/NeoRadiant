@@ -81,7 +81,7 @@ std::string ApplicationContextBase::getRuntimeDataPath() const
     return path;
 #elif defined(POSIX)
 #   if defined(ENABLE_RELOCATION)
-    return _appPath + "../share/hellforge/";
+    return _appPath + "../share/neoradiant/";
 #   elif defined(PKGDATADIR)
     return std::string(PKGDATADIR) + "/";
 #   else
@@ -98,7 +98,7 @@ std::string ApplicationContextBase::getHTMLPath() const
     return getRuntimeDataPath();
 #elif defined(POSIX)
 #if defined(ENABLE_RELOCATION)
-    return _appPath + "../share/doc/hellforge/";
+    return _appPath + "../share/doc/neoradiant/";
 #elif defined(HTMLDIR)
     return std::string(HTMLDIR) + "/";
 #else
@@ -230,7 +230,7 @@ std::string getXDGPath(const std::string& envVar, const std::string& fallback)
     {
         // Use default path within $HOME/fallback
         static const std::string HOME_DIR = strenv("HOME");
-        return os::standardPathWithSlash(HOME_DIR) + fallback + "/hellforge/";
+        return os::standardPathWithSlash(HOME_DIR) + fallback + "/neoradiant/";
     }
     else
     {
@@ -293,8 +293,8 @@ void ApplicationContextBase::initialise(int argc, char* argv[])
         );
     }
 
-    // Construct DarkRadiant home directory
-    _homePath = appData + "\\DarkRadiant";
+    // Construct NeoRadiant home directory
+    _homePath = appData + "\\NeoRadiant";
     if (!os::makeDirectory(_homePath))
     {
         rConsoleError() << "ApplicationContextBase: could not create home directory "

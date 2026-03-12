@@ -7,7 +7,7 @@
 #ifdef HAVE_CONFIG_H
 #include <config.h>
 #else
-#define CORE_MODULE_LIBRARY "DarkRadiantCore"
+#define CORE_MODULE_LIBRARY "Core"
 #endif
 
 namespace module
@@ -17,7 +17,7 @@ CoreModule::CoreModule(IApplicationContext& context) :
 	_instance(nullptr)
 {
 	auto coreModulePath = findCoreModule(context);
-	
+
 	_coreModuleLibrary.reset(new DynamicLibrary(coreModulePath));
 
 	if (_coreModuleLibrary->failed())
@@ -63,7 +63,7 @@ std::string CoreModule::findCoreModule(IApplicationContext& context)
 		}
 	}
 
-	throw FailureException("Cannot find the main module in any of the paths: " + 
+	throw FailureException("Cannot find the main module in any of the paths: " +
 		string::join(libraryPaths, "; "));
 }
 

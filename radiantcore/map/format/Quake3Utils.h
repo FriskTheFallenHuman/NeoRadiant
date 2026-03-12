@@ -138,7 +138,7 @@ inline ShiftScaleRotation calculateTexDefFromTransform(const IFace& face, const 
     return td;
 }
 
-// Originally ported from GtkRadiant, made to work with DarkRadiant's data structures
+// Originally ported from GtkRadiant, made to work with NeoRadiant's data structures
 // https://github.com/TTimo/GtkRadiant/blob/a1ae77798f434bf8fb31a7d91cd137d1ce554e33/radiant/brush.cpp#L331
 inline void getTextureVectorsForFace(const Vector3& normal, const ShiftScaleRotation& ssr, float texWidth, float texHeight, double STfromXYZ[2][4])
 {

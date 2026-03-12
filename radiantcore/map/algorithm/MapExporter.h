@@ -18,11 +18,11 @@ namespace map
  * Walker class which passes the visited scene nodes to the
  * attached MapExporter class, for writing it to the given
  * string output stream. The exporter is using a IMapWriter class
- * to dispatch various calls like beginWriteEntity(), 
+ * to dispatch various calls like beginWriteEntity(),
  * beginMap(), endWriteBrush() during scene traversal etc.
  *
  * If the progress dialog is enabled (i.e. nodeCount > 0 in constructor)
- * a gtkutil::OperationAbortedException& might be thrown during traversal, 
+ * a gtkutil::OperationAbortedException& might be thrown during traversal,
  * the calling code needs to be able to handle that.
  */
 class MapExporter :
@@ -60,7 +60,7 @@ public:
 	MapExporter(IMapWriter& writer, const scene::IMapRootNodePtr& root,
 				std::ostream& mapStream, std::size_t nodeCount = 0);
 
-	// Additional constructor allowed to write to the auxiliary .darkradiant file
+	// Additional constructor allowed to write to the auxiliary .project file
 	MapExporter(IMapWriter& writer, const scene::IMapRootNodePtr& root,
 				std::ostream& mapStream, std::ostream& auxStream, std::size_t nodeCount = 0);
 

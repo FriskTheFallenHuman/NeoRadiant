@@ -1,10 +1,10 @@
-/** 
+/**
  * greebo: Precompiled header module. This is included by the respective precompiled.h
  * files throughout the project.
  */
 #pragma once
 
-// Commonly used DarkRadiant interfaces
+// Commonly used NeoRadiant interfaces
 #include "Bounded.h"
 #include "editable.h"
 #include "i18n.h"

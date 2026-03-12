@@ -433,7 +433,7 @@ void LayerInfoFileModule::applyInfoToScene(const IMapRootNodePtr& root, const ma
 
 	rDebug() << "Sanity-checking the layer assignments...";
 
-	// Sanity-check the layer mapping, it's possible that some .darkradiant
+	// Sanity-check the layer mapping, it's possible that some .project
 	// files are mapping nodes to non-existent layer IDs
 	LayerValidityCheckWalker checker;
 	root->traverseChildren(checker);

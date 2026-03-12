@@ -105,7 +105,7 @@ public:
 	void set(const std::string& key, const std::string& value) override;
 
 	/* Appends a whole (external) XML file to the XMLRegistry. The toplevel nodes of this file
-	 * are appended to _topLevelNode (e.g. <darkradiant>) if parentKey is set to the empty string "",
+	 * are appended to _topLevelNode (e.g. <neoradiant>) if parentKey is set to the empty string "",
 	 * otherwise they are imported as a child of the specified parentKey. Choose the target tree by
 	 * passing the correct enum value (e.g. treeUser for the user tree)
 	 */

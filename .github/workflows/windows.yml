@@ -2,7 +2,7 @@ name: Windows
 
 on:
   push:
-    branches: ['**']
+    branches: ["**"]
   pull_request:
   workflow_call:
 
@@ -16,7 +16,7 @@ jobs:
     runs-on: windows-latest
 
     env:
-      SOLUTION_FILE_PATH: .\DarkRadiant.sln
+      SOLUTION_FILE_PATH: .\NeoRadiant.sln
       BUILD_CONFIGURATION: Release
 
     steps:
@@ -63,13 +63,13 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: hellforge-windows-x64
+          name: neoradiant-windows-x64
           path: |
-            tools/scripts/DarkRadiant_install.x64/**/*
-            !tools/scripts/DarkRadiant_install.x64/**/*.pdb
+            tools/scripts/NeoRadiant_install.x64/**/*
+            !tools/scripts/NeoRadiant_install.x64/**/*.pdb
 
       - name: Upload PDB files
         uses: actions/upload-artifact@v4
         with:
-          name: hellforge-windows-x64-pdb
-          path: tools/scripts/DarkRadiant_install.x64/**/*.pdb
+          name: neoradiant-windows-x64-pdb
+          path: tools/scripts/NeoRadiant_install.x64/**/*.pdb

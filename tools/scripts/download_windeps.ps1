@@ -46,7 +46,7 @@ try
     Remove-Item (Join-Path $target_folder "w32deps") -Recurse -ErrorAction SilentlyContinue
     Remove-Item (Join-Path $target_folder "w64deps") -Recurse -ErrorAction SilentlyContinue
     Remove-Item (Join-Path $target_folder "windeps") -Recurse -ErrorAction SilentlyContinue
-    
+
     Write-Host ("Extracting dependencies package...")
 
     & ..\7z\7za.exe x $package_path -o"$target_folder" -aoa

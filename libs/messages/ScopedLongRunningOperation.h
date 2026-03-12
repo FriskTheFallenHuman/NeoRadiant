@@ -9,10 +9,10 @@ namespace radiant
 
 /**
  * Scoped helper class dispatching a LongRunningOperationMessage
- * to DarkRadiant's message bus. The constructor will send 
+ * to NeoRadiant's message bus. The constructor will send
  * the Started event, the destructor will do the Finished part
  */
-class ScopedLongRunningOperation : 
+class ScopedLongRunningOperation :
 	public util::Noncopyable
 {
 public:

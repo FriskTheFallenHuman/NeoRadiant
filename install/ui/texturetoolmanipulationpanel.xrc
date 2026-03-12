@@ -43,7 +43,7 @@
 									<flag>wxALIGN_CENTER_VERTICAL</flag>
 									<border>0</border>
 									<object class="wxBitmapButton" name="ShiftLeftButton">
-										<bitmap stock_id="darkradiant:arrow_left_blue.png" stock_client="">undefined.png</bitmap>
+										<bitmap stock_id="neoradiant:arrow_left_blue.png" stock_client="">undefined.png</bitmap>
 										<default>0</default>
 									</object>
 								</object>
@@ -58,7 +58,7 @@
 											<flag>wxALIGN_CENTER</flag>
 											<border>0</border>
 											<object class="wxBitmapButton" name="ShiftUpButton">
-												<bitmap stock_id="darkradiant:arrow_up_blue.png" stock_client="">undefined.png</bitmap>
+												<bitmap stock_id="neoradiant:arrow_up_blue.png" stock_client="">undefined.png</bitmap>
 												<default>0</default>
 											</object>
 										</object>
@@ -67,7 +67,7 @@
 											<flag>wxALIGN_CENTER</flag>
 											<border>0</border>
 											<object class="wxBitmapButton" name="ShiftDownButton">
-												<bitmap stock_id="darkradiant:arrow_down_blue.png" stock_client="">undefined.png</bitmap>
+												<bitmap stock_id="neoradiant:arrow_down_blue.png" stock_client="">undefined.png</bitmap>
 												<default>0</default>
 											</object>
 										</object>
@@ -78,7 +78,7 @@
 									<flag>wxALIGN_CENTER_VERTICAL</flag>
 									<border>0</border>
 									<object class="wxBitmapButton" name="ShiftRightButton">
-										<bitmap stock_id="darkradiant:arrow_right_blue.png" stock_client="">undefined.png</bitmap>
+										<bitmap stock_id="neoradiant:arrow_right_blue.png" stock_client="">undefined.png</bitmap>
 										<default>0</default>
 									</object>
 								</object>
@@ -125,7 +125,7 @@
 									<flag>wxALIGN_CENTER|wxBOTTOM</flag>
 									<border>0</border>
 									<object class="wxBitmapButton" name="ScaleHorizSmallerButton">
-										<bitmap stock_id="darkradiant:hscale_down.png" stock_client="">undefined.png</bitmap>
+										<bitmap stock_id="neoradiant:hscale_down.png" stock_client="">undefined.png</bitmap>
 										<default>0</default>
 									</object>
 								</object>
@@ -134,7 +134,7 @@
 									<flag>wxLEFT</flag>
 									<border>6</border>
 									<object class="wxBitmapButton" name="ScaleHorizLargerButton">
-										<bitmap stock_id="darkradiant:hscale_up.png" stock_client="">undefined.png</bitmap>
+										<bitmap stock_id="neoradiant:hscale_up.png" stock_client="">undefined.png</bitmap>
 										<default>0</default>
 									</object>
 								</object>
@@ -172,7 +172,7 @@
 									<flag>wxALIGN_CENTER|wxBOTTOM</flag>
 									<border>0</border>
 									<object class="wxBitmapButton" name="ScaleVertSmallerButton">
-										<bitmap stock_id="darkradiant:vscale_down.png" stock_client="">undefined.png</bitmap>
+										<bitmap stock_id="neoradiant:vscale_down.png" stock_client="">undefined.png</bitmap>
 										<default>0</default>
 									</object>
 								</object>
@@ -181,7 +181,7 @@
 									<flag>wxLEFT</flag>
 									<border>6</border>
 									<object class="wxBitmapButton" name="ScaleVertLargerButton">
-										<bitmap stock_id="darkradiant:vscale_up.png" stock_client="">undefined.png</bitmap>
+										<bitmap stock_id="neoradiant:vscale_up.png" stock_client="">undefined.png</bitmap>
 										<default>0</default>
 									</object>
 								</object>
@@ -249,7 +249,7 @@
 									<flag>wxALIGN_CENTER|wxBOTTOM</flag>
 									<border>0</border>
 									<object class="wxBitmapButton" name="RotateClockWiseButton">
-										<bitmap stock_id="darkradiant:rotate_cw.png" stock_client="">undefined.png</bitmap>
+										<bitmap stock_id="neoradiant:rotate_cw.png" stock_client="">undefined.png</bitmap>
 										<default>0</default>
 									</object>
 								</object>
@@ -258,7 +258,7 @@
 									<flag>wxLEFT</flag>
 									<border>6</border>
 									<object class="wxBitmapButton" name="RotateCounterClockWiseButton">
-										<bitmap stock_id="darkradiant:rotate_ccw.png" stock_client="">undefined.png</bitmap>
+										<bitmap stock_id="neoradiant:rotate_ccw.png" stock_client="">undefined.png</bitmap>
 										<default>0</default>
 									</object>
 								</object>

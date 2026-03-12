@@ -1,37 +1,40 @@
-# Set the command name so that DarkRadiant recognises this file
-__commandName__ = 'ShiftTexturesRandomly'
-__commandDisplayName__ = 'Shift Textures randomly'
+# Set the command name so that NeoRadiant recognises this file
+__commandName__ = "ShiftTexturesRandomly"
+__commandDisplayName__ = "Shift Textures randomly"
 
-# The actual algorithm called by DarkRadiant
+# The actual algorithm called by NeoRadiant
 # is contained in the execute() function
 
+
 def execute():
-	import random
-	import darkradiant as dr
+    import random
 
-	class FaceVisitor(dr.SelectedFaceVisitor) :
-		def visitFace(self, face):
-			s = random.randint(0, 100) / 100
-			t = random.randint(0, 100) / 100
-			face.shiftTexdef(s, t)
+    import neoradiant as dr
 
-	visitor = FaceVisitor()
-	GlobalSelectionSystem.foreachSelectedFace(visitor)
+    class FaceVisitor(dr.SelectedFaceVisitor):
+        def visitFace(self, face):
+            s = random.randint(0, 100) / 100
+            t = random.randint(0, 100) / 100
+            face.shiftTexdef(s, t)
 
-	class PatchVisitor(dr.SelectionVisitor) :
-		def visit(self, node):
-			patch = node.getPatch()
-			if not patch.isNull():
-				s = random.randint(0, 100)
-				t = random.randint(0, 100)
-				patch.translateTexture(s, t)
+    visitor = FaceVisitor()
+    GlobalSelectionSystem.foreachSelectedFace(visitor)
 
-	patchVisitor = PatchVisitor()
-	GlobalSelectionSystem.foreachSelected(patchVisitor)
+    class PatchVisitor(dr.SelectionVisitor):
+        def visit(self, node):
+            patch = node.getPatch()
+            if not patch.isNull():
+                s = random.randint(0, 100)
+                t = random.randint(0, 100)
+                patch.translateTexture(s, t)
 
-	GlobalCameraManager.getActiveView().refresh()
+    patchVisitor = PatchVisitor()
+    GlobalSelectionSystem.foreachSelected(patchVisitor)
+
+    GlobalCameraManager.getActiveView().refresh()
+
 
 # The variable __executeCommand__ evaluates to true
-# when DarkRadiant executes this command
+# when NeoRadiant executes this command
 if __executeCommand__:
-	execute()
+    execute()

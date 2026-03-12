@@ -24,7 +24,7 @@ constexpr LogLevel AllLogLevels[] = {
 /**
  * greebo: A LogDevice is a class which is able to take log output.
  *
- * Examples of LogDevices are the Console and the DarkRadiant logfile.
+ * Examples of LogDevices are the Console and the NeoRadiant logfile.
  * Note: Use the LogWriter::attach() method to register a class for logging.
  */
 class ILogDevice
@@ -44,14 +44,14 @@ public:
 	 * This is supposed to make it easier to inspect the startup phase opening
 	 * the console viewer in the UI.
 	 */
-	virtual bool isConsole() const 
+	virtual bool isConsole() const
 	{
 		return false;
 	}
 };
 
 /**
- * Central logging hub, dispatching any incoming log messages 
+ * Central logging hub, dispatching any incoming log messages
  * to all attached ILogDevices.
  *
  * Also offers the stream references to set up the rMessage/rWarning streams

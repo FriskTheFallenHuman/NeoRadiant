@@ -5,7 +5,7 @@
 #include <sigc++/signal.h>
 #include <functional>
 
-const char* const MODULE_RADIANT_CORE("RadiantCore");
+const char* const MODULE_RADIANT_CORE("Core");
 
 namespace applog { class ILogWriter;  }
 namespace language { class ILanguageManager; } // see "i18n.h"
@@ -24,7 +24,7 @@ class IMessageBus; // see imessagebus.h
  * Module Registration doesn't need to be performed explicitly,
  * the IRadiant module will register itself.
  */
-class IRadiant : 
+class IRadiant :
     public RegisterableModule
 {
 public:
@@ -53,7 +53,7 @@ public:
     virtual language::ILanguageManager& getLanguageManager() = 0;
 
     /**
-     * Loads and initialises all modules, starting up the 
+     * Loads and initialises all modules, starting up the
      * application. Might throw a StartupFailure exception
      * on unrecoverable errors.
      */

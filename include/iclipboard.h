@@ -7,7 +7,7 @@ namespace radiant
 {
 
 /**
- * Interface to DarkRadiant's clipboard which is able to 
+ * Interface to NeoRadiant's clipboard which is able to
  * store and retrieve a string from and to the system clipboard.
  * Access it through the GlobalClipboard() function.
  *

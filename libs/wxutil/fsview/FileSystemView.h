@@ -11,10 +11,10 @@ namespace wxutil
 /**
  * Specialised Tree View class sutiable for displaying a hierarchy of
  * files and folders, based on a given file extension filter.
- * The base path can be set to the root of DarkRadiant's VFS or on of its
+ * The base path can be set to the root of NeoRadiant's VFS or on of its
  * subdirectories. It's also capable of displaying the contents of an
  * arbitrary archive file, located somewhere in the physical filesystem.
- * 
+ *
  * Use the static constructor to create an instance of this widget.
  */
 class FileSystemView :

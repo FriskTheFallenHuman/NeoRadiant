@@ -6,7 +6,7 @@
 #define DEBUG_ASSERTS
 #endif
 
-#include "imodule.h" // for GlobalErrorHandler() 
+#include "imodule.h" // for GlobalErrorHandler()
 
 #if defined(DEBUG_ASSERTS)
 
@@ -28,11 +28,11 @@
 
 /// \brief Sends a \p message to the current debug-message-handler text-output-stream if \p condition evaluates to false.
 #define ASSERT_MESSAGE(condition, message)\
-	if(!(condition)) { GlobalErrorHandler()("DarkRadiant - Assertion Failure", std::string(FILE_LINE) + "\nAssertion failure: " + message + "\nBreak into the debugger?"); }
+	if(!(condition)) { GlobalErrorHandler()("NeoRadiant - Assertion Failure", std::string(FILE_LINE) + "\nAssertion failure: " + message + "\nBreak into the debugger?"); }
 
 /// \brief Sends a \p message to the current debug-message-handler text-output-stream.
 #define ERROR_MESSAGE(message)\
-{ GlobalErrorHandler()("DarkRadiant - Runtime Error", std::string(FILE_LINE) + "\nRuntime Error: " + message + "\nBreak into the debugger?"); }
+{ GlobalErrorHandler()("NeoRadiant - Runtime Error", std::string(FILE_LINE) + "\nRuntime Error: " + message + "\nBreak into the debugger?"); }
 
 #define ASSERT_NOTNULL(ptr) ASSERT_MESSAGE(ptr != 0, "pointer \"" #ptr "\" is null")
 

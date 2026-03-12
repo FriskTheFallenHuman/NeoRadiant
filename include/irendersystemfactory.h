@@ -11,7 +11,7 @@ namespace render
 
 /**
  * greebo: The rendersystem factory can be used to generate
- * new instances of DarkRadiant's backend renderer.
+ * new instances of NeoRadiant's backend renderer.
  *
  * The backend renderer provides access to named Shader objects
  * which can be filled with OpenGLRenderable objects.

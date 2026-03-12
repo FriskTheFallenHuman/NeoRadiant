@@ -7,7 +7,7 @@ namespace decl
 {
 
 /**
- * Base declaration implementation shared by all decls supported by DarkRadiant.
+ * Base declaration implementation shared by all decls supported by NeoRadiant.
  *
  * To avoid subclasses having to inherit the IDeclaration interface themselves
  * (and to circumvent the diamond pattern and virtual inheritance), subclasses

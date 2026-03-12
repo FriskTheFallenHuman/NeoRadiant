@@ -13,19 +13,24 @@
 		<menuItem name="saveas" caption="Save &amp;as..." command="SaveMapAs" />
 		<menuItem name="saveCopyAs" caption="Save &amp;copy as..." command="SaveMapCopyAs" />
 		<menuSeparator />
-		<menuItem name="exportMap" caption="Export Map..." command="ExportMap" />
-		<menuItem name="saveSelected" caption="Export selected as Map..." command="SaveSelected" />
-		<menuItem name="saveSelectedPrefab" caption="&amp;Export selected as Prefab..." command="SaveSelectedAsPrefab" />
-		<menuItem name="exportSelectedAsModel" caption="Export selected as Model..." command="ExportSelectedAsModelDialog" />
-		<menuItem name="createCM" caption="Export selected as Collision Model..." command="ExportCollisionModelDialog" />
-		<menuItem name="saveRegion" caption="Export &amp;Region..." command="SaveRegion" />
+		<subMenu name="export" caption="Export...">
+			<menuItem name="exportMap" caption="Map" command="ExportMap" />
+			<menuItem name="saveSelected" caption="Selection as Map" command="SaveSelected" />
+			<menuItem name="saveSelectedPrefab" caption="&amp;Selection as Prefab" command="SaveSelectedAsPrefab" />
+			<menuSeparator />
+			<menuItem name="exportSelectedAsModel" caption="Export selection as Model..." command="ExportSelectedAsModelDialog" />
+			<menuItem name="createCM" caption="Export selection as Collision Model..." command="ExportCollisionModelDialog" />
+			<menuItem name="saveRegion" caption="Export &amp;Region" command="SaveRegion" />
+		</subMenu>
 		<menuSeparator />
 		<menuItem name="ConvertModel" caption="Import/Convert Model..." command="ConvertModelDialog" />
 		<menuSeparator />
-		<menuItem name="reloadDecls" caption="Reload Declarations" command="ReloadDecls" icon="decl.png" />
-		<menuItem name="reloadImages" caption="Reload Images" command="ReloadImages" icon="icon_texture.png" />
-		<menuItem name="refreshModels" caption="&amp;Reload Models" command="RefreshModels" icon="model16green.png" />
-		<menuItem name="refreshSelectedModels" caption="Reload Selected Models" command="RefreshSelectedModels" icon="model16green.png" />
+		<subMenu name="reload" caption="Reload...">
+			<menuItem name="reloadDecls" caption="Declarations" command="ReloadDecls" icon="decl.png" />
+			<menuItem name="reloadImages" caption="Images" command="ReloadImages" icon="icon_texture.png" />
+			<menuItem name="refreshModels" caption="&amp;Models" command="RefreshModels" icon="model16green.png" />
+			<menuItem name="refreshSelectedModels" caption="Selected Models" command="RefreshSelectedModels" icon="model16green.png" />
+		</subMenu>
 		<menuSeparator />
 		<menuItem name="gameSelector" caption="&amp;Game/Project Setup..." command="ProjectSettings" />
 		<menuSeparator />
@@ -71,7 +76,7 @@
 		<menuItem name="commandpalette" caption="Command Palette..." command="CommandPalette" />
 		<menuItem name="insertpalette" caption="Insert Palette..." command="InsertPalette" />
 		<menuItem name="shortcuts" caption="Keyboard Shortcuts..." command="ShowCommandList" />
-    <menuItem name="mousetoolbindings" caption="Mouse Bindings..." command="MouseToolMappingDialog" />
+		<menuItem name="mousetoolbindings" caption="Mouse Bindings..." command="MouseToolMappingDialog" />
 		<menuItem name="themes" caption="Themes..." command="EditColourScheme" icon="editcolour16.png" />
 		<menuItem name="preferences" caption="Pre&amp;ferences..." command="Preferences" />
 	</subMenu>
@@ -79,7 +84,7 @@
 	<subMenu name="view" caption="V&amp;iew">
 		<menuItem name="newxyview" caption="New XY view" command="NewOrthoView" />
 		<menuItem name="newcamview" caption="New Camera view" command="NewCameraView" />
-    <menuSeparator name="controlSeparatorBottom" />
+	<menuSeparator name="controlSeparatorBottom" />
 		<subMenu name="camera" caption="Camera">
 			<menuItem name="cameraCenter" caption="&amp;Center" command="CenterView" />
 			<menuItem name="cameraUpFloor" caption="&amp;Up Floor" command="UpFloor" />
@@ -194,7 +199,7 @@
 
 	<subMenu name="map" caption="M&amp;ap">
 		<menuItem name="findBrush" caption="Find brush..." command="FindBrush" />
-    <menuItem name="findReplaceTextures" caption="Find and replace textures..." icon="texwindow_findandreplace.png" command="ToggleFindAndReplaceMaterial" />
+	<menuItem name="findReplaceTextures" caption="Find and replace textures..." icon="texwindow_findandreplace.png" command="ToggleFindAndReplaceMaterial" />
 		<menuItem name="mapinfo" caption="Map info..." command="MapInfo" />
 		<menuItem name="skinEditor" caption="Skin Editor..." command="SkinEditor" icon="icon_skin.png" />
 	</subMenu>
@@ -308,8 +313,8 @@
 		<menuItem name="capselection" caption="Cap..." command="PatchCapDialog" icon="curve_cap.png" />
 		<menuSeparator />
 		<menuItem name="stitchTextures" caption="Stitch Patch Textures" command="StitchPatchTexture" />
-        <menuItem name="bulgePatch" caption="Bulge Patch..." command="BulgePatchDialog" />
-        <menuItem name="weldPatches" caption="Weld/Merge Patches" command="WeldSelectedPatches" />
+		<menuItem name="bulgePatch" caption="Bulge Patch..." command="BulgePatchDialog" />
+		<menuItem name="weldPatches" caption="Weld/Merge Patches" command="WeldSelectedPatches" />
 	</subMenu>
 
 	<subMenu name="curve" caption="&amp;Curve">
@@ -325,9 +330,7 @@
 
 	<subMenu name="help" caption="&amp;Help">
 		<menuItem name="about" caption="&amp;About" command="About" />
-        <menuItem name="openForumLink" caption="&amp;Community Forum" command="OpenForumUrl" />
-        <menuItem name="openScriptRef" caption="&amp;Script Reference Wiki Article" command="OpenScriptReference" />
-		<menuItem name="userGuide" caption="&amp;User Guide (Online)" command="ShowUserGuide" />
-		<menuItem name="userGuideLocal" caption="&amp;User Guide (Local)" command="ShowOfflineUserGuide" />
+		<menuItem name="openScriptRef" caption="&amp;Script Reference" command="OpenScriptReference" />
+		<menuItem name="userGuide" caption="&amp;User Guide" command="ShowUserGuide" />
 	</subMenu>
 </menu>

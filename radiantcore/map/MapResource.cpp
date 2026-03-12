@@ -174,7 +174,7 @@ bool MapResource::saveBackup()
 		fs::path backup = fullpath;
 		backup.replace_extension(".bak");
 
-		// replace_extension() doesn't accept something like ".darkradiant.bak", so roll our own
+		// replace_extension() doesn't accept something like ".project.bak", so roll our own
 		fs::path auxFileBackup = auxFile.string() + ".bak";
 
 		bool errorOccurred = false;
@@ -197,7 +197,7 @@ bool MapResource::saveBackup()
 			errorOccurred = true;
 		}
 
-		// Handle the .darkradiant file only if the above succeeded
+		// Handle the .project file only if the above succeeded
 		if (!errorOccurred)
 		{
 			try
@@ -208,7 +208,7 @@ bool MapResource::saveBackup()
 					fs::remove(auxFileBackup);
 				}
 
-				// Check if the .darkradiant file exists in the first place
+				// Check if the .project file exists in the first place
 				if (fs::exists(auxFile))
 				{
 					// rename current to backup
@@ -365,7 +365,7 @@ stream::MapResourceStream::Ptr MapResource::openInfofileStream()
         radiant::NotificationMessage::SendWarning(
             fmt::format(_("No existing file named {0} found, could not load any group or layer information. "
                 "A new info file will be created the next time the map is saved."), os::getFilename(infoFilePath)),
-            _("Missing .darkradiant File"));
+            _("Missing .project File"));
         return stream::MapResourceStream::Ptr();
     }
 }

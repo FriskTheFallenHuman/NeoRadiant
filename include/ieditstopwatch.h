@@ -8,13 +8,13 @@ namespace map
 
 /**
 * Stopwatch to measure the time spent editing a particular map.
-* The time is persisted to the .darkradiant/.mapx file and keeps running
+* The time is persisted to the .project/.mapx file and keeps running
 * as long as the application is in focus.
 *
 * The class will maintain its own internal timer class, but will broadcast
-* a query message (type is IMessage::ApplicationIsActiveQuery) over the 
-* MessageBus such that the UI module can react and prevent the timer 
-* from increasing when the application is not in focus or blocked 
+* a query message (type is IMessage::ApplicationIsActiveQuery) over the
+* MessageBus such that the UI module can react and prevent the timer
+* from increasing when the application is not in focus or blocked
 * in some other way.
 */
 class IMapEditStopwatch :

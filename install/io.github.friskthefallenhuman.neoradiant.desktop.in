@@ -1,0 +1,20 @@
+[Desktop Entry]
+Version=1.0
+Name=NeoRadiant
+GenericName=Level editor
+Keywords=doom;doom3;idtech;level;map;game development;
+
+Comment=3D level editor for idTech4-based games
+Comment[de]=3D Level Editor für idTech4-basierte Spiele
+
+Icon=io.github.friskthefallenhuman.neoradiant
+
+# The %f means a single, local, absolute file. Remote files will be
+# first copied in a local temp location and then given to the program:
+Exec=@CMAKE_INSTALL_PREFIX@/bin/neoradiant %f
+
+Terminal=false
+
+Type=Application
+
+Categories=Game;3DGraphics;

@@ -49,7 +49,7 @@ inline language::ILanguageManager& GlobalLanguageManager()
 	return GlobalRadiantCore().getLanguageManager();
 }
 
-#define GETTEXT_PACKAGE "darkradiant"
+#define GETTEXT_PACKAGE "neoradiant"
 
 // Redefine the _() macro to return a std::string for convenience
 #ifndef WXINTL_NO_GETTEXT_MACRO

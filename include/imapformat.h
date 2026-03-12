@@ -207,7 +207,7 @@ public:
     virtual IMapWriterPtr getMapWriter() const = 0;
 
     /**
-     * Returns true if this map format allows the .darkradiant file
+     * Returns true if this map format allows the .project file
      * to be saved along the actual .map file. Some exporter modules
      * might want to disable that (i.e. the prefab exporter)
      */

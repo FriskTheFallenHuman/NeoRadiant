@@ -1,6 +1,5 @@
 #include "SoundPlayer.h"
 
-#include <vorbis/vorbisfile.h>
 #include <iostream>
 #include <vector>
 #include "string/case_conv.h"
@@ -64,7 +63,7 @@ void SoundPlayer::initialise() {
 	}
 	else {
 		rError() << "Could not open ALC device." << std::endl;
-    }
+	}
 }
 
 SoundPlayer::~SoundPlayer() {
@@ -88,7 +87,7 @@ SoundPlayer::~SoundPlayer() {
 	}
 	else {
 		rError() << "Could not reset ALC context." << std::endl;
-    }
+	}
 }
 
 void SoundPlayer::onTimerIntervalReached(wxTimerEvent& ev)
@@ -141,7 +140,7 @@ void SoundPlayer::play(ArchiveFile& file, bool loopSound)
 	if (!_initialised) 
 	{
 		initialise();
-    }
+	}
 
 	// Stop any previous playback operations, that might be still active
 	clearBuffer();
@@ -197,17 +196,17 @@ void SoundPlayer::createBufferDataFromWav(ArchiveFile& file)
 
 void SoundPlayer::createBufferDataFromOgg(ArchiveFile& file)
 {
-    // Must be an OGG file
-    try
-    {
-        // Create an AL sound buffer directly from the buffer in memory
-        _buffer = OggFileLoader::LoadFromFile(file);
-    }
-    catch (std::runtime_error & e)
-    {
-        rError() << "SoundPlayer: Error opening OGG file: " << e.what() << std::endl;
-        _buffer = 0;
-    }
+	// Must be an OGG file
+	try
+	{
+		// Create an AL sound buffer directly from the buffer in memory
+		_buffer = OggFileLoader::LoadFromFile(file);
+	}
+	catch (std::runtime_error & e)
+	{
+		rError() << "SoundPlayer: Error opening OGG file: " << e.what() << std::endl;
+		_buffer = 0;
+	}
 }
 
 } // namespace sound

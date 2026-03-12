@@ -69,11 +69,11 @@ ScriptWindow::ScriptWindow(wxWindow* parent) :
 	_paned->SetSashPosition(150);
 
     // Add the initial import statement
-    _view->SetValue(fmt::format(R"(import darkradiant as dr
+    _view->SetValue(fmt::format(R"(import neoradiant as dr
 
 # Enter your script code here. For reference, see
 # {0}
-# or the scripts/test.py in DarkRadiant installation folder.
+# or the scripts/test.py in NeoRadiant installation folder.
 )", scriptReferenceUrl));
 }
 
@@ -112,7 +112,7 @@ void ScriptWindow::onRunScript(wxCommandEvent& ev)
 	}
 	else
 	{
-		_outView->appendText(result->output, 
+		_outView->appendText(result->output,
 			result->errorOccurred ? wxutil::ConsoleView::ModeError : wxutil::ConsoleView::ModeStandard);
 	}
 }

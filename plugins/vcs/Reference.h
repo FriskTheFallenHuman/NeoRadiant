@@ -68,7 +68,7 @@ public:
     void setTarget(git_oid* oid)
     {
         git_reference* newTargetRef;
-        auto error = git_reference_set_target(&newTargetRef, _reference, oid, "Reference set to new target by DarkRadiant");
+        auto error = git_reference_set_target(&newTargetRef, _reference, oid, "Reference set to new target by NeoRadiant");
         GitException::ThrowOnError(error);
 
         // Swap the wrapped reference pointer, release the old one

@@ -15,14 +15,8 @@ public:
     /// Show the user guide online
     static void showUserGuide(const cmd::ArgumentList&);
 
-    // Open the TDM forums
-    static void OpenForumUrl(const cmd::ArgumentList&);
-
-    // Navigate to the DR script reference
+    // Navigate to the Editor script reference
     static void OpenScriptReference(const cmd::ArgumentList&);
-
-    /// Show the locally-installed user guide
-    static void showOfflineUserGuide(const cmd::ArgumentList&);
 };
 
 }

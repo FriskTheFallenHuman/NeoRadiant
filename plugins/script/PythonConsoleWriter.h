@@ -10,7 +10,7 @@ namespace script
 
 /**
  * greebo: A small helper class for redirecting Python's StdIo output
- * to DarkRadiant's global*() streams.
+ * to NeoRadiant's global*() streams.
  *
  * The output is duplicated to a given string.
  */

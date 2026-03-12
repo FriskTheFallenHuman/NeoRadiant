@@ -21,7 +21,7 @@ namespace ui
 using NotebookType = wxListbook;
 
 PrefDialog::PrefDialog(wxWindow* parent)
-: DialogBase(_("HellForge Preferences"), parent)
+: DialogBase(_("NeoRadiant Preferences"), parent)
 {
     wxBoxSizer* mainVbox = new wxBoxSizer(wxVERTICAL);
 
@@ -81,7 +81,7 @@ void PrefDialog::showModal(const std::string& requestedPage)
 		}
 
 		// greebo: Check if the mainframe module is already "existing". It might be
-		// uninitialised if this dialog is shown during DarkRadiant startup
+		// uninitialised if this dialog is shown during NeoRadiant startup
 		if (module::GlobalModuleRegistry().moduleExists(MODULE_MAINFRAME))
 		{
 			GlobalMainFrame().updateAllWindows();
@@ -110,7 +110,7 @@ void PrefDialog::showPage(const std::string& path)
 void PrefDialog::ShowDialog(const std::string& path)
 {
 	// greebo: Check if the mainframe module is already "existing". It might be
-	// uninitialised if this dialog is shown during DarkRadiant startup
+	// uninitialised if this dialog is shown during NeoRadiant startup
 	wxWindow* parent = module::GlobalModuleRegistry().moduleExists(MODULE_MAINFRAME) ?
 		GlobalMainFrame().getWxTopLevelWindow() : nullptr;
 

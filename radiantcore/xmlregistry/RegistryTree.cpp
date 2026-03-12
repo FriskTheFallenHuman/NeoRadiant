@@ -12,7 +12,7 @@ RegistryTree::RegistryTree() :
 	_defaultImportNode(std::string("/") + _topLevelNode),
 	_tree(xml::Document::create())
 {
-	// Create the base XML structure with the <darkradiant> top-level tag
+	// Create the base XML structure with the <neoradiant> top-level tag
 	_tree.addTopLevelNode(_topLevelNode);
 }
 
@@ -37,7 +37,7 @@ std::string RegistryTree::prepareKey(const std::string& key)
 	}
 	else
 	{
-		// add the prefix <darkradiant> and return
+		// add the prefix <neoradiant> and return
 		return std::string("/") + _topLevelNode + std::string("/") + key;
 	}
 }

@@ -13,7 +13,7 @@ namespace module
  * Module loader functor class. This class is used to traverse a directory and
  * load each module, calling the RegisterModule function they need to expose.
  *
- * Invoke the loadModules() method to load the DLLs from DarkRadiant's
+ * Invoke the loadModules() method to load the DLLs from NeoRadiant's
  * default module folders (e.g. modules/ and plugins/).
  */
 class ModuleLoader

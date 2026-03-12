@@ -1,4 +1,4 @@
-= DarkRadiant User Guide
+= NeoRadiant User Guide
 :toc: left
 :toclevels: 3
 :imagesdir: img
@@ -7,38 +7,22 @@
 
 == Introduction
 
-DarkRadiant is a level editor for Doom 3 and The Dark Mod, developed by The Dark
-Mod team. It may also be used for editing levels for similar *id Software* games
-such as Quake 4.
-
-This User Guide describes the features and functionality of DarkRadiant, however
-it is not intended as a guide to mapping techniques. Level design is a complex
-topic, and is covered by various other learning resources, some of which are
-listed below.
-
-http://wiki.thedarkmod.com/index.php?title=Main_Page[The Dark Mod Wiki]:: The
-starting point for most Dark Mod documentation and tutorials, including
-gameplay, configuration and editing.
-
-https://modwiki.xnet.fi[ModWiki]:: Online wiki covering editing topics for
-vanilla Doom 3 and similar engines.
-
-http://forums.thedarkmod.com[The Dark Mod forums]:: Online community for
-discussion of the Dark Mod, including various ad-hoc mapping tutorial threads
-posted by individual users.
+NeoRadiant is a fork of DarkRadiant, a level editor for idTech4-based games.
+While NeoRadiant focuses primarily on The Dark Mod, NeoRadiant is tailored for
+editing generic maps targeting Idtech4 game engines.
 
 === Editing workflow
 
-image::DarkRadiantWorkflow.png[align="center"]
+image::NeoRadiantWorkflow.png[align="center"]
 
 The level editing process starts off with basic assets: models, textures,
 sounds, entity definitions, skins, animations and so on. Many of these assets
 will be packaged with a particular game installation, but a level designer may
 also choose to create custom assets for a specific mission. These assets are
-installed into a directory tree which is accessible both by DarkRadiant (for
+installed into a directory tree which is accessible both by NeoRadiant (for
 editing) and the game engine itself (for playing the mission).
 
-Once assets have been arranged in DarkRadiant according to the wishes of the
+Once assets have been arranged in NeoRadiant according to the wishes of the
 level designer, a `.map` file is saved to disk. This is a text file in a format
 understood by the game engine, and includes both level geometry and references
 to the assets used in the map. Since the `.map` file is simply text, and does
@@ -47,14 +31,14 @@ not actually embed the binary asset data, it tends to be fairly small.
 The game engine includes functionality to _compile_ the `.map` file into a
 `.proc` file containing low-level vertex geometry derived from the brushes and
 patches within the `.map` file. The game engine can then render the mission in
-realtime, making use of the same assets that were accessed by DarkRadiant during
+realtime, making use of the same assets that were accessed by NeoRadiant during
 editing.
 
-DarkRadiant also maintains its own separate file containing various editing
-information, such as object layers used within a map. This `.darkradiant` file
+NeoRadiant also maintains its own separate file containing various editing
+information, such as object layers used within a map. This `.project` file
 is never used by the game engine, and is non-critical -- a `.map` file with no
-accompanying `.darkradiant` file can still be edited with DarkRadiant, although
-certain DarkRadiant-specific state may be lost.
+accompanying `.project` file can still be edited with NeoRadiant, although
+certain NeoRadiant-specific state may be lost.
 
 === What's in a MAP?
 
@@ -87,22 +71,22 @@ situations where the distinction between brush and patch is not important.
 The entities, brushes and patches in a map are arranged in a hierarchy: not
 every entity has children, but every primitive must have an entity as a parent.
 Each map therefore starts with a single default entity called the *worldspawn*,
-which acts as the parent for new brushes and patches created in DarkRadiant.
+which acts as the parent for new brushes and patches created in NeoRadiant.
 
 == Initial configuration
 
 [[GameSetup]]
 === Choosing a game type
 
-When running DarkRadiant for the first time, the *Game Setup* dialog will be
+When running NeoRadiant for the first time, the *Game Setup* dialog will be
 shown. This is where you configure the path to the game installation from which
-DarkRadiant will load assets, such as textures, models and entity definitions.
+NeoRadiant will load assets, such as textures, models and entity definitions.
 
 image::GameSetupDialog.png[align="center"]
 
 The *Game Setup* dialog contains the following options:
 
-*Game Type*:: DarkRadiant ships with support for several different game engines,
+*Game Type*:: NeoRadiant ships with support for several different game engines,
  each of which is contained within a `.game` file. For editing Dark Mod
  missions, the default choice of `The Dark Mod 2.0 (Standalone)` is the one to
  use, but it is also possible to edit stock Doom 3 or Quake 4 missions.
@@ -126,16 +110,16 @@ The *Game Setup* dialog contains the following options:
  being used.
 
 Once the game paths are set up, click the *Save* button to proceed to the main
-DarkRadiant interface.
+NeoRadiant interface.
 
 NOTE: It is possible to *Cancel* the *Game Setup* dialog and proceed to the main
-window without configuring a game installation, in which case DarkRadiant will
-show a warning and ask if you wish to proceed. If you do, DarkRadiant will run
+window without configuring a game installation, in which case NeoRadiant will
+show a warning and ask if you wish to proceed. If you do, NeoRadiant will run
 but there will be no available textures, models, entities or other game assets.
 
 === Interface layout
 
-DarkRadiant uses a flexible layout system based on dockable windows which can be moved into
+NeoRadiant uses a flexible layout system based on dockable windows which can be moved into
 various positions around the edges of the main window, or floated as separate top-level
 windows. The arrangement and sizes of these windows are saved into settings and persisted
 between sessions.
@@ -160,21 +144,21 @@ view, if desired.
 [[ColourSchemes]]
 === Colour schemes
 
-DarkRadiant defaults to a black-on-white colour scheme in the 2D windows, but ships with
+NeoRadiant defaults to a black-on-white colour scheme in the 2D windows, but ships with
 four other colour schemes, which can be chosen with the *View -> Colours...* dialog. If you
 prefer a dark theme, the `Black & Green` scheme might be suitable, whereas the
 `Maya/Max/Lightwave Emulation` and `Super Mal` themes provide a more neutral, low-contrast
 look.
 
-Colour schemes only affect what is rendered in the 2D and 3D views by DarkRadiant itself.
+Colour schemes only affect what is rendered in the 2D and 3D views by NeoRadiant itself.
 The appearance of the user interface is determined by the *wxWidgets* toolkit based on the
 system-wide widget theme, and can only be changed via system settings or other applications
 (such as `gnome-tweaks` on Linux).
 
 [align="center",cols="^.<a,^.<a,^.<a",grid="none"]
 |===
-|image:DarkRadiantDefaultTheme.png[] +
-*DarkRadiant Default*
+|image:DefaultTheme.png[] +
+*NeoRadiant Default*
 |image:BlackGreenTheme.png[] +
 *Black and Green*
 |image:Q3RadiantTheme.png[] +
@@ -309,7 +293,7 @@ and fully lit by in-game light sources. While the 2D view is the main interface
 for creating and aligning level geometry, the 3D view is a vital tool for tasks
 such as texturing, or configuring light parameters.
 
-IMPORTANT: The fully lit rendering mode in DarkRadiant is not identical to what
+IMPORTANT: The fully lit rendering mode in NeoRadiant is not identical to what
 the game engine will ultimately render. Certain advanced rendering features such
 as reflections and fog lights are not currently supported.
 
@@ -397,7 +381,7 @@ For more advanced ways to select objects, see
 |Backspace|Delete the selected object(s)
 |===
 
-TIP: Like other editors in the Radiant family, DarkRadiant offers a rather
+TIP: Like other editors in the Radiant family, NeoRadiant offers a rather
 unusual system for resizing objects. Rather than clicking exactly on the edge,
 or on a dedicated resizing handle, you can click and drag anywhere outside an
 edge to move that edge inwards or outwards. Dragging outside a corner allows you
@@ -405,7 +389,7 @@ to move two edges at once.
 
 ==== Flipping and rotating
 
-DarkRadiant provides six buttons to quickly flip or rotate objects (in 90 degree
+NeoRadiant provides six buttons to quickly flip or rotate objects (in 90 degree
 increments) around each of the three world axes. These are available on the
 left-hand vertical toolbar.
 
@@ -454,9 +438,9 @@ leaking.
 .Additive versus subtractive geometry
 ****
 If you are used to mapping for the legacy Thief games using Dromed or T3Edit,
-the system used by DarkRadiant may seem somewhat back-to-front. In previous
+the system used by NeoRadiant may seem somewhat back-to-front. In previous
 games, the world starts out as an infinite solid, in which you "carve out" rooms
-using subtractive brushes. In DarkRadiant, the world starts out as an infinite
+using subtractive brushes. In NeoRadiant, the world starts out as an infinite
 void, and all brushes are solid. The space in which the mission happens must be
 fully enclosed by solid brushes, otherwise the map will "leak" and fail to
 compile.
@@ -489,7 +473,7 @@ brush.
 ==== More complex brush shapes
 
 Although each brush starts out as a six-sided cuboid, it doesn't have to stay
-that way. DarkRadiant offers several options for creating multi-sided brushes in
+that way. NeoRadiant offers several options for creating multi-sided brushes in
 more complex shapes. To create one of these shapes, first define a regular
 cuboid brush covering the volume you want the new shape to occupy, then choose
 the appropriate option from the *Brush* menu:
@@ -524,7 +508,7 @@ spheres or cones created with patches or static meshes.
 
 Although it is not too difficult to create a hollow room by creating floor,
 ceiling and wall brushes manually, this is a common enough operation that
-DarkRadiant provides a couple of shortcuts. These options can be found on the
+NeoRadiant provides a couple of shortcuts. These options can be found on the
 vertical toolbar at the far left of the main window.
 
 [cols="1,4"]
@@ -547,7 +531,7 @@ This is legacy tool from GtkRadiant, and generally inferior to *Create Room*.
 The overlapping wall brushes make it more difficult to precisely align interior
 textures, since part of the inner face is obscured (and therefore removed during
 map compilation). However, there may be occasional situations in which *Hollow*
-is useful, so it is retained in DarkRadiant.
+is useful, so it is retained in NeoRadiant.
 |===
 
 The room creation tools do not require the initial brush to be rectangular --
@@ -599,7 +583,7 @@ accessed via the *Select Edges* tool on the upper toolbar, or with the *E* key.
 image::EdgeEditing.png[align="center"]
 
 . Select a brush.
-. Activate *Select Edges* with the toolbar button or *E* key. DarkRadiant will
+. Activate *Select Edges* with the toolbar button or *E* key. NeoRadiant will
 place a green control point at the center of each brush edge.
 . In either the 2D or the 3D view, click and drag on a control point to move its
 edge. The control point will turn blue and move along with the cursor. In the 2D
@@ -737,7 +721,7 @@ solid, you can <<Group,group>> the patches together.
 
 ==== More complex patch shapes
 
-Just like with brushes, DarkRadiant offers several default patch shapes beyond
+Just like with brushes, NeoRadiant offers several default patch shapes beyond
 the flat simple patch. These can be created by choosing the corresponding option
 in the *Patch* menu. There is no need to have a brush selected first in order to
 create these shapes, however if a brush _is_ selected, it will be removed and
@@ -749,7 +733,7 @@ used to define the size of the patch shape.
 *Sphere*
 
 An approximation of a sphere (the quadratic Bezier patch implementation in Doom
-3 and DarkRadiant does not permit the creation of a perfect sphere).
+3 and NeoRadiant does not permit the creation of a perfect sphere).
 
 |image:PatchCylinder.png[]|
 *Cylinder*
@@ -859,7 +843,7 @@ all the textures which are currently loaded in the current map.
 
 image::TexturesTab.png[align="center"]
 
-When DarkRadiant first starts up no textures are loaded and this panel is empty.
+When NeoRadiant first starts up no textures are loaded and this panel is empty.
 New textures can only be loaded via the *Media* tab (described in the
 <<MediaTab,previous section>>), either by applying a texture directly to a
 brush, or by using the *Load in Textures view* command to explicitly load an
@@ -875,7 +859,7 @@ will highlight the clicked texture in the *Media* tab.
 
 Once a texture is applied via the Media or Textures tabs, you will most likely
 wish to adjust the alignment and scale of the texture on the brush or patch
-face. DarkRadiant provides the *Surface Inspector* for this purpose, which can
+face. NeoRadiant provides the *Surface Inspector* for this purpose, which can
 be toggled with the *S* key or by choosing the option in the *View* menu.
 
 image::SurfaceInspector.png[align="center"]
@@ -949,7 +933,7 @@ resized), you will want to disable *Texture Lock*.
 
 While constructing a map it will frequently be necessary to apply the same
 texture to several different surfaces such that they appear seamless in game. In
-order to assist with this, DarkRadiant provides a *shader clipboard* which
+order to assist with this, NeoRadiant provides a *shader clipboard* which
 allows shaders to be copied and pasted between primitives, and is independent of
 the main clipboard used for copying and pasting other objects.
 
@@ -1008,7 +992,7 @@ also various functional entity types which provide vital metadata to the game
 engine, such as determining where the player should start, or how creatures
 should navigate between locations.
 
-DarkRadiant provides certain common functionality to all entities, such as the
+NeoRadiant provides certain common functionality to all entities, such as the
 ability to edit properties using the *Entity* tab. Particular entity types are
 sufficiently common, however, that they have their own dedicated creation and
 editing tools.
@@ -1021,7 +1005,7 @@ cast shadows, and can even be animated to flicker or flash.
 
 *Model (func_static)*:: Model entities represent geometry that is not compiled
 as part of the map itself. The model geometry can either be derived from brushes
-and patches created inside DarkRadiant, or from an external model file in ASE or
+and patches created inside NeoRadiant, or from an external model file in ASE or
 LWO format. Model files are the primary mechanism for including fine detail in a
 map which would be cumbersome to create with brushes and patches.
 
@@ -1129,7 +1113,7 @@ are created with an external 3D application such as Blender, Lightwave or Maya,
 and saved into the game asset tree in LWO or ASE format.
 
 To insert a model, ensure that nothing is selected, then *Right click* in the 2D
-view and choose *Create model…*. DarkRadiant will show the model selector
+view and choose *Create model…*. NeoRadiant will show the model selector
 dialog:
 
 image::ModelSelector.png[align="center"]
@@ -1154,10 +1138,10 @@ which the player should enter the map. Without such an entity the map will be
 unplayable.
 
 To create this entity, ensure that nothing is selected then *Right click* in the
-2D view and choose *Create player start here*. DarkRadiant will create the
+2D view and choose *Create player start here*. NeoRadiant will create the
 player start entity at the clicked position.
 
-Since it makes no sense to have more than one player start location, DarkRadiant
+Since it makes no sense to have more than one player start location, NeoRadiant
 will not enable the *Create player start here* menu option if there is already
 an `info_player_start` in the map. Instead, you may choose *Move player start
 here* to move the existing entity to the clicked position.
@@ -1247,11 +1231,11 @@ containing all of the primitives which define the world geometry. However,
 *worldspawn* is not the only entity which can contain brushes and patches as
 children.
 
-When you create a model using the <<CreatingModels,model selector>>, DarkRadiant
+When you create a model using the <<CreatingModels,model selector>>, NeoRadiant
 will insert a type of entity called a *func_static* into the map to represent
 the model geometry. A *func_static* can contain a model file loaded from disk in
 LWO or ASE format, but it can also be used as a parent for one or more
-primitives created within DarkRadiant. In either case, the behaviour of
+primitives created within NeoRadiant. In either case, the behaviour of
 *func_static* is the same: it represents a static mesh which is rendered in
 game but is considered separate from the main world geometry, meaning that it
 does not participate in map compilation, will not seal the map from leaks, and
@@ -1266,7 +1250,7 @@ geometry.
 The *func_static* entity class is not the only type of entity which can contain
 primitives: there are several other *func_* entities which perform various
 functions, for example *func_rotating* which allows geometry to rotate
-continuously. DarkRadiant offers dedicated commands to convert to/from a
+continuously. NeoRadiant offers dedicated commands to convert to/from a
 *func_static* since this is a very common operation, however the ability to
 <<SelectChildPrimitives,select>>, <<AddRemoveChildPrimitives,add and remove>>
 individual primitives behaves the same for all types of primitive-containing
@@ -1300,7 +1284,7 @@ dragging any one of its primitives.
 
 However, it is still possible to perform operations on a single primitive, for
 example resizing a brush, by selecting it with the *TAB* key. Each press of
-*TAB* will cause DarkRadiant to select a different primitive contained within
+*TAB* will cause NeoRadiant to select a different primitive contained within
 the entity, after which it will return to selecting the entire entity. With only
 a single primitive selected, all of the normal operations are possible on that
 primitive, for example deleting or resizing it.
@@ -1334,7 +1318,7 @@ entity from scratch.
 
 === Compiling a map
 
-DarkRadiant does not include functionality for compiling a map into the form
+NeoRadiant does not include functionality for compiling a map into the form
 needed by the game engine; instead, you must use external tools or the map
 compiler built into the game itself.
 
@@ -1351,7 +1335,7 @@ engine and start playing it immediately.
 
 TIP: When compiling and testing maps, it may be helpful to set your game to
 play in windowed mode, with a reduced resolution. This will allow both the game
-and DarkRadiant to be visible on the screen as separate windows, which you can
+and NeoRadiant to be visible on the screen as separate windows, which you can
 easily switch between during the compile and test cycle.
 
 ==== Preventing leaks
@@ -1386,7 +1370,7 @@ No matter how hard you try to avoid leaks, occasionally they will happen. In
 this case the *pointfile* functionality is helpful to identify the location of
 the leak.
 
-After the map compilation has failed with a leak, return to DarkRadiant and
+After the map compilation has failed with a leak, return to NeoRadiant and
 choose *Pointfile* from the *File* menu. This will automatically load the point
 file associated with the current map, which contains a series of points
 identifying the path to the leak. This path will be rendered as a bright red
@@ -1400,7 +1384,7 @@ brush does not join up with the ceiling.
 
 == Organising a map
 
-Since a fully developed Dark Mod map is large and complex, DarkRadiant provides
+Since a fully developed Dark Mod map is large and complex, NeoRadiant provides
 several tools to make organising a large map easier. Objects can be grouped,
 sorted into user-defined layers and filtered using various criteria, while the
 prefab system allows large chunks of map to be reused or shared with other
@@ -1409,7 +1393,7 @@ mappers.
 [[Group]]
 === Grouping objects
 
-DarkRadiant allows a number of objects to be grouped together, so that they can
+NeoRadiant allows a number of objects to be grouped together, so that they can
 be selected and manipulated as a single unit.
 
 To *create* a group:
@@ -1431,7 +1415,7 @@ groups will be restored.
 [[WorkingWithPrefabs]]
 === Working with prefabs
 
-DarkRadiant allows a collection of objects to be saved to disk as a *prefab*,
+NeoRadiant allows a collection of objects to be saved to disk as a *prefab*,
 which can then be imported into other maps. You can use prefabs to store
 anything from a single small object to a vast section of map geometry complete
 with lights and AI.
@@ -1443,7 +1427,7 @@ with lights and AI.
 . Use the file chooser dialog to choose a location and name for the prefab file.
 
 TIP: Unlike actual `.map` files which must be accessible by the game engine,
-prefabs are a DarkRadiant-only feature that have no significance to the engine.
+prefabs are a NeoRadiant-only feature that have no significance to the engine.
 You are therefore free to store prefab files wherever you wish, either inside or
 outside the game installation directory.
 
@@ -1481,10 +1465,10 @@ separate selectable objects.
 
 === Exporting models
 
-DarkRadiant provides a limited ability to export scene geometry into a number of
+NeoRadiant provides a limited ability to export scene geometry into a number of
 3D model file formats: ASCII Scene Export (ASE), Lightwave (LWO) or
 Wavefront OBJ. This functionality is provided to help with organising
-frequently-used map elements — DarkRadiant is not intended to compete with
+frequently-used map elements — NeoRadiant is not intended to compete with
 full-featured 3D modelling applications such as Blender or 3DS Max.
 
 Exporting to a model is similar to exporting to a prefab, except that models can
@@ -1495,7 +1479,7 @@ for creating map-specific static meshes in a more powerful modelling tool.
 
 To export a model:
 
-. Select the geometry to be exported. Note that DarkRadiant currently does not
+. Select the geometry to be exported. Note that NeoRadiant currently does not
 complain if you select non-geometry such as lights, however these will not
 appear in the resulting model file.
 . Open the *File* menu and choose *Export selected as model...*
@@ -1575,7 +1559,7 @@ copy objects between layers using the options in the 2D view's context menu.
 === Filtering map elements
 
 While the Layers feature allows maps to be organised into manual groupings of
-objects, DarkRadiant also provides a mechanism for controlling the visibility of
+objects, NeoRadiant also provides a mechanism for controlling the visibility of
 items based on their characteristics. This is controlled via the *Filter*
 menu.
 
@@ -1589,7 +1573,7 @@ filter will be hidden; the remaining visible objects will be those which are not
 matched by any active filters.
 
 TIP: Active filters are persisted into settings, and are therefore retained
-between DarkRadiant sessions.
+between NeoRadiant sessions.
 
 The built-in filters include:
 
@@ -1625,7 +1609,7 @@ Aside from the list of filters, the *Filter* menu contains three other options:
 
 ==== Customising filters
 
-In addition to the filters supplied with the mod distribution, DarkRadiant also
+In addition to the filters supplied with the mod distribution, NeoRadiant also
 allows you to add your own custom filters to the list by choosing the *Edit
 Filters...* menu option. This displays a dialog containing the list of all
 available filters, including built-in ones. Use the *Add* and *Delete* buttons
@@ -1673,7 +1657,7 @@ Each rule has the following components:
 === The entity list
 
 As a map becomes larger and more complex, keeping track of its contents may
-become more challenging. To assist with this, DarkRadiant provides an *Entity
+become more challenging. To assist with this, NeoRadiant provides an *Entity
 List* which functions as an "outline" view of the map, listing all entities and
 their child brushes and patches (if any).
 
@@ -1694,124 +1678,6 @@ additionally be moved to view the clicked entity.
 
 By enabling the *List visible nodes only* checkbox, you can limit the entity
 list to show only entities which are not currently hidden via filters.
-
-== Dark Mod features
-
-The Dark Mod is a considerably more complex game than vanilla Doom 3, and its
-maps therefore include certain settings and features that would be cumbersome to
-configure manually by entering property values on entities. DarkRadiant
-therefore provides a number of Dark Mod specific dialogs which are described in
-this section.
-
-NOTE: Most Dark Mod features are compiled as separate plugins, and may not be
-built by default on certain platforms. If these features seem to be missing,
-contact the distributor of your DarkRadiant binary package for advice, or
-examine the build options if you are compiling DarkRadiant yourself from source
-code.
-
-=== The Difficulty editor
-
-Most Dark Mod maps can be played on one of three possible difficulty settings,
-typically named "Easy", "Medium" and "Difficult" (although these names can be
-overridden). The precise effects of each of these difficulty settings are fully
-under the control of the map author, and might include such effects as spawning
-or despawning particular enemies, changing enemy health or patrol routes, or
-modifying the details of objectives.
-
-DarkRadiant provides a Difficulty editor dialog to facilitate one particular
-class of difficulty-dependent modification: making global changes to entity
-classes throughout the map. This could be used, for example, to change the
-health of every instance of a particular enemy, or (as shown in the diagram)
-removing a particular enemy type's ability to relight torches.
-
-.The Difficulty editor, showing a modified property on a particular entity class
-image::DifficultyEditor.png[align="center"]
-
-The Difficulty editor shows the names of the available difficulty levels in a
-dropdown widget, beneath which are the settings for the selected difficulty
-level. The difficulty names are customisable on a per-map basis — normally these
-will be the default values of "Easy", "Medium" and "Difficult", but if the
-current map has customised difficulty names DarkRadiant will adjust the tab
-names accordingly.
-
-On the left is a tree view showing all of the property overrides for the current
-difficulty level. Each top-level item is a particular entity class, which
-contains all of the property changes that are made to this entity class in this
-difficulty level. In this example, the `ai_builder_guard` entity has its
-`canLightTorches` property set to 0 on the Easy difficulty setting, meaning that
-all enemies of this particular type will not be able to relight torches.
-
-*Adding a setting*:: To add a new property setting for the current difficulty
- level, click the *Add* button. The widgets on the right hand side will become
- available, allowing you to choose an entity class, a property ("Spawnarg") to
- change, and the change to make ("Argument"). You can choose a number of
- mathematical operations for the modification, including a simple value
- assignment, or an addition or multiplication. After specifying the values, make
- sure you click the *Save* button to commit the changes into the list view.
-
-*Removing a setting*:: Select an item in the list view and click the *Delete*
- button to remove a particular setting. You can only remove individual
- assignments from the list; to remove all of the assignments for a particular
- entity class, you must select and delete each one individually.
-
-*Editing the difficulty name*:: To edit the name of the current difficulty
- level, click the edit button to the right of the dropdown, and enter a new name
- in the text box. The modified name will be written into a property on the
- `worldspawn` entity and reflected both in game and in DarkRadiant.
-
-TIP: For details of more advanced difficulty-dependent changes, such as
-modifying the behaviour of a *single* entity (rather than an entire entity
-class), consult the Dark Mod Wiki.
-
-=== Game Connection
-
-The Dark Mod includes functionality to dynamically interact with a DarkRadiant
-session running on the same machine, allowing certain information (such as
-camera position) to be synchronised both to and from the game, and for certain
-entity property changes to be pushed to the running game without needing to
-restart.
-
-These features are accessed in DarkRadiant through the *Connection* menu and
-buttons on the camera view toolbar.
-
-==== Activating the connection
-
-. In *The Dark Mod*, load the map which you are currently editing in DarkRadiant.
-. Bring down the game console and enter the command
-[listing]
-com_automation 1
-+
-This should result in a status message indicating that the game is listening for
-connections on a particular network port.
-[listing]
-Automation now listens on port 3879
-
-The game process is now ready to exchange data with DarkRadiant.
-
-==== Synchronising camera position
-
-You can synchronise the DarkRadiant camera position and the game player position
-in both directions: editor to game and game to editor. This feature is most
-easily controlled with the buttons on the camera view toolbar, but it can also
-be activated from the *Connection* menu.
-
-[cols="^1h,3h,10"]
-|===
-|image:CameraSync.png[align="center",width=24]
-|Game position follows DarkRadiant camera|
-Any motion of the DarkRadiant camera will be transmitted in realtime to the
-game, resulting in the player position moving (in *noclip* mode) to the same
-position and view direction.
-
-This is a toggled option which remains active until switched off.
-|image:CameraSyncBack.png[align="center",width=24]
-|Move camera to current game position|
-Update the DarkRadiant camera to match the current player position and view
-direction in game.
-
-This is a single-shot command; there is no mechanism to continuously move the
-DarkRadiant camera in response to player motion in game.
-|===
 
 == Command reference
 
@@ -1854,16 +1720,16 @@ partially-complete maps.
 
 *Save selected as Collision Model...*:: Allows a selected map object (typically
  a brush) to be set as the collision model for a particular ASE or LWO model.
- After choosing this option, DarkRadiant will display the model chooser dialog,
+ After choosing this option, NeoRadiant will display the model chooser dialog,
  allowing you to choose the particular model that the selected object should be
  associated with. The selected brush is then saved, and associated with the
  model so that subsequent insertions of the same model will use the new
  collision geometry.
 
 *Reload Models/Selected Models/Skins/Scripts/Readable Guis/Materials/Defs/Particles*::
- Forces DarkRadiant to re-read the selected category of items from disk,
+ Forces NeoRadiant to re-read the selected category of items from disk,
  refreshing its internal data structures. This is necessary if you have edited
- or re-exported some asset which DarkRadiant is using in the current map and you
+ or re-exported some asset which NeoRadiant is using in the current map and you
  want to see the latest changes.
 
 *Game/Project Setup...*:: Show the <<GameSetup,Game Setup>> dialog for
@@ -1876,7 +1742,7 @@ displayed if there is no current pointfile (which is usually the case if the
 current map has not leaked during compilation). Choose this option a second time
 to hide the rendered pointfile.
 
-*Exit*:: Exit DarkRadiant, prompting to save the current map if necessary.
+*Exit*:: Exit NeoRadiant, prompting to save the current map if necessary.
 
 === Edit menu
 
@@ -2000,9 +1866,9 @@ the unwanted half manually. See <<SplittingBrushes,splitting brushes>>.
 *Make Detail / Make Structural*:: These options only exist to support legacy games, and are not
 used in the Dark Mod.
 
-== Configuring DarkRadiant
+== Configuring NeoRadiant
 
-DarkRadiant offers a large number of configurable options which can be used to
+NeoRadiant offers a large number of configurable options which can be used to
 tailor its behaviour to your desired workflow. Most of these options can be
 found either in the Preferences dialog or exposed directly as menu items.
 
@@ -2102,33 +1968,33 @@ the 2D views.
 
 *Higher selection priority for entities*:: When using the mouse to click on and
  select an entity which is in front of, behind or inside a brush, this option
- controls whether DarkRadiant will prefer to select the entity (enabled) or the
+ controls whether NeoRadiant will prefer to select the entity (enabled) or the
  brush (disabled).
 
 ==== User Interface settings
 
 *Start on Monitor*:: If you have more than one monitor, you can choose which
-monitor DarkRadiant will start on using this combo box.
+monitor NeoRadiant will start on using this combo box.
 
 *Source view font size*:: This controls the point size of the monospace font
 used in source code view widgets, such as those which show material or skin
 source declarations.
 
 *Language*:: This combo box lists all of the installed language packs, allowing
-you to choose which language is used for the DarkRadiant interface.
+you to choose which language is used for the NeoRadiant interface.
 
 ==== Autosave settings
 
 *Enable Autosave*:: Controls whether the autosave feature is active or disabled.
 
-*Autosave Interval*:: Use this slider to choose how often DarkRadiant will make
+*Autosave Interval*:: Use this slider to choose how often NeoRadiant will make
  an autosave. By default, autosaves are made every 5 minutes.
 
-*Save Snapshots*:: If this option is enabled, DarkRadiant will make each
+*Save Snapshots*:: If this option is enabled, NeoRadiant will make each
  autosave into a separate copy of the map file, allowing you to potentially
  revert changes which were made several autosaves ago. If this option is
  disabled, there will only ever be a single autosave file, which will protect
- against DarkRadiant or system crashes but not against long-term erroneous
+ against NeoRadiant or system crashes but not against long-term erroneous
  changes.
 
 *Snapshot folder*:: This specifies the name of the folder used to store snapshot
@@ -2137,7 +2003,7 @@ you to choose which language is used for the DarkRadiant interface.
 *Max Snapshot size per map*:: This allows you to control the amount of disk
  space used for storing snapshots, by specifying a maximum number of megabytes
  that will be used for storing the snapshots for a single map. If the disk usage
- grows above this limit, DarkRadiant will start to delete old snapshots.
+ grows above this limit, NeoRadiant will start to delete old snapshots.
 
 ==== Clipper settings
 
@@ -2166,7 +2032,7 @@ behaviour of the grid.
 
 *Ignore light volume bounds when calculating default rotation pivot location*::
  This option affects the behaviour of the <<ManipulatorModes,rotation tool>>
- when multiple objects are selected. DarkRadiant will place the rotation widget
+ when multiple objects are selected. NeoRadiant will place the rotation widget
  at the approximate "center of gravity" of the set of selected objects. If this
  option is enabled, any selected lights will be treated as point entities, with
  no volume in 3D space regardless of their actual light volumes. If this option
@@ -2176,7 +2042,7 @@ behaviour of the grid.
 ==== Undo settings
 
 *Undo Queue Size*:: Use this spinbox to control the number of operations which
- are saved onto DarkRadiant's internal undo stack. Larger values provide a
+ are saved onto NeoRadiant's internal undo stack. Larger values provide a
  longer history of undoable operations, at the expense of requiring more memory.
 
 ==== Primitives settings
@@ -2213,13 +2079,13 @@ These options control the behaviour of the <<TexturesTab,Textures tab>>.
 *Number of most recently used files*:: Choose the number of map files to list in
  the recent map section at the bottom of the *File* menu.
 
-*Open last map on startup*:: Enable this option to make DarkRadiant
+*Open last map on startup*:: Enable this option to make NeoRadiant
  automatically load the most recently-used map every time it starts, rather than
  starting with an empty map.
 
 == Features for game distributors
 
-DarkRadiant is designed to work out of the box with a standard Doom 3 or Dark
+NeoRadiant is designed to work out of the box with a standard Doom 3 or Dark
 Mod game installation, however it also offers a few features aimed at developers
 of the game itself.
 
@@ -2231,7 +2097,7 @@ of the quality standard that is expected of new assets. If these assets have
 already been distributed, removing them from the game installation may be
 problematic, as maps which depend on them will fail to load correctly.
 
-DarkRadiant offers a mechanism to deal with this by allowing certain assets to
+NeoRadiant offers a mechanism to deal with this by allowing certain assets to
 be marked as "hidden". A hidden asset will no longer be presented for selection
 by the user (e.g. on the Media tab or in the Model selector), but will continue
 to function as normal when it appears in a loaded map.
@@ -2263,7 +2129,7 @@ listing the file at all, and results in no change to its visibility.
 
 NOTE: Only *files* may be listed in an `assets.lst`, not items in a virtual hierarchy such
 as the material shader tree. When a `.mtr` or `.sndshd` file is listed as hidden, all
-shaders contained within it will be hidden in DarkRadiant. This means that in order to
+shaders contained within it will be hidden in NeoRadiant. This means that in order to
 hide specific shaders, you must move these into one or more source files which are listed
 as hidden.
 

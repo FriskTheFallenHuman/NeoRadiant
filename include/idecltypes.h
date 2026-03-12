@@ -11,7 +11,7 @@
 namespace decl
 {
 
-// Enumeration of declaration types supported by DarkRadiant
+// Enumeration of declaration types supported by NeoRadiant
 enum class Type
 {
     Undetermined = -2,

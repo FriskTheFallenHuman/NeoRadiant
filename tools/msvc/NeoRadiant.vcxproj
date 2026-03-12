@@ -1,0 +1,721 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8E70385C-223A-4DD1-9B99-28FF2331A2B5}</ProjectGuid>
+    <RootNamespace>GtkRadiant</RootNamespace>
+    <Keyword>Win32Proj</Keyword>
+    <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>Unicode</CharacterSet>
+    <PlatformToolset>v143</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="properties\NeoRadiant Base Release Win32.props" />
+    <Import Project="properties\NeoRadiant Main Executable.props" />
+    <Import Project="properties\wxWidgets.props" />
+    <Import Project="properties\GLEW.props" />
+    <Import Project="properties\ftgl.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="properties\NeoRadiant Base Debug Win32.props" />
+    <Import Project="properties\NeoRadiant Main Executable.props" />
+    <Import Project="properties\wxWidgets.props" />
+    <Import Project="properties\GLEW.props" />
+    <Import Project="properties\ftgl.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="properties\NeoRadiant Base Release x64.props" />
+    <Import Project="properties\NeoRadiant Main Executable.props" />
+    <Import Project="properties\wxWidgets.props" />
+    <Import Project="properties\GLEW.props" />
+    <Import Project="properties\ftgl.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="properties\NeoRadiant Base Debug x64.props" />
+    <Import Project="properties\NeoRadiant Main Executable.props" />
+    <Import Project="properties\wxWidgets.props" />
+    <Import Project="properties\GLEW.props" />
+    <Import Project="properties\ftgl.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <MinimalRebuild>false</MinimalRebuild>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <BrowseInformation>
+      </BrowseInformation>
+      <WarningLevel>Level4</WarningLevel>
+      <ForcedIncludeFiles>%(PrecompiledHeaderFile)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(WinDepsDir)wxWidgets/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(NeoRadiantRoot)\tools\msvc\post_build_event.cmd $(Configuration) vc$(PlatformToolsetVersion)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <BrowseInformation>
+      </BrowseInformation>
+      <ForcedIncludeFiles>%(PrecompiledHeaderFile)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(WinDepsDir)wxWidgets/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(NeoRadiantRoot)tools\msvc\post_build_event_x64.cmd $(Configuration) vc$(PlatformToolsetVersion)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level4</WarningLevel>
+      <ForcedIncludeFiles>%(PrecompiledHeaderFile)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(WinDepsDir)wxWidgets/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(NeoRadiantRoot)\tools\msvc\post_build_event.cmd $(Configuration) vc$(PlatformToolsetVersion)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <TargetEnvironment>X64</TargetEnvironment>
+    </Midl>
+    <ClCompile>
+      <WholeProgramOptimization>true</WholeProgramOptimization>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <ForcedIncludeFiles>%(PrecompiledHeaderFile)</ForcedIncludeFiles>
+    </ClCompile>
+    <ResourceCompile>
+      <Culture>0x0409</Culture>
+      <AdditionalIncludeDirectories>$(WinDepsDir)wxWidgets/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Link>
+      <LinkTimeCodeGeneration>UseLinkTimeCodeGeneration</LinkTimeCodeGeneration>
+      <DataExecutionPrevention>
+      </DataExecutionPrevention>
+    </Link>
+    <PostBuildEvent>
+      <Command>$(NeoRadiantRoot)tools\msvc\post_build_event_x64.cmd $(Configuration) vc$(PlatformToolsetVersion)</Command>
+    </PostBuildEvent>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\radiant\camera\CameraWndManager.cpp" />
+    <ClCompile Include="..\..\radiant\camera\tools\CameraBrushCreatorTool.cpp" />
+    <ClCompile Include="..\..\radiant\camera\tools\DecalShooterTool.cpp" />
+    <ClCompile Include="..\..\radiant\camera\tools\FaceIntersectionFinder.cpp" />
+    <ClCompile Include="..\..\radiant\clipboard\ClipboardModule.cpp" />
+    <ClCompile Include="..\..\radiant\eventmanager\Accelerator.cpp" />
+    <ClCompile Include="..\..\radiant\eventmanager\EventManager.cpp" />
+    <ClCompile Include="..\..\radiant\eventmanager\GlobalKeyEventFilter.cpp" />
+    <ClCompile Include="..\..\radiant\eventmanager\MouseToolGroup.cpp" />
+    <ClCompile Include="..\..\radiant\eventmanager\MouseToolManager.cpp" />
+    <ClCompile Include="..\..\radiant\eventmanager\Statement.cpp" />
+    <ClCompile Include="..\..\radiant\eventmanager\Toggle.cpp" />
+    <ClCompile Include="..\..\radiant\eventmanager\WidgetToggle.cpp" />
+    <ClCompile Include="..\..\radiant\main.cpp" />
+    <ClCompile Include="..\..\radiant\map\AutoSaveTimer.cpp" />
+    <ClCompile Include="..\..\radiant\map\StartupMapLoader.cpp" />
+    <ClCompile Include="..\..\radiant\precompiled.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">precompiled.h</PrecompiledHeaderFile>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release|x64'">precompiled.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <ClCompile Include="..\..\radiant\RadiantApp.cpp" />
+    <ClCompile Include="..\..\radiant\selection\ManipulateMouseTool.cpp" />
+    <ClCompile Include="..\..\radiant\selection\SceneManipulateMouseTool.cpp" />
+    <ClCompile Include="..\..\radiant\selection\SelectionMouseTools.cpp" />
+    <ClCompile Include="..\..\radiant\settings\LocalisationModule.cpp" />
+    <ClCompile Include="..\..\radiant\settings\LocalisationProvider.cpp" />
+    <ClCompile Include="..\..\radiant\settings\RenderingQualitySettings.cpp" />
+    <ClCompile Include="..\..\radiant\settings\Win32Registry.cpp" />
+    <ClCompile Include="..\..\radiant\textool\tools\TextureToolManipulateMouseTool.cpp" />
+    <ClCompile Include="..\..\radiant\ui\aas\AasFileControl.cpp" />
+    <ClCompile Include="..\..\radiant\ui\aas\AasVisualisationPanel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\aas\RenderableAasFile.cpp" />
+    <ClCompile Include="..\..\radiant\ui\array\ArrayDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\animationpreview\AnimationPreview.cpp" />
+    <ClCompile Include="..\..\radiant\ui\animationpreview\MD5AnimationChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\animationpreview\MD5AnimationViewer.cpp" />
+    <ClCompile Include="..\..\radiant\ui\brush\FindBrush.cpp" />
+    <ClCompile Include="..\..\radiant\ui\colourscheme\ColourSchemeEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\commandpalette\CommandPalette.cpp" />
+    <ClCompile Include="..\..\radiant\ui\commandpalette\InsertPalette.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\DialogManager.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\ImageFilePopulator.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\ImageFileSelector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\SkinChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\SoundChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\SoundShaderPreview.cpp" />
+    <ClCompile Include="..\..\radiant\ui\console\CommandEntry.cpp" />
+    <ClCompile Include="..\..\radiant\ui\console\Console.cpp" />
+    <ClCompile Include="..\..\radiant\ui\decalshooter\DecalShooterPanel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\DispatchEvent.cpp" />
+    <ClCompile Include="..\..\radiant\ui\Documentation.cpp" />
+    <ClCompile Include="..\..\radiant\ui\eclasstree\EClassTree.cpp" />
+    <ClCompile Include="..\..\radiant\ui\eclasstree\EClassTreeBuilder.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\Algorithm.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\EntityInspectorModule.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\FxPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\InheritPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\entitylist\EntityList.cpp" />
+    <ClCompile Include="..\..\radiant\ui\entitylist\GraphTreeModel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\favourites\FavouritesBrowser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\favourites\FavouritesUserInterfaceModule.cpp" />
+    <ClCompile Include="..\..\radiant\ui\filters\editor\FilterDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\filters\editor\FilterEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\filters\FilterContextMenu.cpp" />
+    <ClCompile Include="..\..\radiant\ui\filters\FilterOrthoContextMenuItem.cpp" />
+    <ClCompile Include="..\..\radiant\ui\filters\FiltersMainMenu.cpp" />
+    <ClCompile Include="..\..\radiant\ui\filters\FilterUserInterface.cpp" />
+    <ClCompile Include="..\..\radiant\ui\fx\FxChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\gl\WxGLWidgetManager.cpp" />
+    <ClCompile Include="..\..\radiant\ui\grid\GridUserInterface.cpp" />
+    <ClCompile Include="..\..\radiant\ui\layers\CreateLayerDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\layers\LayerControlPanel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\LongRunningOperationHandler.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mainframe\AuiFloatingFrame.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mainframe\AuiLayout.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mainframe\AuiManager.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mainframe\PropertyNotebook.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mainframe\TopLevelFrame.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mainframe\ViewMenu.cpp" />
+    <ClCompile Include="..\..\radiant\ui\MapCommands.cpp" />
+    <ClCompile Include="..\..\radiant\ui\MapFileProgressHandler.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mapinfo\LayerInfoTab.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mapselector\MapSelector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\materials\editor\MaterialEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\materials\editor\MaterialEditorModule.cpp" />
+    <ClCompile Include="..\..\radiant\ui\materials\editor\MaterialPreview.cpp" />
+    <ClCompile Include="..\..\radiant\ui\materials\MaterialChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\materials\MaterialPopulator.cpp" />
+    <ClCompile Include="..\..\radiant\ui\materials\MaterialSelector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\materials\MaterialThumbnailBrowser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\materials\MaterialTreeView.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mediabrowser\MediaBrowserModule.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mediabrowser\MediaBrowserTreeView.cpp" />
+    <ClCompile Include="..\..\radiant\ui\menu\MenuBar.cpp" />
+    <ClCompile Include="..\..\radiant\ui\menu\MenuElement.cpp" />
+    <ClCompile Include="..\..\radiant\ui\menu\MenuFolder.cpp" />
+    <ClCompile Include="..\..\radiant\ui\menu\MenuItem.cpp" />
+    <ClCompile Include="..\..\radiant\ui\menu\MenuManager.cpp" />
+    <ClCompile Include="..\..\radiant\ui\menu\MenuSeparator.cpp" />
+    <ClCompile Include="..\..\radiant\ui\merge\MapMergePanel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\modelexport\ConvertModelDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\modelexport\ExportAsModelDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\modelexport\ExportCollisionModelDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\modelselector\MaterialsList.cpp" />
+    <ClCompile Include="..\..\radiant\camera\CameraSettings.cpp" />
+    <ClCompile Include="..\..\radiant\camera\CameraHintOverlay.cpp" />
+    <ClCompile Include="..\..\radiant\camera\CamWnd.cpp" />
+    <ClCompile Include="..\..\radiant\textool\TexTool.cpp" />
+    <ClCompile Include="..\..\radiant\ui\about\AboutDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\commandlist\CommandList.cpp" />
+    <ClCompile Include="..\..\radiant\ui\commandlist\ShortcutChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\EntityChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\MapPreview.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\TexturePreviewCombo.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\AddPropertyDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\AnglePropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\BooleanPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\ClassnamePropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\ColourPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\EntityInspector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\EntityPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\FloatPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\ModelPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\PropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\PropertyEditorFactory.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\SkinPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\SoundPropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\TexturePropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\einspector\Vector3PropertyEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\findshader\FindShader.cpp" />
+    <ClCompile Include="..\..\radiant\ui\lightinspector\LightInspector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mapinfo\EntityInfoTab.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mapinfo\MapInfoDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mapinfo\ModelInfoTab.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mapinfo\ShaderInfoTab.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mediabrowser\MediaBrowser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\modelselector\ModelSelector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\modelselector\ModelTreeView.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mousetool\BindToolDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mousetool\ToolMappingDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\ortho\OrthoContextMenu.cpp" />
+    <ClCompile Include="..\..\radiant\ui\overlay\OrthoBackgroundPanel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\overlay\Overlay.cpp" />
+    <ClCompile Include="..\..\radiant\ui\particles\ParticleChooserDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\particles\ParticleEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\particles\ParticleSelector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\patch\BulgePatchDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\patch\CapDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\patch\PatchCreateDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\patch\PatchPrefabDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\patch\PatchInspector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\patch\PatchThickenDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\PointFileChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\prefabselector\PrefabSelector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\prefdialog\GameSetupDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\prefdialog\GameSetupPage.cpp" />
+    <ClCompile Include="..\..\radiant\ui\prefdialog\GameSetupPageIdTech.cpp" />
+    <ClCompile Include="..\..\radiant\ui\prefdialog\GameSetupPageTdm.cpp" />
+    <ClCompile Include="..\..\radiant\ui\prefdialog\PrefDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\prefdialog\PreferenceItem.cpp" />
+    <ClCompile Include="..\..\radiant\ui\prefdialog\PrefPage.cpp" />
+    <ClCompile Include="..\..\radiant\ui\scatter\ScatterDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\script\ScriptMenu.cpp" />
+    <ClCompile Include="..\..\radiant\ui\script\ScriptWindow.cpp" />
+    <ClCompile Include="..\..\radiant\ui\selectionset\SelectionSetToolmenu.cpp" />
+    <ClCompile Include="..\..\radiant\ui\skin\SkinEditor.cpp" />
+    <ClCompile Include="..\..\radiant\ui\skin\SkinEditorTreeView.cpp" />
+    <ClCompile Include="..\..\radiant\ui\cables\CableGeneratorDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\stairs\StairsGeneratorDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\statusbar\CommandStatus.cpp" />
+    <ClCompile Include="..\..\radiant\ui\statusbar\EditingStopwatchStatus.cpp" />
+    <ClCompile Include="..\..\radiant\ui\statusbar\MapStatistics.cpp" />
+    <ClCompile Include="..\..\radiant\ui\statusbar\StatusBarManager.cpp" />
+    <ClCompile Include="..\..\radiant\ui\texturebrowser\MapTextureBrowser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\texturebrowser\TextureBrowserManager.cpp" />
+    <ClCompile Include="..\..\radiant\ui\texturebrowser\TextureBrowserPanel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\terrain\TerrainGeneratorDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\texturebrowser\TextureThumbnailBrowser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\toolbar\ToolbarManager.cpp" />
+    <ClCompile Include="..\..\radiant\ui\splash\Splash.cpp" />
+    <ClCompile Include="..\..\radiant\ui\surfaceinspector\SurfaceInspector.cpp" />
+    <ClCompile Include="..\..\radiant\ui\layers\LayerContextMenu.cpp" />
+    <ClCompile Include="..\..\radiant\ui\layers\LayerOrthoContextMenuItem.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mainframe\MainFrame.cpp" />
+    <ClCompile Include="..\..\radiant\ui\mainframe\ScreenUpdateBlocker.cpp" />
+    <ClCompile Include="..\..\radiant\ui\brush\QuerySidesDialog.cpp" />
+    <ClCompile Include="..\..\radiant\ui\transform\TransformPanel.cpp" />
+    <ClCompile Include="..\..\radiant\ui\UserInterfaceModule.cpp" />
+    <ClCompile Include="..\..\radiant\xyview\GlobalXYWnd.cpp" />
+    <ClCompile Include="..\..\radiant\xyview\OrthoView.cpp" />
+    <ClCompile Include="..\..\radiant\xyview\tools\BrushCreatorTool.cpp" />
+    <ClCompile Include="..\..\radiant\xyview\tools\ClipperTool.cpp" />
+    <ClCompile Include="..\..\radiant\xyview\tools\MeasurementTool.cpp" />
+    <ClCompile Include="..\..\radiant\xyview\tools\PolygonTool.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\radiant\ApplicationContext.h" />
+    <ClInclude Include="..\..\radiant\camera\CameraWndManager.h" />
+    <ClInclude Include="..\..\radiant\camera\FloorHeightWalker.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\CameraMouseToolEvent.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\FreeMoveTool.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\JumpToObjectTool.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\ObjectFinder.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\PanViewTool.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\ShaderClipboardTools.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\CameraBrushCreatorTool.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\DecalShooterTool.h" />
+    <ClInclude Include="..\..\radiant\camera\tools\FaceIntersectionFinder.h" />
+    <ClInclude Include="..\..\radiant\clipboard\ClipboardModule.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\Accelerator.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\Event.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\EventManager.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\GlobalKeyEventFilter.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\KeyEvent.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\ModifierHintPopup.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\MouseToolGroup.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\MouseToolManager.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\RegistryToggle.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\ShortcutSaver.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\Statement.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\Toggle.h" />
+    <ClInclude Include="..\..\radiant\eventmanager\WidgetToggle.h" />
+    <ClInclude Include="..\..\radiant\map\AutoSaveTimer.h" />
+    <ClInclude Include="..\..\radiant\map\StartupMapLoader.h" />
+    <ClInclude Include="..\..\radiant\precompiled.h" />
+    <ClInclude Include="..\..\radiant\RadiantApp.h" />
+    <ClInclude Include="..\..\radiant\render\RenderStatistics.h" />
+    <ClInclude Include="..\..\radiant\selection\ManipulateMouseTool.h" />
+    <ClInclude Include="..\..\radiant\selection\SceneManipulateMouseTool.h" />
+    <ClInclude Include="..\..\radiant\selection\SelectionMouseTools.h" />
+    <ClInclude Include="..\..\radiant\settings\LocalisationModule.h" />
+    <ClInclude Include="..\..\radiant\settings\LocalisationProvider.h" />
+    <ClInclude Include="..\..\radiant\settings\RenderingQualitySettings.h" />
+    <ClInclude Include="..\..\radiant\settings\Win32Registry.h" />
+    <ClInclude Include="..\..\radiant\textool\TexToolModeToggles.h" />
+    <ClInclude Include="..\..\radiant\textool\TextureToolControl.h" />
+    <ClInclude Include="..\..\radiant\textool\tools\TextureToolCycleSelectionTool.h" />
+    <ClInclude Include="..\..\radiant\textool\tools\TextureToolManipulateMouseTool.h" />
+    <ClInclude Include="..\..\radiant\textool\tools\TextureToolMouseEvent.h" />
+    <ClInclude Include="..\..\radiant\textool\tools\TextureToolSelectionTool.h" />
+    <ClInclude Include="..\..\radiant\ui\aas\AasFileControl.h" />
+    <ClInclude Include="..\..\radiant\ui\aas\AasVisualisationControl.h" />
+    <ClInclude Include="..\..\radiant\ui\aas\AasVisualisationPanel.h" />
+    <ClInclude Include="..\..\radiant\ui\aas\RenderableAasFile.h" />
+    <ClInclude Include="..\..\radiant\ui\array\ArrayDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\animationpreview\AnimationPreview.h" />
+    <ClInclude Include="..\..\radiant\ui\animationpreview\MD5AnimationChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\animationpreview\MD5AnimationViewer.h" />
+    <ClInclude Include="..\..\radiant\ui\AutoSaveRequestHandler.h" />
+    <ClInclude Include="..\..\radiant\ui\brush\FindBrush.h" />
+    <ClInclude Include="..\..\radiant\ui\colourscheme\ColourSchemeEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\commandpalette\CommandMetadata.h" />
+    <ClInclude Include="..\..\radiant\ui\commandpalette\CommandPalette.h" />
+    <ClInclude Include="..\..\radiant\ui\commandpalette\InsertPalette.h" />
+    <ClInclude Include="..\..\radiant\ui\common\DialogManager.h" />
+    <ClInclude Include="..\..\radiant\ui\common\ImageFilePopulator.h" />
+    <ClInclude Include="..\..\radiant\ui\common\ImageFileSelector.h" />
+    <ClInclude Include="..\..\radiant\ui\common\SkinChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\common\SoundChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\common\SoundShaderSelector.h" />
+    <ClInclude Include="..\..\radiant\ui\common\SoundShaderPreview.h" />
+    <ClInclude Include="..\..\radiant\ui\console\CommandEntry.h" />
+    <ClInclude Include="..\..\radiant\ui\console\Console.h" />
+    <ClInclude Include="..\..\radiant\ui\console\ConsoleControl.h" />
+    <ClInclude Include="..\..\radiant\ui\decalshooter\DecalShooterControl.h" />
+    <ClInclude Include="..\..\radiant\ui\decalshooter\DecalShooterPanel.h" />
+    <ClInclude Include="..\..\radiant\ui\DispatchEvent.h" />
+    <ClInclude Include="..\..\radiant\ui\Documentation.h" />
+    <ClInclude Include="..\..\radiant\ui\eclasstree\EClassTree.h" />
+    <ClInclude Include="..\..\radiant\ui\eclasstree\EClassTreeBuilder.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\Algorithm.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\EntityInspectorModule.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\FxPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\InheritPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\TargetKey.h" />
+    <ClInclude Include="..\..\radiant\ui\entitylist\EntityList.h" />
+    <ClInclude Include="..\..\radiant\ui\entitylist\EntityListControl.h" />
+    <ClInclude Include="..\..\radiant\ui\entitylist\GraphTreeModel.h" />
+    <ClInclude Include="..\..\radiant\ui\entitylist\GraphTreeModelPopulator.h" />
+    <ClInclude Include="..\..\radiant\ui\entitylist\GraphTreeNode.h" />
+    <ClInclude Include="..\..\radiant\ui\favourites\FavouritesBrowser.h" />
+    <ClInclude Include="..\..\radiant\ui\favourites\FavouritesBrowserControl.h" />
+    <ClInclude Include="..\..\radiant\ui\FileOverwriteConfirmationHandler.h" />
+    <ClInclude Include="..\..\radiant\ui\FileSaveConfirmationHandler.h" />
+    <ClInclude Include="..\..\radiant\ui\FileSelectionRequestHandler.h" />
+    <ClInclude Include="..\..\radiant\ui\filters\editor\Filter.h" />
+    <ClInclude Include="..\..\radiant\ui\filters\editor\FilterDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\filters\editor\FilterEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\filters\FilterContextMenu.h" />
+    <ClInclude Include="..\..\radiant\ui\filters\FilterOrthoContextMenuItem.h" />
+    <ClInclude Include="..\..\radiant\ui\filters\FiltersMainMenu.h" />
+    <ClInclude Include="..\..\radiant\ui\filters\FilterUserInterface.h" />
+    <ClInclude Include="..\..\radiant\ui\findshader\FindShaderControl.h" />
+    <ClInclude Include="..\..\radiant\ui\fx\FxChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\gl\WxGLWidgetManager.h" />
+    <ClInclude Include="..\..\radiant\ui\grid\GridUserInterface.h" />
+    <ClInclude Include="..\..\radiant\ui\layers\CreateLayerDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\layers\LayerControl.h" />
+    <ClInclude Include="..\..\radiant\ui\layers\LayerControlPanel.h" />
+    <ClInclude Include="..\..\radiant\ui\lightinspector\LightInspectorControl.h" />
+    <ClInclude Include="..\..\radiant\ui\LongRunningOperationHandler.h" />
+    <ClInclude Include="..\..\radiant\ui\mainframe\AuiFloatingFrame.h" />
+    <ClInclude Include="..\..\radiant\ui\mainframe\AuiLayout.h" />
+    <ClInclude Include="..\..\radiant\ui\mainframe\AuiManager.h" />
+    <ClInclude Include="..\..\radiant\ui\mainframe\PropertyNotebook.h" />
+    <ClInclude Include="..\..\radiant\ui\mainframe\TopLevelFrame.h" />
+    <ClInclude Include="..\..\radiant\ui\mainframe\ViewMenu.h" />
+    <ClInclude Include="..\..\radiant\ui\ManipulatorToggle.h" />
+    <ClInclude Include="..\..\radiant\ui\MapCommands.h" />
+    <ClInclude Include="..\..\radiant\ui\MapFileProgressHandler.h" />
+    <ClInclude Include="..\..\radiant\ui\mapinfo\LayerInfoTab.h" />
+    <ClInclude Include="..\..\radiant\ui\mapselector\MapSelector.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\Binding.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\CheckBoxBinding.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\ExpressionBinding.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\MapExpressionEntry.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\MaterialEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\MaterialPreview.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\RadioButtonBinding.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\SpinCtrlBinding.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\TestModelSkin.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\editor\TexturePreview.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\MaterialChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\MaterialPopulator.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\MaterialSelector.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\MaterialThumbnailBrowser.h" />
+    <ClInclude Include="..\..\radiant\ui\materials\MaterialTreeView.h" />
+    <ClInclude Include="..\..\radiant\ui\mediabrowser\FocusMaterialRequest.h" />
+    <ClInclude Include="..\..\radiant\ui\mediabrowser\MediaBrowserTreeView.h" />
+    <ClInclude Include="..\..\radiant\ui\menu\MenuBar.h" />
+    <ClInclude Include="..\..\radiant\ui\menu\MenuElement.h" />
+    <ClInclude Include="..\..\radiant\ui\menu\MenuFolder.h" />
+    <ClInclude Include="..\..\radiant\ui\menu\MenuItem.h" />
+    <ClInclude Include="..\..\radiant\ui\menu\MenuManager.h" />
+    <ClInclude Include="..\..\radiant\ui\menu\MenuRootElement.h" />
+    <ClInclude Include="..\..\radiant\ui\menu\MenuSeparator.h" />
+    <ClInclude Include="..\..\radiant\ui\merge\MapMergeControl.h" />
+    <ClInclude Include="..\..\radiant\ui\merge\MapMergePanel.h" />
+    <ClInclude Include="..\..\radiant\ui\modelexport\ConvertModelDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\modelexport\ExportAsModelDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\modelexport\ExportCollisionModelDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\modelselector\MaterialsList.h" />
+    <ClInclude Include="..\..\radiant\camera\CameraSettings.h" />
+    <ClInclude Include="..\..\radiant\camera\CameraHintOverlay.h" />
+    <ClInclude Include="..\..\radiant\camera\CamWnd.h" />
+    <ClInclude Include="..\..\radiant\textool\TexTool.h" />
+    <ClInclude Include="..\..\radiant\ui\about\AboutDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\commandlist\CommandList.h" />
+    <ClInclude Include="..\..\radiant\ui\commandlist\CommandListPopulator.h" />
+    <ClInclude Include="..\..\radiant\ui\commandlist\ShortcutChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\common\EntityChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\common\MapPreview.h" />
+    <ClInclude Include="..\..\radiant\ui\common\TexturePreviewCombo.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\AddPropertyDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\AnglePropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\BooleanPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\ClassnamePropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\ColourPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\EntityInspector.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\EntityPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\FloatPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\ModelPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\PropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\PropertyEditorFactory.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\SkinPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\SoundPropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\TexturePropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\einspector\Vector3PropertyEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\findshader\FindShader.h" />
+    <ClInclude Include="..\..\radiant\ui\lightinspector\LightInspector.h" />
+    <ClInclude Include="..\..\radiant\ui\mapinfo\EntityInfoTab.h" />
+    <ClInclude Include="..\..\radiant\ui\mapinfo\MapInfoDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\mapinfo\ModelInfoTab.h" />
+    <ClInclude Include="..\..\radiant\ui\mapinfo\ShaderInfoTab.h" />
+    <ClInclude Include="..\..\radiant\ui\mediabrowser\MediaBrowser.h" />
+    <ClInclude Include="..\..\radiant\ui\mediabrowser\TextureDirectoryLoader.h" />
+    <ClInclude Include="..\..\radiant\ui\modelselector\ModelDataInserter.h" />
+    <ClInclude Include="..\..\radiant\ui\modelselector\ModelPopulator.h" />
+    <ClInclude Include="..\..\radiant\ui\modelselector\ModelSelector.h" />
+    <ClInclude Include="..\..\radiant\ui\modelselector\ModelTreeView.h" />
+    <ClInclude Include="..\..\radiant\ui\mousetool\BindToolDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\mousetool\RegistrationHelper.h" />
+    <ClInclude Include="..\..\radiant\ui\mousetool\ToolMappingDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\mru\MRUMenu.h" />
+    <ClInclude Include="..\..\radiant\ui\ortho\OrthoContextMenu.h" />
+    <ClInclude Include="..\..\radiant\ui\overlay\OrthoBackgroundControl.h" />
+    <ClInclude Include="..\..\radiant\ui\overlay\OrthoBackgroundPanel.h" />
+    <ClInclude Include="..\..\radiant\ui\overlay\Overlay.h" />
+    <ClInclude Include="..\..\radiant\ui\overlay\OverlayRegistryKeys.h" />
+    <ClInclude Include="..\..\radiant\ui\particles\ParticleChooserDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\particles\ParticleEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\particles\ThreadedParticlesLoader.h" />
+    <ClInclude Include="..\..\radiant\ui\particles\ParticleSelector.h" />
+    <ClInclude Include="..\..\radiant\ui\patch\BulgePatchDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\patch\CapDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\patch\PatchCreateDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\patch\PatchPrefabDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\patch\PatchInspector.h" />
+    <ClInclude Include="..\..\radiant\ui\patch\PatchInspectorControl.h" />
+    <ClInclude Include="..\..\radiant\ui\patch\PatchThickenDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\PointFileChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\prefabselector\PrefabSelector.h" />
+    <ClInclude Include="..\..\radiant\ui\prefdialog\GameSetupDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\prefdialog\GameSetupPage.h" />
+    <ClInclude Include="..\..\radiant\ui\prefdialog\GameSetupPageIdTech.h" />
+    <ClInclude Include="..\..\radiant\ui\prefdialog\GameSetupPageTdm.h" />
+    <ClInclude Include="..\..\radiant\ui\prefdialog\PrefDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\prefdialog\PreferenceItem.h" />
+    <ClInclude Include="..\..\radiant\ui\prefdialog\PrefPage.h" />
+    <ClInclude Include="..\..\radiant\ui\scatter\ScatterDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\script\ScriptMenu.h" />
+    <ClInclude Include="..\..\radiant\ui\script\ScriptPanel.h" />
+    <ClInclude Include="..\..\radiant\ui\script\ScriptWindow.h" />
+    <ClInclude Include="..\..\radiant\ui\SelectionModeToggle.h" />
+    <ClInclude Include="..\..\radiant\ui\selectionset\SelectionSetToolmenu.h" />
+    <ClInclude Include="..\..\radiant\ui\skin\SkinEditor.h" />
+    <ClInclude Include="..\..\radiant\ui\skin\SkinEditorTreeView.h" />
+    <ClInclude Include="..\..\radiant\ui\cables\CableGeneratorDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\cables\CableGeometry.h" />
+    <ClInclude Include="..\..\radiant\ui\stairs\StairsGeneratorDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\stairs\StairsGeometry.h" />
+    <ClInclude Include="..\..\radiant\ui\statusbar\CommandStatus.h" />
+    <ClInclude Include="..\..\radiant\ui\statusbar\EditingStopwatchStatus.h" />
+    <ClInclude Include="..\..\radiant\ui\statusbar\MapStatistics.h" />
+    <ClInclude Include="..\..\radiant\ui\statusbar\ShaderClipboardStatus.h" />
+    <ClInclude Include="..\..\radiant\ui\statusbar\StatusBarManager.h" />
+    <ClInclude Include="..\..\radiant\ui\surfaceinspector\SurfaceInspectorControl.h" />
+    <ClInclude Include="..\..\radiant\ui\texturebrowser\MapTextureBrowser.h" />
+    <ClInclude Include="..\..\radiant\ui\texturebrowser\TextureBrowserManager.h" />
+    <ClInclude Include="..\..\radiant\ui\texturebrowser\TextureBrowserPanel.h" />
+    <ClInclude Include="..\..\radiant\ui\texturebrowser\TextureDirectoryBrowser.h" />
+    <ClInclude Include="..\..\radiant\ui\terrain\TerrainGeneratorDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\texturebrowser\TextureThumbnailBrowser.h" />
+    <ClInclude Include="..\..\radiant\ui\toolbar\ToolbarManager.h" />
+    <ClInclude Include="..\..\radiant\ui\splash\Splash.h" />
+    <ClInclude Include="..\..\radiant\ui\surfaceinspector\SurfaceInspector.h" />
+    <ClInclude Include="..\..\radiant\ui\layers\LayerContextMenu.h" />
+    <ClInclude Include="..\..\radiant\ui\layers\LayerOrthoContextMenuItem.h" />
+    <ClInclude Include="..\..\radiant\ui\mainframe\MainFrame.h" />
+    <ClInclude Include="..\..\radiant\ui\mainframe\ScreenUpdateBlocker.h" />
+    <ClInclude Include="..\..\radiant\ui\brush\QuerySidesDialog.h" />
+    <ClInclude Include="..\..\radiant\ui\transform\TransformPanel.h" />
+    <ClInclude Include="..\..\radiant\ui\transform\TransformPanelControl.h" />
+    <ClInclude Include="..\..\radiant\ui\UserInterfaceModule.h" />
+    <ClInclude Include="..\..\radiant\xyview\GlobalXYWnd.h" />
+    <ClInclude Include="..\..\radiant\xyview\OrthoView.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\BrushCreatorTool.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\CameraAngleTool.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\CameraMoveTool.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\ClipperTool.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\MeasurementTool.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\PolygonTool.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\MoveViewTool.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\XYMouseToolEvent.h" />
+    <ClInclude Include="..\..\radiant\xyview\tools\ZoomTool.h" />
+    <ClInclude Include="..\..\radiant\xyview\XYRenderer.h" />
+    <ClInclude Include="..\..\radiant\log\PIDFile.h" />
+    <ClInclude Include="..\..\radiant\log\PopupErrorHandler.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\radiant\NeoRadiant.rc">
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(WinDepsDir)wxWidgets/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(WinDepsDir)wxWidgets/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(WinDepsDir)wxWidgets/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(WinDepsDir)wxWidgets/include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="wxutillib.vcxproj">
+      <Project>{b6d4b38a-0c39-42cd-8193-75979e1f4d68}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="mathlib.vcxproj">
+      <Project>{3c9fb5aa-7118-476e-b33d-d3ac1c8412bb}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="scenelib.vcxproj">
+      <Project>{f7408b46-e4a9-470c-9731-9a1564247385}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="xmlutillib.vcxproj">
+      <Project>{a15efb56-927f-411d-a57b-0328321456a2}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Xml Include="..\..\install\colours.xml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xml>
+    <Xml Include="..\..\install\commandsystem.xml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xml>
+    <Xml Include="..\..\install\debug.xml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xml>
+    <Xml Include="..\..\install\input.xml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xml>
+    <Xml Include="..\..\install\menu.xml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xml>
+    <Xml Include="..\..\install\user.xml">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
+    </Xml>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\innosetup\NeoRadiant.iss" />
+    <None Include="..\innosetup\NeoRadiant.x64.iss" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

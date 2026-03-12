@@ -12,9 +12,9 @@ class VolumeTest;
 namespace ui
 {
 
-/** 
- * A Tool class represents an operator which can be "used" 
- * in DarkRadiant's Ortho- and Camera views by using the mouse.
+/**
+ * A Tool class represents an operator which can be "used"
+ * in NeoRadiant's Ortho- and Camera views by using the mouse.
  */
 class MouseTool
 {
@@ -53,7 +53,7 @@ public:
     }
 
     // A tool using pointer mode Capture might want to get notified
-    // when the mouse capture of the window has been lost due to 
+    // when the mouse capture of the window has been lost due to
     // the user alt-tabbing out of the app or something else.
     // Any tools using PointerMode::Capture must watch out for this event.
     virtual void onMouseCaptureLost(IInteractiveView& view)
@@ -120,7 +120,7 @@ public:
 
     // Optional render routine that is invoked after the scene
     // has been drawn on the interactive window. The projection
-    // and modelview matrix have already been set up for  
+    // and modelview matrix have already been set up for
     // overlay rendering (glOrtho).
     virtual void renderOverlay()
     {}

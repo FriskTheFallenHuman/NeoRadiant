@@ -8,7 +8,7 @@ namespace render
 {
 
 /**
- * Vertex as used in DarkRadiant's render system.
+ * Vertex as used in NeoRadiant's render system.
  * It's based on single-precision floats for memory/performance.
  */
 class RenderVertex

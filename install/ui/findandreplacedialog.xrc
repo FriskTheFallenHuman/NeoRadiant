@@ -38,7 +38,7 @@
 						<flag>wxALIGN_CENTER_VERTICAL</flag>
 						<border>0</border>
 						<object class="wxBitmapButton" name="FindReplaceDialogFindSelectButton">
-							<bitmap stock_id="darkradiant:folder16.png" stock_client="">undefined.png</bitmap>
+							<bitmap stock_id="neoradiant:folder16.png" stock_client="">undefined.png</bitmap>
 							<default>0</default>
 						</object>
 					</object>
@@ -47,7 +47,7 @@
 						<flag>wxALL</flag>
 						<border>5</border>
 						<object class="wxBitmapButton" name="FindReplaceDialogFindPickButton">
-							<bitmap stock_id="darkradiant:texture_pick.png" stock_client="">undefined.png</bitmap>
+							<bitmap stock_id="neoradiant:texture_pick.png" stock_client="">undefined.png</bitmap>
 							<default>0</default>
 						</object>
 					</object>
@@ -73,7 +73,7 @@
 						<flag>wxALIGN_CENTER_VERTICAL</flag>
 						<border>0</border>
 						<object class="wxBitmapButton" name="FindReplaceDialogReplaceSelectButton">
-							<bitmap stock_id="darkradiant:folder16.png" stock_client="">undefined.png</bitmap>
+							<bitmap stock_id="neoradiant:folder16.png" stock_client="">undefined.png</bitmap>
 							<default>0</default>
 						</object>
 					</object>
@@ -82,7 +82,7 @@
 						<flag>wxALL</flag>
 						<border>5</border>
 						<object class="wxBitmapButton" name="FindReplaceDialogReplacePickButton">
-							<bitmap stock_id="darkradiant:texture_pick.png" stock_client="">undefined.png</bitmap>
+							<bitmap stock_id="neoradiant:texture_pick.png" stock_client="">undefined.png</bitmap>
 							<default>0</default>
 						</object>
 					</object>

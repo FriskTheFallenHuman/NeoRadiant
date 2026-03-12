@@ -19,7 +19,7 @@ namespace settings
 
 namespace
 {
-	const char* const LANGUAGE_SETTING_FILE = "darkradiant.language";
+	const char* const LANGUAGE_SETTING_FILE = "neoradiant.language";
 	const char* const DEFAULT_LANGUAGE = "en";
 }
 
