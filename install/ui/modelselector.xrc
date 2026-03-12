@@ -61,7 +61,7 @@
 											<object class="notebookpage">
 												<label>Properties</label>
 												<selected>0</selected>
-												<bitmap stock_id="darkradiant:icon_classname.png" stock_client="">undefined.png</bitmap>
+												<bitmap stock_id="neoradiant:icon_classname.png" stock_client="">undefined.png</bitmap>
 												<object class="wxPanel" name="ModelDetailsPanel">
 													<style>wxTAB_TRAVERSAL</style>
 													<object class="wxBoxSizer">
@@ -72,7 +72,7 @@
 											<object class="notebookpage">
 												<label>Materials</label>
 												<selected>0</selected>
-												<bitmap stock_id="darkradiant:icon_texture.png" stock_client="">undefined.png</bitmap>
+												<bitmap stock_id="neoradiant:icon_texture.png" stock_client="">undefined.png</bitmap>
 												<object class="wxPanel" name="ModelMaterialsPanel">
 													<style>wxTAB_TRAVERSAL</style>
 													<object class="wxBoxSizer">
@@ -83,7 +83,7 @@
 											<object class="notebookpage">
 												<label>Related Entity Classes</label>
 												<selected>1</selected>
-												<bitmap stock_id="darkradiant:cmenu_add_entity.png" stock_client="">undefined.png</bitmap>
+												<bitmap stock_id="neoradiant:cmenu_add_entity.png" stock_client="">undefined.png</bitmap>
 												<object class="wxPanel" name="ModelRelatedEntitiesPanel">
 													<style>wxTAB_TRAVERSAL</style>
 													<object class="wxBoxSizer">

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<component type="desktop-application">
+  <id>io.github.friskthefallenhuman.neoradiant</id>
+  <name>NeoRadiant</name>
+  <summary>3D level editor for idTech4-based games</summary>
+  <developer id="io.github.friskthefallenhuman">
+    <name>Krispy</name>
+  </developer>
+  <metadata_license>CC0-1.0</metadata_license>
+  <project_license>GPL-2.0-or-later</project_license>
+  <content_rating type="oars-1.1" />
+  <url type="homepage">https://github.com/FriskTheFallenHuman/NeoRadiant</url>
+  <description>
+    <p>
+      NeoRadiant is a fork of DarkRadiant, a level editor for idTech4-based games. While DarkRadiant focuses primarily on The Dark Mod, NeoRadiant is tailored for editing generic maps that uses Idtech4 engine.
+    </p>
+  </description>
+  <launchable
+        type="desktop-id"
+    >io.github.friskthefallenhuman.neoradiant.desktop</launchable>
+  <releases>
+    <release version="1.0.0" date="2025-01-01" />
+  </releases>
+</component>

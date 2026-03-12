@@ -415,6 +415,12 @@
     <ClInclude Include="..\..\libs\decl\DeclLib.h">
       <Filter>decl</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\libs\miniz\miniz.h">
+      <Filter>miniz</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\libs\miniz\minizconf.h">
+      <Filter>miniz</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="util">
@@ -467,6 +473,9 @@
     </Filter>
     <Filter Include="decl">
       <UniqueIdentifier>{b6509c1f-67af-4737-b9d9-833a01c4bdd4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="miniz">
+      <UniqueIdentifier>{13c301ff-21dc-4129-94d0-16585bed2ed3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
 </Project>

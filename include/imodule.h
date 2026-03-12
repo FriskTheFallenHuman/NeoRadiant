@@ -23,7 +23,7 @@
  * by their RegisterableModule::getCompatibilityLevel() method.
  *
  * This number should be changed each time the set of module/plugin files (.so/.dll/.dylib)
- * is modified, especially when files are going to be removed from a DarkRadiant release.
+ * is modified, especially when files are going to be removed from a NeoRadiant release.
  * The number will be checked by the ModuleRegistry against the internally stored one
  * to detect outdated binaries and reject their registration.
  *
@@ -68,7 +68,7 @@ public:
      * for any libraries containing modules and/or plugins.
      *
      * On Windows this is most likely the same as the application path. On
-     * Linux it might be a hard-coded path like /usr/lib/darkradiant, or a
+     * Linux it might be a hard-coded path like /usr/lib/neoradiant, or a
      * relocatable relative path like ../lib
      */
     virtual std::vector<std::string> getLibraryPaths() const = 0;
@@ -77,7 +77,7 @@ public:
      * Return the toplevel path contaning runtime data files, such as the GL
      * programs or UI descriptor files. On Windows this is the same as the
      * application path, on Linux it is determined at compile-time but probably
-     * something like /usr/share/darkradiant.
+     * something like /usr/share/neoradiant.
      */
     virtual std::string getRuntimeDataPath() const = 0;
 
@@ -498,12 +498,12 @@ namespace module
     #if defined(_MSC_VER)
         // In VC++ we use this to export symbols instead of using .def files
         // Note: don't use __stdcall since this is adding stack bytes to the function name
-        #define DARKRADIANT_DLLEXPORT __declspec(dllexport)
+        #define NEORADIANT_DLLEXPORT __declspec(dllexport)
     #else
-        #define DARKRADIANT_DLLEXPORT
+        #define NEORADIANT_DLLEXPORT
     #endif
 #elif defined(__APPLE__)
-    #define DARKRADIANT_DLLEXPORT __attribute__((visibility("default")))
+    #define NEORADIANT_DLLEXPORT __attribute__((visibility("default")))
 #else
-    #define DARKRADIANT_DLLEXPORT __attribute__((visibility("default")))
+    #define NEORADIANT_DLLEXPORT __attribute__((visibility("default")))
 #endif

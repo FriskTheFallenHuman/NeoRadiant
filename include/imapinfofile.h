@@ -17,18 +17,18 @@ typedef std::map<NodeIndexPair, scene::INodePtr> NodeIndexMap;
 
 /**
  * An info file module is allowed to write text-based information
- * to the auxiliary .darkradiant file that is written alongside to the 
+ * to the auxiliary .project file that is written alongside to the
  * game-compatible .map file. Things like layer or selection set/group
  * information can be stored persistently between mapping sessions this way.
  *
- * The module should write its information in named blocks, like 
+ * The module should write its information in named blocks, like
  *
  * MyModuleInfo
  * {
  *      // arbitrary parseable info here
  * }
  *
- * Later, when the info file is parsed after map load, the module will be asked 
+ * Later, when the info file is parsed after map load, the module will be asked
  * to parse the blocks it's responsible for, and apply its information to the map.
  */
 class IMapInfoFileModule
@@ -59,7 +59,7 @@ public:
 	 * Assemble information about the primitive and save it
 	 * internally, until the writeBlocks() method is called.
 	 */
-	virtual void onSavePrimitive(const scene::INodePtr& node, 
+	virtual void onSavePrimitive(const scene::INodePtr& node,
 		std::size_t entityNum, std::size_t primitiveNum) = 0;
 
 	/**
@@ -90,7 +90,7 @@ public:
 	// Info File Loading / Parsing
 
 	/**
-	 * Called before the info file is loaded, so take tihs opportunity to 
+	 * Called before the info file is loaded, so take tihs opportunity to
 	 * clear internal structures that are going to be filled during the parse process.
 	 */
 	virtual void onInfoFileLoadStart() = 0;
@@ -106,7 +106,7 @@ public:
 	 * Parse a block as found in the info file. The block name as passed to this method
 	 * needs to be registered in the IMapInfoFileManager class before.
 	 *
-	 * Regarding the state of the tokeniser: the block name will already have been parsed 
+	 * Regarding the state of the tokeniser: the block name will already have been parsed
 	 * by the time this method is called, so expect the opening brace { as first token.
 	 */
 	virtual void parseBlock(const std::string& blockName, parser::DefTokeniser& tok) = 0;
@@ -132,7 +132,7 @@ class IMapInfoFileManager :
 	public RegisterableModule
 {
 public:
-	virtual ~IMapInfoFileManager() 
+	virtual ~IMapInfoFileManager()
 	{}
 
 	/**

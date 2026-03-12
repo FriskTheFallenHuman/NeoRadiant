@@ -5,8 +5,8 @@ CMakeCache.txt
 cmake_install.cmake
 /config.h
 /install_manifest.txt
-/radiant/darkradiant
-/install/darkradiant.desktop
+/radiant/neoradiant
+/install/neoradiant.desktop
 /test/drtest
 *.o
 *.lo
@@ -44,8 +44,8 @@ tools/msvc/*.exe
 
 # Windows Visual Studio stuff
 *.user
-DarkRadiant.opensdf
-DarkRadiant.sdf
+NeoRadiant.opensdf
+NeoRadiant.sdf
 gtkrc
 testsuite.ilk
 
@@ -72,19 +72,17 @@ xcuserdata
 
 /install/*.zip
 /tools/msvc/.vs
-/tools/msvc/DarkRadiant.VC.db
+/tools/msvc/NeoRadiant.VC.db
 /tools/innosetup/*.zip
 /tools/lwo_analyse/.vs
 /radiant/*.aps
 
 # Portable installation temp folders
-/tools/scripts/DarkRadiant_install.x64
-/tools/scripts/DarkRadiant_install
+/tools/scripts/NeoRadiant_install.x64
+/tools/scripts/NeoRadiant_install
 /install/*.ilk
-/tools/msvc/Tests/x64
 /tools/msvc/x64
 /tools/msvc/packages
-/install/*.testdurations
 *.ilk
 .vs/
 windeps*.7z

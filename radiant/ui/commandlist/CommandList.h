@@ -9,7 +9,7 @@
 class wxButton;
 
 /* greebo: The CommandListDialog class displays a list of all available
- * DarkRadiant commands and provides methods to clear and assign the shortcuts.
+ * NeoRadiant commands and provides methods to clear and assign the shortcuts.
  *
  * The actual re-assignment is taken care of by the ShortcutChooser helper class.
  *

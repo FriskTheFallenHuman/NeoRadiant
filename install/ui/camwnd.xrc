@@ -25,28 +25,28 @@
 								<label>wireframeBtn</label>
 								<tooltip>Render in wireframe mode</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:wireframeMode16.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:wireframeMode16.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<radio>1</radio>
 							</object>
 							<object class="tool" name="flatShadeBtn">
 								<label>flatShadeBtn</label>
 								<tooltip>Render in flat shaded mode</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:solidMode16.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:solidMode16.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<radio>1</radio>
 							</object>
 							<object class="tool" name="texturedBtn">
 								<label>texturedBtn</label>
 								<tooltip>Render in fullbright textured mode</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:textureMode16.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:textureMode16.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<radio>1</radio>
 							</object>
 							<object class="tool" name="lightingBtn">
 								<label>lightingBtn</label>
 								<tooltip>Render in lighting preview mode</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:lightingMode.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:lightingMode.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<radio>1</radio>
 							</object>
 							<object class="separator" />
@@ -54,7 +54,7 @@
 								<label>shadowBtn</label>
 								<tooltip>Enable Shadow Mapping</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:lightingModeWithShadows.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:lightingModeWithShadows.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<toggle>1</toggle>
 							</object>
 							<object class="separator" />
@@ -62,40 +62,40 @@
 								<label>startTimeButton</label>
 								<tooltip>Start Render Time</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:media-playback-start-ltr.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:media-playback-start-ltr.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 							</object>
 							<object class="tool" name="stopTimeButton">
 								<label>stopTimeButton</label>
 								<tooltip>Stop Render Time</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:media-playback-stop.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:media-playback-stop.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 							</object>
 							<object class="separator" />
 							<object class="tool" name="clipPlaneToggleButton">
 								<label>clipPlaneToggleButton</label>
 								<tooltip>Enable or disable far clip plane</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:view_cubicclipping.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:view_cubicclipping.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<toggle>1</toggle>
 							</object>
 							<object class="tool" name="clipPlaneInButton">
 								<label>clipPlaneInButton</label>
 								<tooltip>Clip plane in</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:farClipIn.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:farClipIn.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 							</object>
 							<object class="tool" name="clipPlaneOutButton">
 								<label>clipPlaneOutButton</label>
 								<tooltip>Clip plane out</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:farClipOut.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:farClipOut.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 							</object>
 							<object class="separator" />
 							<object class="tool" name="drawGridButton">
 								<label>drawGridButton</label>
 								<tooltip>Draw 3D Grid</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:grid_toggle.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:grid_toggle.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<toggle>1</toggle>
 							</object>
 						</object>

@@ -198,7 +198,7 @@ void GameSetupDialog::onPageChanged(wxBookCtrlEvent& ev)
 void GameSetupDialog::TryGetConfig(const std::function<void(const game::GameConfiguration&)>& onSuccess)
 {
 	// greebo: Check if the mainframe module is already "existing". It might be
-	// uninitialised if this dialog is shown during DarkRadiant startup
+	// uninitialised if this dialog is shown during NeoRadiant startup
 	wxWindow* parent = module::GlobalModuleRegistry().moduleExists(MODULE_MAINFRAME) ?
 		GlobalMainFrame().getWxTopLevelWindow() : nullptr;
 

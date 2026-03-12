@@ -29,7 +29,7 @@ private:
     PythonModule(const PythonModule& other) = delete;
     PythonModule& operator=(const PythonModule& other) = delete;
 
-    // We need a static reference to the current object, since 
+    // We need a static reference to the current object, since
     // PyImport_AppendInittab doesn't allow us to pass user data
     static PythonModule* _instance;
 
@@ -46,7 +46,7 @@ public:
     PythonModule();
     ~PythonModule();
 
-    // Starts up the interpreter, imports the darkradiant module
+    // Starts up the interpreter, imports the NeoRadiant module
     void initialise();
 
     ExecutionResultPtr executeString(const std::string& scriptString);
@@ -64,7 +64,7 @@ public:
     ScriptCommand::Ptr createScriptCommand(const std::string& scriptBasePath, const std::string& relativeScriptPath);
 
 private:
-    // Register the darkradiant module with the inittab pointing to InitModule
+    // Register the NeoRadiant module with the inittab pointing to InitModule
     void registerModule();
 
     bool interfaceExists(const std::string& name);

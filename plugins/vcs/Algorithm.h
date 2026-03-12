@@ -72,7 +72,7 @@ inline RemoteStatus analyseRemoteStatus(const std::shared_ptr<Repository>& repos
 
     if (repository->mergeIsInProgress())
     {
-        return RemoteStatus{ status.localCommitsAhead, status.remoteCommitsAhead, 
+        return RemoteStatus{ status.localCommitsAhead, status.remoteCommitsAhead,
             _("Merge in progress"), RequiredMergeStrategy::MergeAlreadyInProgress };
     }
 
@@ -98,13 +98,13 @@ inline RemoteStatus analyseRemoteStatus(const std::shared_ptr<Repository>& repos
     auto mergeBase = repository->findMergeBase(*head, *upstream);
 
     auto remoteDiffAgainstBase = repository->getDiff(*upstream, *mergeBase);
-    
+
     bool remoteDiffContainsMap = remoteDiffAgainstBase->containsFile(mapPath);
 
     if (!remoteDiffContainsMap)
     {
         // Remote didn't change the map, we can integrate it without conflicting the loaded map
-        return RemoteStatus{ status.localCommitsAhead, status.remoteCommitsAhead, _("Integrate"), 
+        return RemoteStatus{ status.localCommitsAhead, status.remoteCommitsAhead, _("Integrate"),
             status.localCommitsAhead == 0 ? RequiredMergeStrategy::FastForward : RequiredMergeStrategy::MergeRecursively };
     }
 
@@ -172,7 +172,7 @@ inline void tryToFinishMerge(const std::shared_ptr<Repository>& repository)
     {
         // Remove the conflict state from the map
         resolveMapFileConflictUsingOurs(repository);
-        
+
         // If the index still has conflicts, notify the user
         if (index->hasConflicts())
         {
@@ -250,7 +250,7 @@ inline void syncWithRemote(const std::shared_ptr<Repository>& repository)
     }
 
     auto mapPath = repository->getRepositoryRelativePath(GlobalMapModule().getMapName());
-    
+
     RemoteStatus status = analyseRemoteStatus(repository);
 
     switch (status.strategy)
@@ -312,14 +312,14 @@ inline void syncWithRemote(const std::shared_ptr<Repository>& repository)
         {
             throw GitException("The repository state doesn't require a regular merge, cannot proceed.");
         }
-        
+
         git_merge_options mergeOptions = GIT_MERGE_OPTIONS_INIT;
         git_checkout_options checkoutOptions = GIT_CHECKOUT_OPTIONS_INIT;
         checkoutOptions.checkout_strategy = GIT_CHECKOUT_FORCE | GIT_CHECKOUT_ALLOW_CONFLICTS;
 
         error = git_merge(repository->_get(), mergeHeads.data(), mergeHeads.size(), &mergeOptions, &checkoutOptions);
         GitException::ThrowOnError(error);
-        
+
         // Check if the loaded map is affected by the merge
         if (status.strategy != RequiredMergeStrategy::MergeMap)
         {
@@ -330,7 +330,7 @@ inline void syncWithRemote(const std::shared_ptr<Repository>& repository)
         // A map merge is required
         wxutil::Messagebox::Show(_("Map Merge Required"),
             _("The map has been changed both on the server and locally.\n"
-                "DarkRadiant will now switch to Merge Mode to highlight the differences.\n"
+                "NeoRadiant will now switch to Merge Mode to highlight the differences.\n"
                 "Please have a look, resolve possible conflicts and finish the merge."),
             ::ui::IDialog::MessageType::MESSAGE_CONFIRM);
 

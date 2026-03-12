@@ -1567,7 +1567,7 @@ void Map::shutdownModule()
 
 void Map::handleShutdownRequest(radiant::ApplicationShutdownRequest& request)
 {
-    if (!askForSave(_("Exit HellForge")))
+    if (!askForSave(_("Exit NeoRadiant")))
     {
         request.deny();
     }

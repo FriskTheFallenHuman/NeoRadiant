@@ -20,7 +20,7 @@ void Documentation::showUserGuide(const cmd::ArgumentList&)
 
 void Documentation::OpenScriptReference(const cmd::ArgumentList&)
 {
-    const IApplicationContext& ctx = module::GlobalModuleRegistry().getApplicationContext();
+    //const IApplicationContext& ctx = module::GlobalModuleRegistry().getApplicationContext();
     wxLaunchDefaultBrowser(registry::getValue<std::string>(RKEY_SCRIPT_REFERENCE_URL));
 }
 

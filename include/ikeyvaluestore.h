@@ -21,7 +21,7 @@ public:
 	virtual std::string getProperty(const std::string& key) const = 0;
 
 	/**
-	 * Store a value in the map root's property store. DarkRadiant will persist
+	 * Store a value in the map root's property store. NeoRadiant will persist
 	 * these values in the Info file when saving and restore them on loading.
 	 * Other map formats without info file are free to use that information
 	 * when exporting map data.
@@ -45,4 +45,3 @@ public:
 	 */
 	virtual void clearProperties() = 0;
 };
-

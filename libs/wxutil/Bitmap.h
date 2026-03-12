@@ -8,19 +8,19 @@ namespace wxutil
 
 /**
  * \brief
- * Get a wxBitmap from the local "darkradiant" art provider
+ * Get a wxBitmap from the local "neoradiant" art provider
  *
  * \param name
  * Image file name with no prefix, e.g. "something.png"
  */
 inline wxBitmap GetLocalBitmap(const std::string& name)
 {
-    return wxArtProvider::GetBitmap("darkradiant:" + name);
+    return wxArtProvider::GetBitmap("neoradiant:" + name);
 }
 
 /**
  * \brief
- * Get a wxBitmap from the local "darkradiant" art provider, passing the given
+ * Get a wxBitmap from the local "neoradiant" art provider, passing the given
  * art client along.
  *
  * \param name
@@ -28,7 +28,7 @@ inline wxBitmap GetLocalBitmap(const std::string& name)
  */
 inline wxBitmap GetLocalBitmap(const std::string& name, const wxArtClient& client)
 {
-    return wxArtProvider::GetBitmap("darkradiant:" + name, client);
+    return wxArtProvider::GetBitmap("neoradiant:" + name, client);
 }
 
 /// Construct and return a wxBitmapButton displaying the given local icon

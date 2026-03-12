@@ -6,7 +6,7 @@ namespace radiant
 {
 
 /**
- * Message sent to query whether DarkRadiant is active.
+ * Message sent to query whether NeoRadiant is active.
  * The UI module should respond to this request and set the flag
  * in the message instance accordingly, using setApplicationIsActive().
  *

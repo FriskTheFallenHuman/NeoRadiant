@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <stdexcept>
 
 #ifdef __APPLE__
 #include <OpenAL/al.h>
@@ -8,12 +9,11 @@
 #include <AL/al.h>
 #endif
 
-#include <vorbis/vorbisfile.h>
-#include <fmt/format.h>
+#define STB_VORBIS_HEADER_ONLY
+#include "stb_vorbis.h"
 
 #include "iarchive.h"
 #include "stream/ScopedArchiveBuffer.h"
-#include "OggFileStream.h"
 
 namespace sound
 {
@@ -23,46 +23,6 @@ namespace sound
  */
 class OggFileLoader
 {
-private:
-    class FileWrapper
-    {
-    private:
-        OggVorbis_File _oggFile;
-        OggFileStream _stream;
-        int _openResult;
-
-    public:
-        FileWrapper(ArchiveFile& file) :
-            _stream(file)
-        {
-            // Setup the callbacks and point them to the helper class
-            ov_callbacks callbacks;
-            callbacks.read_func = OggFileStream::oggReadFunc;
-            callbacks.seek_func = OggFileStream::oggSeekFunc;
-            callbacks.close_func = OggFileStream::oggCloseFunc;
-            callbacks.tell_func = OggFileStream::oggTellFunc;
-
-            // Open the OGG data stream using the custom callbacks
-            _openResult = ov_open_callbacks(static_cast<void*>(&_stream), &_oggFile, nullptr, 0, callbacks);
-        }
-
-        // Return the pointer to the handle structure needed to call the ov_* functions
-        OggVorbis_File* getHandle()
-        {
-            if (_openResult != 0)
-            {
-                throw std::runtime_error(fmt::format("Error opening OGG file (error code: {0}", _openResult));
-            }
-
-            return &_oggFile;
-        }
-
-        ~FileWrapper()
-        {
-            // Clean up the OGG routines
-            ov_clear(&_oggFile);
-        }
-    };
 public:
     /**
      * greebo: Determines the OGG file length in seconds.
@@ -70,9 +30,25 @@ public:
      */
     static float GetDuration(ArchiveFile& vfsFile)
     {
-        FileWrapper file(vfsFile);
+        archive::ScopedArchiveBuffer buffer(vfsFile);
 
-        return static_cast<float>(ov_time_total(file.getHandle(), -1));
+        int error = 0;
+        stb_vorbis *vorbis = stb_vorbis_open_memory(
+            buffer.buffer,
+            static_cast<int>(buffer.length),
+            &error,
+            nullptr
+        );
+
+        if ( !vorbis )
+        {
+            throw std::runtime_error("stb_vorbis: failed to open OGG data (error " + std::to_string(error) + ")");
+        }
+
+        float duration = stb_vorbis_stream_length_in_seconds(vorbis);
+        stb_vorbis_close(vorbis);
+
+        return duration;
     }
 
     /**
@@ -83,55 +59,38 @@ public:
      */
     static ALuint LoadFromFile(ArchiveFile& vfsFile)
     {
-        FileWrapper file(vfsFile);
+        archive::ScopedArchiveBuffer buffer(vfsFile);
 
-        // Get some information about the OGG file
-        vorbis_info* vorbisInfo = ov_info(file.getHandle(), -1);
+        int channels   = 0;
+        int sampleRate = 0;
+        short* decoded = nullptr;
 
-        // Check the number of channels
-        ALenum format = (vorbisInfo->channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+        // Decode the entire stream to interleaved 16-bit PCM in one call.
+        int numSamples = stb_vorbis_decode_memory(
+            buffer.buffer,
+            static_cast<int>(buffer.length),
+            &channels,
+            &sampleRate,
+            &decoded
+        );
 
-        // Get the sample Rate
-        ALsizei freq = static_cast<ALsizei>(vorbisInfo->rate);
-
-        long bytes;
-        char smallBuffer[4096];
-
-        std::vector<char> largeBuffer;
-        largeBuffer.reserve(vfsFile.size() * 2);
-
-        do
+        if (numSamples < 0 || !decoded)
         {
-            int bitStream;
-            // Read a chunk of decoded data from the vorbis file
-            bytes = ov_read(file.getHandle(), smallBuffer, sizeof(smallBuffer), 0, 2, 1, &bitStream);
+            throw std::runtime_error("stb_vorbis: failed to decode OGG data");
+        }
 
-            if (bytes == OV_HOLE)
-            {
-                rError() << "Error decoding OGG: OV_HOLE.\n";
-            }
-            else if (bytes == OV_EBADLINK)
-            {
-                rError() << "Error decoding OGG: OV_EBADLINK.\n";
-            }
-            else
-            {
-                // Stuff this into the variable-sized buffer
-                largeBuffer.insert(largeBuffer.end(), smallBuffer, smallBuffer + bytes);
-            }
-        } 
-        while (bytes > 0);
+        ALenum format = (channels == 1) ? AL_FORMAT_MONO16 : AL_FORMAT_STEREO16;
+        ALsizei freq  = static_cast<ALsizei>(sampleRate);
+
+        // numSamples is per-channel; total shorts = numSamples * channels
+        ALsizei dataSize = static_cast<ALsizei>(numSamples * channels * sizeof(short));
 
         ALuint bufferNum = 0;
-        // Allocate a new buffer
         alGenBuffers(1, &bufferNum);
+        alBufferData(bufferNum, format, decoded, dataSize, freq);
 
-        // Upload sound data to buffer
-        alBufferData(bufferNum,
-            format,
-            largeBuffer.data(),
-            static_cast<ALsizei>(largeBuffer.size()),
-            freq);
+        // stb_vorbis allocates the output buffer with malloc; free it.
+        free(decoded);
 
         return bufferNum;
     }

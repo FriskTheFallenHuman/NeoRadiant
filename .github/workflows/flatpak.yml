@@ -25,12 +25,12 @@ jobs:
       - name: Build Flatpak
         uses: flatpak/flatpak-github-actions/flatpak-builder@v6
         with:
-          manifest-path: dist/io.github.klaussilveira.hellforge.yml
-          bundle: hellforge.flatpak
+          manifest-path: dist/io.github.friskthefallenhuman.neoradiant.yml
+          bundle: neoradiant.flatpak
           upload-artifact: false
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: hellforge-flatpak-x86_64
-          path: hellforge.flatpak
+          name: neoradiant-flatpak-x86_64
+          path: neoradiant.flatpak

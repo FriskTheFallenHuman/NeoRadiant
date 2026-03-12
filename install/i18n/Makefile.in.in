@@ -424,10 +424,10 @@ dist2: stamp-po $(DISTFILES)
 gather-po-files:
 	for dir in *; do \
 		if test -d $${dir}; then \
-			cp $${dir}/LC_MESSAGES/darkradiant.po $${dir}.po; \
+			cp $${dir}/LC_MESSAGES/neoradiant.po $${dir}.po; \
 		fi; \
 	done
-	
+
 update-po: Makefile
 	$(MAKE) $(DOMAIN).pot-update
 	test -z "$(UPDATEPOFILES)" || $(MAKE) $(UPDATEPOFILES)

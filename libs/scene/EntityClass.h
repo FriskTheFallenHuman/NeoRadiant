@@ -117,7 +117,7 @@ public:
     using Ptr = std::shared_ptr<EntityClass>;
     using CPtr = std::shared_ptr<const EntityClass>;
 
-    // Enumeration of types DarkRadiant is capable of distinguishing when creating entities
+    // Enumeration of types NeoRadiant is capable of distinguishing when creating entities
     enum class Type
     {
         Generic,            // fixed-size, coloured boxes with and without arrow

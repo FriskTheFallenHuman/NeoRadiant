@@ -59,7 +59,7 @@ const std::string& CameraBrushCreatorTool::getDisplayName()
 Ray CameraBrushCreatorTool::calculateRayForDevicePoint(camera::ICameraView& camView, const Vector2& devicePoint) const
 {
     // Get the camera's position and orientation
-    const Vector3& camOrigin = camView.getCameraOrigin();
+    //const Vector3& camOrigin = camView.getCameraOrigin();
     const Matrix4& modelView = camView.getModelView();
     const Matrix4& projection = camView.getProjection();
 
@@ -582,7 +582,7 @@ MouseTool::Result CameraBrushCreatorTool::onMouseUp(Event& ev)
     try
     {
         // We only operate on camera view events
-        CameraMouseToolEvent& camEvent = dynamic_cast<CameraMouseToolEvent&>(ev);
+        //CameraMouseToolEvent& camEvent = dynamic_cast<CameraMouseToolEvent&>(ev);
 
         if (_brush)
         {

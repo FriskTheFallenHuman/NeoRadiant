@@ -4,7 +4,7 @@
 #include "itextstream.h"
 #include "iarchive.h"
 #include "gamelib.h"
-#include <zlib.h>
+#include "miniz/miniz.h"
 
 #include "os/fs.h"
 #include "os/path.h"

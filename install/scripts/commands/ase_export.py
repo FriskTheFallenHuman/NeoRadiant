@@ -16,27 +16,33 @@
 #
 # ***** END GPL LICENCE BLOCK *****
 
-#TODO:
+# TODO:
 
-# Set the command name so that DarkRadiant recognises this file
-__commandName__ = 'aseExport'
-__commandDisplayName__ = 'Export ASE...'
+# Set the command name so that NeoRadiant recognises this file
+__commandName__ = "aseExport"
+__commandDisplayName__ = "Export ASE..."
 
-# The actual algorithm called by DarkRadiant is contained in the execute() function
+
+# The actual algorithm called by NeoRadiant is contained in the execute() function
 def execute():
-    script = "Dark Radiant ASCII Scene Export (*.ase)"
+    script = "NeoRadiant ASCII Scene Export (*.ase)"
     author = "Richard Bartlett, some additions by greebo and tels"
     version = "0.9"
 
-    import darkradiant as dr
+    import neoradiant as dr
 
     # Check if we have a valid selection
 
     selectionInfo = GlobalSelectionSystem.getSelectionInfo()
 
     # Don't allow empty selections or selected components only
-    if selectionInfo.totalCount == 0 or selectionInfo.totalCount == selectionInfo.componentCount:
-        errMsg = GlobalDialogManager.createMessageBox('No selection', 'Nothing selected, cannot run exporter.', dr.Dialog.ERROR)
+    if (
+        selectionInfo.totalCount == 0
+        or selectionInfo.totalCount == selectionInfo.componentCount
+    ):
+        errMsg = GlobalDialogManager.createMessageBox(
+            "No selection", "Nothing selected, cannot run exporter.", dr.Dialog.ERROR
+        )
         errMsg.run()
         return
 
@@ -55,10 +61,22 @@ def execute():
 
     def skinmatrix(pointset, width, height):
         tris = []
-        for h in range(height-1):
-            for w in range(width-1):
-                tris.append([pointset[w+(h*width)], pointset[w+1+(h*width)], pointset[w+width+(h*width)]])
-                tris.append([pointset[w+1+(h*width)], pointset[w+1+width+(h*width)], pointset[w+width+(h*width)]])
+        for h in range(height - 1):
+            for w in range(width - 1):
+                tris.append(
+                    [
+                        pointset[w + (h * width)],
+                        pointset[w + 1 + (h * width)],
+                        pointset[w + width + (h * width)],
+                    ]
+                )
+                tris.append(
+                    [
+                        pointset[w + 1 + (h * width)],
+                        pointset[w + 1 + width + (h * width)],
+                        pointset[w + width + (h * width)],
+                    ]
+                )
         return tris
 
     def processBrush(brushnode):
@@ -71,18 +89,31 @@ def execute():
             shader = facenode.getShader()
 
             # Tels: skip if caulk and no caulk should be exported
-            if (shader == 'textures/common/caulk') and (int(GlobalRegistry.get('user/scripts/aseExport/exportcaulk'))) == 0:
+            if (shader == "textures/common/caulk") and (
+                int(GlobalRegistry.get("user/scripts/aseExport/exportcaulk"))
+            ) == 0:
                 continue
 
             if not shader in shaderlist:
                 shaderlist.append(shader)
             winding = facenode.getWinding()
-            tris = triangulate([x+len(verts) for x in range(len(winding))])
+            tris = triangulate([x + len(verts) for x in range(len(winding))])
             for x in tris:
                 x.append(shaderlist.index(shader))
                 faces.append(x)
             for x in reversed(winding):
-                verts.append([x.vertex.x(), x.vertex.y(), x.vertex.z(), x.texcoord.x(), x.texcoord.y() * -1, x.normal.x(), x.normal.y(), x.normal.z()])
+                verts.append(
+                    [
+                        x.vertex.x(),
+                        x.vertex.y(),
+                        x.vertex.z(),
+                        x.texcoord.x(),
+                        x.texcoord.y() * -1,
+                        x.normal.x(),
+                        x.normal.y(),
+                        x.normal.z(),
+                    ]
+                )
 
         geomlist.append([verts, faces])
         return
@@ -94,14 +125,28 @@ def execute():
         shader = patchnode.getShader()
 
         # Tels: skip if caulk and no caulk should be exported
-        if shader == 'textures/common/caulk' and int(GlobalRegistry.get('user/scripts/aseExport/exportcaulk')) == 0:
+        if (
+            shader == "textures/common/caulk"
+            and int(GlobalRegistry.get("user/scripts/aseExport/exportcaulk")) == 0
+        ):
             return
 
         if not shader in shaderlist:
             shaderlist.append(shader)
         mesh = patchnode.getTesselatedPatchMesh()
         for x in mesh.vertices:
-            verts.append([x.vertex.x(), x.vertex.y(), x.vertex.z(), x.texcoord.x(), x.texcoord.y() * -1, x.normal.x(), x.normal.y(), x.normal.z()])
+            verts.append(
+                [
+                    x.vertex.x(),
+                    x.vertex.y(),
+                    x.vertex.z(),
+                    x.texcoord.x(),
+                    x.texcoord.y() * -1,
+                    x.normal.x(),
+                    x.normal.y(),
+                    x.normal.z(),
+                ]
+            )
         tris = skinmatrix([x for x in range(len(verts))], mesh.width, mesh.height)
         for x in tris:
             x.append(shaderlist.index(shader))
@@ -142,42 +187,73 @@ def execute():
                 nodewalker = nodeVisitor()
                 scenenode.traverse(nodewalker)
             else:
-                print('WARNING: unsupported node type selected. Skipping: ' + scenenode.getNodeType())
+                print(
+                    "WARNING: unsupported node type selected. Skipping: "
+                    + scenenode.getNodeType()
+                )
 
     # Dialog
-    dialog = GlobalDialogManager.createDialog(script + 'v' + version)
+    dialog = GlobalDialogManager.createDialog(script + "v" + version)
 
     # Add an entry box and remember the handle
     fileHandle = dialog.addEntryBox("Filename:")
-    dialog.setElementValue(fileHandle, GlobalRegistry.get('user/scripts/aseExport/recentFilename'))
+    dialog.setElementValue(
+        fileHandle, GlobalRegistry.get("user/scripts/aseExport/recentFilename")
+    )
 
     # Add an entry box and remember the handle
     pathHandle = dialog.addPathEntry("Save path:", True)
-    dialog.setElementValue(pathHandle, GlobalRegistry.get('user/scripts/aseExport/recentPath'))
+    dialog.setElementValue(
+        pathHandle, GlobalRegistry.get("user/scripts/aseExport/recentPath")
+    )
 
     # Add a checkbox
     centerObjectsHandle = dialog.addCheckbox("Center objects at 0,0,0 origin")
-    dialog.setElementValue(centerObjectsHandle, GlobalRegistry.get('user/scripts/aseExport/centerObjects'))
+    dialog.setElementValue(
+        centerObjectsHandle, GlobalRegistry.get("user/scripts/aseExport/centerObjects")
+    )
 
     # Add another checkbox
     exportCaulkHandle = dialog.addCheckbox("Export caulked faces")
-    dialog.setElementValue(exportCaulkHandle, GlobalRegistry.get('user/scripts/aseExport/exportcaulk'))
+    dialog.setElementValue(
+        exportCaulkHandle, GlobalRegistry.get("user/scripts/aseExport/exportcaulk")
+    )
 
     if dialog.run() == dr.Dialog.OK:
-        fullpath = dialog.getElementValue(pathHandle) + '/' + dialog.getElementValue(fileHandle)
-        if not fullpath.endswith('.ase'):
-            fullpath = fullpath + '.ase'
+        fullpath = (
+            dialog.getElementValue(pathHandle)
+            + "/"
+            + dialog.getElementValue(fileHandle)
+        )
+        if not fullpath.endswith(".ase"):
+            fullpath = fullpath + ".ase"
 
         # Save the path for later use
-        GlobalRegistry.set('user/scripts/aseExport/recentFilename', dialog.getElementValue(fileHandle))
-        GlobalRegistry.set('user/scripts/aseExport/recentPath', dialog.getElementValue(pathHandle))
-        GlobalRegistry.set('user/scripts/aseExport/centerObjects', dialog.getElementValue(centerObjectsHandle))
-        GlobalRegistry.set('user/scripts/aseExport/exportcaulk', dialog.getElementValue(exportCaulkHandle))
+        GlobalRegistry.set(
+            "user/scripts/aseExport/recentFilename", dialog.getElementValue(fileHandle)
+        )
+        GlobalRegistry.set(
+            "user/scripts/aseExport/recentPath", dialog.getElementValue(pathHandle)
+        )
+        GlobalRegistry.set(
+            "user/scripts/aseExport/centerObjects",
+            dialog.getElementValue(centerObjectsHandle),
+        )
+        GlobalRegistry.set(
+            "user/scripts/aseExport/exportcaulk",
+            dialog.getElementValue(exportCaulkHandle),
+        )
 
         try:
-            file = open(fullpath, 'r')
+            file = open(fullpath, "r")
             file.close()
-            prompt = GlobalDialogManager.createMessageBox('Warning', 'The file ' + fullpath + ' already exists. Do you wish to overwrite it?', dr.Dialog.ASK)
+            prompt = GlobalDialogManager.createMessageBox(
+                "Warning",
+                "The file "
+                + fullpath
+                + " already exists. Do you wish to overwrite it?",
+                dr.Dialog.ASK,
+            )
             if prompt.run() == dr.Dialog.YES:
                 overwrite = True
             else:
@@ -186,14 +262,13 @@ def execute():
             overwrite = True
 
         if overwrite:
-
             # Tels: Only collect the data if we are going to export it
             walker = dataCollector()
             GlobalSelectionSystem.foreachSelected(walker)
 
             # greebo: Check if we should center objects at the 0,0,0 origin
             if int(dialog.getElementValue(centerObjectsHandle)) == 1:
-                #center objects at 0,0,0
+                # center objects at 0,0,0
                 xlist = []
                 ylist = []
                 zlist = []
@@ -202,9 +277,9 @@ def execute():
                         xlist.append(vert[0])
                         ylist.append(vert[1])
                         zlist.append(vert[2])
-                xcenter=(max(xlist)+min(xlist))/2
-                ycenter=(max(ylist)+min(ylist))/2
-                zcenter=(max(zlist)+min(zlist))/2
+                xcenter = (max(xlist) + min(xlist)) / 2
+                ycenter = (max(ylist) + min(ylist)) / 2
+                zcenter = (max(zlist) + min(zlist)) / 2
                 for item in geomlist:
                     for vert in item[0]:
                         vert[0] = vert[0] - xcenter
@@ -233,26 +308,35 @@ def execute():
                             vertlist.append(x[0][index])
                         newfacelist = []
                         for face in facelist:
-                            newfacelist.append([vertlist.index(x[0][face[0]]),vertlist.index(x[0][face[1]]),vertlist.index(x[0][face[2]]),face[3]])
+                            newfacelist.append(
+                                [
+                                    vertlist.index(x[0][face[0]]),
+                                    vertlist.index(x[0][face[1]]),
+                                    vertlist.index(x[0][face[2]]),
+                                    face[3],
+                                ]
+                            )
                         newgeomlist.append([vertlist, newfacelist])
-                    #del geomlist[geomlist.index(x)]
-                    #geomlist.extend(temp)
-                    #newgeomlist.append(temp)
+                    # del geomlist[geomlist.index(x)]
+                    # geomlist.extend(temp)
+                    # newgeomlist.append(temp)
                 else:
                     newgeomlist.append(x)
             geomlist = newgeomlist
 
-            scene = '''\t*SCENE_FILENAME "{0}"
+            scene = """\t*SCENE_FILENAME "{0}"
 \t*SCENE_FIRSTFRAME 0
 \t*SCENE_LASTFRAME 100
 \t*SCENE_FRAMESPEED 30
 \t*SCENE_TICKSPERFRAME 160
 \t*SCENE_BACKGROUND_STATIC 0.0000\t0.0000\t0.0000
-\t*SCENE_AMBIENT_STATIC 0.0000\t0.0000\t0.0000'''.format(GlobalMap.getMapName())
+\t*SCENE_AMBIENT_STATIC 0.0000\t0.0000\t0.0000""".format(GlobalMap.getMapName())
 
             materials = str()
             for x in shaderlist:
-                materials = materials + '''\t*MATERIAL {0} {{
+                materials = (
+                    materials
+                    + """\t*MATERIAL {0} {{
 \t\t*MATERIAL_NAME "{1}"
 \t\t*MATERIAL_CLASS "Standard"
 \t\t*MATERIAL_AMBIENT 0.5882\t0.5882\t0.5882
@@ -288,7 +372,8 @@ def execute():
 \t\t\t*BITMAP_FILTER Pyramidal
 \t\t}}
 \t}}
-'''.format(shaderlist.index(x), x, x)
+""".format(shaderlist.index(x), x, x)
+                )
 
             geomobjects = str()
 
@@ -300,31 +385,63 @@ def execute():
                 # x[1] = faces
                 vertlist = str()
                 for count, data in enumerate(x[0]):
-                    vertlist = vertlist + '''\t\t\t*MESH_VERTEX {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n'''.format(count, data[0], data[1], data[2])
+                    vertlist = (
+                        vertlist
+                        + """\t\t\t*MESH_VERTEX {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n""".format(
+                            count, data[0], data[1], data[2]
+                        )
+                    )
                 facelist = str()
                 for count, data in enumerate(x[1]):
-                    facelist = facelist + '''\t\t\t*MESH_FACE     {0}:  A:   {1} B:   {2} C:     {3} AB:       0 BC:    0 CA:    0\t *MESH_SMOOTHING 1 \t*MESH_MTLID {4}\n'''.format(count, data[0], data[1], data[2], data[3])
+                    facelist = (
+                        facelist
+                        + """\t\t\t*MESH_FACE     {0}:  A:   {1} B:   {2} C:     {3} AB:       0 BC:    0 CA:    0\t *MESH_SMOOTHING 1 \t*MESH_MTLID {4}\n""".format(
+                            count, data[0], data[1], data[2], data[3]
+                        )
+                    )
                 tvertlist = str()
                 for count, data in enumerate(x[0]):
-                    tvertlist = tvertlist + '''\t\t\t*MESH_TVERT {0}\t{1: 10.4f}\t{2: 10.4f}\t0.0000\n'''.format(count, data[3], data[4])
+                    tvertlist = (
+                        tvertlist
+                        + """\t\t\t*MESH_TVERT {0}\t{1: 10.4f}\t{2: 10.4f}\t0.0000\n""".format(
+                            count, data[3], data[4]
+                        )
+                    )
                 tfacelist = str()
                 for count, data in enumerate(x[1]):
-                    tfacelist = tfacelist + '''\t\t\t*MESH_TFACE {0}\t{1}\t{2}\t{3}\n'''.format(count, data[0], data[1], data[2])
+                    tfacelist = (
+                        tfacelist
+                        + """\t\t\t*MESH_TFACE {0}\t{1}\t{2}\t{3}\n""".format(
+                            count, data[0], data[1], data[2]
+                        )
+                    )
                 cfacelist = str()
                 for count, data in enumerate(x[1]):
-                    cfacelist = cfacelist + '''\t\t\t*MESH_CFACE {0}\t0\t0\t0\n'''.format(count)
+                    cfacelist = (
+                        cfacelist + """\t\t\t*MESH_CFACE {0}\t0\t0\t0\n""".format(count)
+                    )
 
                 normals = str()
                 for count, data in enumerate(x[1]):
-                    normals += '''\t\t\t*MESH_FACENORMAL {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n'''.format(count, x[0][data[0]][5], x[0][data[0]][6], x[0][data[0]][7]) # greebo: use first vertex normal as face normal
-                    normals += '''\t\t\t\t*MESH_VERTEXNORMAL {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n'''.format(data[0], x[0][data[0]][5], x[0][data[0]][6], x[0][data[0]][7])
-                    normals += '''\t\t\t\t*MESH_VERTEXNORMAL {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n'''.format(data[1], x[0][data[1]][5], x[0][data[1]][6], x[0][data[1]][7])
-                    normals += '''\t\t\t\t*MESH_VERTEXNORMAL {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n'''.format(data[2], x[0][data[2]][5], x[0][data[2]][6], x[0][data[2]][7])
+                    normals += """\t\t\t*MESH_FACENORMAL {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n""".format(
+                        count, x[0][data[0]][5], x[0][data[0]][6], x[0][data[0]][7]
+                    )  # greebo: use first vertex normal as face normal
+                    normals += """\t\t\t\t*MESH_VERTEXNORMAL {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n""".format(
+                        data[0], x[0][data[0]][5], x[0][data[0]][6], x[0][data[0]][7]
+                    )
+                    normals += """\t\t\t\t*MESH_VERTEXNORMAL {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n""".format(
+                        data[1], x[0][data[1]][5], x[0][data[1]][6], x[0][data[1]][7]
+                    )
+                    normals += """\t\t\t\t*MESH_VERTEXNORMAL {0}\t{1: 10.4f}\t{2: 10.4f}\t{3: 10.4f}\n""".format(
+                        data[2], x[0][data[2]][5], x[0][data[2]][6], x[0][data[2]][7]
+                    )
 
                 if len(x[1]) == 0:
                     continue
 
-                geomobjects = geomobjects + '''*GEOMOBJECT {{
+                geomobjects = (
+                    geomobjects
+                    + """*GEOMOBJECT {{
 \t*NODE_NAME "{0}"
 \t*NODE_TM {{
 \t\t*NODE_NAME "{0}"
@@ -370,21 +487,24 @@ def execute():
 \t*PROP_CASTSHADOW 1
 \t*PROP_RECVSHADOW 1
 \t*MATERIAL_REF {12}
-}}\n'''.format('mesh' + str(geomlist.index(x)), \
-        len(x[0]), \
-        len(x[1]), \
-        vertlist, \
-        facelist, \
-        len(x[0]), \
-        tvertlist, \
-        len(x[1]), \
-        tfacelist, \
-        len(x[1]), \
-        cfacelist, \
-        normals, \
-        x[1][0][3]) # material reference from first face
+}}\n""".format(
+                        "mesh" + str(geomlist.index(x)),
+                        len(x[0]),
+                        len(x[1]),
+                        vertlist,
+                        facelist,
+                        len(x[0]),
+                        tvertlist,
+                        len(x[1]),
+                        tfacelist,
+                        len(x[1]),
+                        cfacelist,
+                        normals,
+                        x[1][0][3],
+                    )
+                )  # material reference from first face
 
-                data = '''*3DSMAX_ASCIIEXPORT\t200
+                data = """*3DSMAX_ASCIIEXPORT\t200
 *COMMENT "{0} v{1}"
 *SCENE {{
 {2}
@@ -392,14 +512,14 @@ def execute():
 *MATERIAL_LIST {{
 \t*MATERIAL_COUNT {3}
 {4}}}
-{5}'''.format(script, version, scene, len(shaderlist), materials, geomobjects)
+{5}""".format(script, version, scene, len(shaderlist), materials, geomobjects)
 
                 # Write the compiled data to the output file
-                file = open(fullpath, 'w')
+                file = open(fullpath, "w")
                 file.write(data)
                 file.close()
 
-# __executeCommand__ evaluates to true after DarkRadiant has successfully initialised
+
+# __executeCommand__ evaluates to true after NeoRadiant has successfully initialised
 if __executeCommand__:
     execute()
-

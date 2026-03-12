@@ -5,7 +5,7 @@
 #include "math/Vector2.h"
 
 /**
- * Base class of the interactive views used in DarkRadiant:
+ * Base class of the interactive views used in NeoRadiant:
  * OrthoView (XYView), Camera (3D View), Texture Tool (UV editor)
  */
 class IInteractiveView

@@ -40,7 +40,7 @@ void AseExporter::exportToStream(std::ostream& stream)
 {
 	// Header / scene block
 	stream << "*3DSMAX_ASCIIEXPORT	200" << std::endl;
-	stream << "*COMMENT \"DarkRadiant ASCII Scene Export(*.ase)\"" << std::endl;
+	stream << "*COMMENT \"NeoRadiant ASCII Scene Export(*.ase)\"" << std::endl;
 	stream << "*SCENE {" << std::endl;
 	stream << "\t*SCENE_FILENAME \"" << GlobalMapModule().getMapName() << "\"" << std::endl;
 	stream << "\t*SCENE_FIRSTFRAME 0" << std::endl;

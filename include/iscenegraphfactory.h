@@ -7,10 +7,10 @@ namespace scene
 
 /**
  * greebo: The scenegraph factory can be used to generate
- * new instances of DarkRadiant's main scene manager.
+ * new instances of NeoRadiant's main scene manager.
  *
  * A Scenegraph consists of [0..N] scene::INodes, forming
- * an acyclic graph. There is one main scenegraph in DarkRadiant
+ * an acyclic graph. There is one main scenegraph in NeoRadiant
  * accessible through GlobalSceneGraph(), but it's possible to have
  * more than this one, used for preview scenes for example.
  */

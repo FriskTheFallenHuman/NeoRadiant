@@ -10,7 +10,7 @@ namespace ui
 {
 
 /**
- * greebo: The AboutDialog displays information about DarkRadiant and
+ * greebo: The AboutDialog displays information about NeoRadiant and
  * the subsystems OpenGL and GTK+.
  */
 class AboutDialog :

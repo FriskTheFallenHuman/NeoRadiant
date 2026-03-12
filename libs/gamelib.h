@@ -93,7 +93,7 @@ inline std::vector<std::string> getLightTexturePrefixes()
 }
 
 /**
- * Returns the path where DarkRadiant is able to write custom game resources (like decls) to.
+ * Returns the path where NeoRadiant is able to write custom game resources (like decls) to.
  * This defaults to the mod path and falls back to the user engine path if not found.
  * Does not create any directories.
  */

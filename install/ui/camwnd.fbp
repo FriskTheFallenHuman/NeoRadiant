@@ -127,7 +127,7 @@
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:wireframeMode16.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:wireframeMode16.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_RADIO</property>
@@ -138,7 +138,7 @@
                                     <property name="tooltip">Render in wireframe mode</property>
                                 </object>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:solidMode16.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:solidMode16.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_RADIO</property>
@@ -149,7 +149,7 @@
                                     <property name="tooltip">Render in flat shaded mode</property>
                                 </object>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:textureMode16.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:textureMode16.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_RADIO</property>
@@ -160,7 +160,7 @@
                                     <property name="tooltip">Render in fullbright textured mode</property>
                                 </object>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:lightingMode.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:lightingMode.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_RADIO</property>
@@ -174,7 +174,7 @@
                                     <property name="permission">protected</property>
                                 </object>
                                 <object class="tool" expanded="1">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:lightingModeWithShadows.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:lightingModeWithShadows.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_CHECK</property>
@@ -188,7 +188,7 @@
                                     <property name="permission">protected</property>
                                 </object>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:media-playback-start-ltr.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:media-playback-start-ltr.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_NORMAL</property>
@@ -199,7 +199,7 @@
                                     <property name="tooltip">Start Render Time</property>
                                 </object>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:media-playback-stop.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:media-playback-stop.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_NORMAL</property>
@@ -213,7 +213,7 @@
                                     <property name="permission">protected</property>
                                 </object>
                                 <object class="tool" expanded="1">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:view_cubicclipping.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:view_cubicclipping.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_CHECK</property>
@@ -224,7 +224,7 @@
                                     <property name="tooltip">Enable or disable far clip plane</property>
                                 </object>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:farClipIn.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:farClipIn.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_NORMAL</property>
@@ -235,7 +235,7 @@
                                     <property name="tooltip">Clip plane in</property>
                                 </object>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:farClipOut.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:farClipOut.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_NORMAL</property>
@@ -249,7 +249,7 @@
                                     <property name="permission">protected</property>
                                 </object>
                                 <object class="tool" expanded="1">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:grid_toggle.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:grid_toggle.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_CHECK</property>

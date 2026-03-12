@@ -13,18 +13,18 @@ namespace settings
 
 /**
  * Settings file manager, dealing with saving and loading settings files
- * to the user's settings path. DarkRadiant 2.15+ or higher stores its settings
+ * to the user's settings path. NeoRadiant 2.15+ or higher stores its settings
  * in folders specific to their major and minor versions:
  *
- * $HOME/.config/darkradiant/2.15/
- * $HOME/.config/darkradiant/3.0/
+ * $HOME/.config/neoradiant/2.15/
+ * $HOME/.config/neoradiant/3.0/
  *
  * When loading settings files, this manager class will search the config folders
  * of the current version and all previous versions, making it possible to use
  * or upgrade settings saved by older versions. The most recent versions will
  * take precedence over older files.
  * It will ignore any files stored in higher or future version folders.
- * For backwards compatibility with DarkRadiant versions that have not been
+ * For backwards compatibility with NeoRadiant versions that have not been
  * using the version-specific settings folders, files in the base settings path
  * will be considered too, with the lowest priority.
  *
@@ -44,7 +44,7 @@ private:
     std::set<MajorMinorVersion> _existingVersionFolders;
 
 public:
-    // Construct a settings manager for this version of DarkRadiant
+    // Construct a settings manager for this version of NeoRadiant
     // Will create the settings path for this version if it's not existing yet.
     SettingsManager(const IApplicationContext& context) :
         SettingsManager(context, RADIANT_VERSION)
@@ -95,7 +95,7 @@ public:
      * will be picked, whereas versions saved by "future" application versions will be ignored.
      *
      * For compatibility reasons, files saved in the root settings folder will be
-     * considered too (with the lowest priority), as DarkRadiant versions prior to 2.15
+     * considered too (with the lowest priority), as NeoRadiant versions prior to 2.15
      * have not been creating version settings folders.
      *
      * Will return an empty string if no file was matching.

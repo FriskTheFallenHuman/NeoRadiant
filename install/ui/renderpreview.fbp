@@ -124,7 +124,7 @@
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:media-playback-start-ltr.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:media-playback-start-ltr.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_NORMAL</property>
@@ -135,7 +135,7 @@
                                     <property name="tooltip">Start Render Time</property>
                                 </object>
                                 <object class="tool" expanded="1">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:media-playback-pause.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:media-playback-pause.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_NORMAL</property>
@@ -146,7 +146,7 @@
                                     <property name="tooltip">Pause Render Time</property>
                                 </object>
                                 <object class="tool" expanded="0">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:media-playback-stop.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:media-playback-stop.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_NORMAL</property>
@@ -363,7 +363,7 @@
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
                                 <object class="tool" expanded="1">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:textureMode16.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:textureMode16.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_RADIO</property>
@@ -374,7 +374,7 @@
                                     <property name="tooltip">Switch to Textured Mode</property>
                                 </object>
                                 <object class="tool" expanded="1">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:lightingMode.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:lightingMode.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_RADIO</property>
@@ -447,7 +447,7 @@
                                 <property name="window_name"></property>
                                 <property name="window_style"></property>
                                 <object class="tool" expanded="1">
-                                    <property name="bitmap">Load From Art Provider; darkradiant:grid_toggle.png; wxART_TOOLBAR</property>
+                                    <property name="bitmap">Load From Art Provider; neoradiant:grid_toggle.png; wxART_TOOLBAR</property>
                                     <property name="context_menu">0</property>
                                     <property name="id">wxID_ANY</property>
                                     <property name="kind">wxITEM_CHECK</property>

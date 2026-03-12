@@ -33,7 +33,7 @@ namespace ui
 
 /**
  * Module responsible of registering and intialising the various
- * UI classes in DarkRadiant, e.g. the LayerSystem.
+ * UI classes in NeoRadiant, e.g. the LayerSystem.
  *
  * Currently many UI classes are spread and initialised all across
  * the main binary, so there's still work left to do.

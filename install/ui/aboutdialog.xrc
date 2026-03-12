@@ -15,7 +15,7 @@
 						<flag>wxALL</flag>
 						<border>6</border>
 						<object class="wxStaticBitmap" name="m_bitmap1">
-							<bitmap stock_id="darkradiant:logo.png" stock_client="">undefined.png</bitmap>
+							<bitmap stock_id="neoradiant:logo.png" stock_client="">undefined.png</bitmap>
 						</object>
 					</object>
 					<object class="sizeritem">
@@ -29,7 +29,7 @@
 								<flag>wxBOTTOM</flag>
 								<border>6</border>
 								<object class="wxStaticText" name="AboutDialogAppTitle">
-									<label>HellForge x.y.z</label>
+									<label>NeoRadiant x.y.z</label>
 									<wrap>-1</wrap>
 								</object>
 							</object>
@@ -47,7 +47,7 @@
 								<flag>wxTOP</flag>
 								<border>6</border>
 								<object class="wxStaticText" name="m_staticText5">
-									<label>HellForge is a fork of DarkRadiant.\nhttps://www.darkradiant.net/\n\nThis product contains software technology\nfrom id Software, Inc. (&apos;id Technology&apos;).\nid Technology 2000 id Software,Inc.\nOriginally based on the GPL version\nof GtkRadiant.</label>
+									<label>NeoRadiant is a fork of DarkRadiant.\nhttps://github.com/FriskTheFallenHuman/NeoRadiant\n\nThis product contains software technology\nfrom id Software, Inc. (&apos;id Technology&apos;).\nid Technology 2000 id Software,Inc.\nOriginally based on the GPL version\nof GtkRadiant.</label>
 									<wrap>-1</wrap>
 								</object>
 							</object>

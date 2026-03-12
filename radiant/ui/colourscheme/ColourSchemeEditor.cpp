@@ -103,10 +103,10 @@ std::string ColourSchemeEditor::getThemeFilePath()
 {
     const char* xdg = std::getenv("XDG_CONFIG_HOME");
     if (xdg && *xdg)
-        return std::string(xdg) + "/hellforge/theme";
+        return std::string(xdg) + "/neoradiant/theme";
 
     const char* home = std::getenv("HOME");
-    return std::string(home ? home : "") + "/.config/hellforge/theme";
+    return std::string(home ? home : "") + "/.config/neoradiant/theme";
 }
 
 std::string ColourSchemeEditor::readThemeFile()

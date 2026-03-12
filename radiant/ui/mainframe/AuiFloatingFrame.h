@@ -14,7 +14,7 @@ class PropertyNotebook;
 
 /**
  * Specialised frame implementation used for floating panels in
- * DarkRadiant's mainframe. It detects being dragged over the property notebook
+ * NeoRadiant's mainframe. It detects being dragged over the property notebook
  * and docks as a new tab when dropped there.
  */
 class AuiFloatingFrame :

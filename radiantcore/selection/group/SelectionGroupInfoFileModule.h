@@ -9,7 +9,7 @@ namespace selection
 
 /**
  * Info file module importing/exporting the selection group info
- * to the .darkradiant file of persistence between mapping sessions.
+ * to the .project file of persistence between mapping sessions.
  */
 class SelectionGroupInfoFileModule :
 	public map::IMapInfoFileModule
@@ -26,7 +26,7 @@ private:
 
 	// Parsed selection group information
 	std::vector<SelectionGroupImportInfo> _groupInfo;
-	
+
 	// Parsed node mapping
 	typedef std::map<map::NodeIndexPair, IGroupSelectable::GroupIds> NodeMapping;
 	NodeMapping _nodeMapping;

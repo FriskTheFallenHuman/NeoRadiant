@@ -54,7 +54,7 @@ inline bool Node_isWorldspawn(const scene::INodePtr& node)
 }
 
 /**
- * greebo: Changing the entity classname is a non-trivial operation in DarkRadiant, as
+ * greebo: Changing the entity classname is a non-trivial operation in NeoRadiant, as
  * the actual c++ class of an entity is depending on it. Changing the classname
  * therefore means 1) to recreate a new entity 2) to copy all spawnargs over from the old one
  * and 3) re-parent any child nodes to the new entity.

@@ -7,7 +7,7 @@ namespace map
 
 /**
 * Info File Module to persist the total map editing time to the
-* .darkradiant map info file.
+* .project map info file.
 */
 class EditingStopwatchInfoFileModule :
 	public IMapInfoFileModule
@@ -22,7 +22,7 @@ public:
 	void onSaveEntity(const scene::INodePtr & node, std::size_t entityNum) override;
 	void writeBlocks(std::ostream & stream) override;
 	void onInfoFileSaveFinished() override;
-	
+
 	void onInfoFileLoadStart() override;
 	bool canParseBlock(const std::string & blockName) override;
 	void parseBlock(const std::string & blockName, parser::DefTokeniser & tok) override;

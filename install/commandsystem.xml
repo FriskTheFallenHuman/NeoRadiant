@@ -1,6 +1,6 @@
-<?xml version="1.0"?>
+<?xml version="1.0" ?>
 <commandsystem>
-	<!-- These are the default statements used by vanilla DarkRadiant, don't remove these -->
+	<!-- These are the default statements used by vanilla NeoRadiant, don't remove these -->
 	<binds>
 		<!-- Brush cuboid commands -->
 		<bind name="Brush3Sided" value="BrushMakeSided 3" readonly="1" />
@@ -39,9 +39,9 @@
 		<bind name="TexAlignBottom" value="TexAlign bottom" readonly="1" />
 		<bind name="TexAlignLeft" value="TexAlign left" readonly="1" />
 		<bind name="TexAlignRight" value="TexAlign right" readonly="1" />
-    <!-- Transformation -->
-    <bind name="MoveSelectionUP" value="MoveSelectionVertically up" readonly="1" />
-    <bind name="MoveSelectionDOWN" value="MoveSelectionVertically down" readonly="1" />
+	    <!-- Transformation -->
+	    <bind name="MoveSelectionUP" value="MoveSelectionVertically up" readonly="1" />
+	    <bind name="MoveSelectionDOWN" value="MoveSelectionVertically down" readonly="1" />
 		<!-- Layer commands -->
 		<bind name="AddSelectionToLayer0" value="AddSelectionToLayer 0" readonly="1" />
 		<bind name="AddSelectionToLayer1" value="AddSelectionToLayer 1" readonly="1" />

@@ -1,16 +1,17 @@
 #pragma once
 
 #include "idatastream.h"
+#include "miniz/miniz.h"
 #include <memory>
 
 // Forward decl.
-struct z_stream_s;
-typedef z_stream_s z_stream;
+//struct z_stream_s;
+//typedef z_stream_s z_stream;
 
 namespace archive
 {
 
-/// \brief A wrapper around an InputStream of data compressed with the zlib deflate algorithm.
+/// \brief A wrapper around an InputStream of data compressed with the miniz deflate algorithm.
 ///
 /// - Uses z_stream to decompress the data stream on the fly.
 /// - Uses a buffer to reduce the number of times the wrapped stream must be read.

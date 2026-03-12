@@ -1,5 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8" ?>
+<Project
+    DefaultTargets="Build"
+    xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
+>
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -26,19 +29,31 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+  <PropertyGroup
+        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+        Label="Configuration"
+    >
     <ConfigurationType>Utility</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+  <PropertyGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+        Label="Configuration"
+    >
     <ConfigurationType>Utility</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+  <PropertyGroup
+        Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
+        Label="Configuration"
+    >
     <ConfigurationType>Utility</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+  <PropertyGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+        Label="Configuration"
+    >
     <ConfigurationType>Utility</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
@@ -47,44 +62,79 @@
   </ImportGroup>
   <ImportGroup Label="Shared">
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\msvc\properties\DarkRadiant Base.props" />
+  <ImportGroup
+        Label="PropertySheets"
+        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+    >
+    <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform"
+        />
+    <Import Project="..\msvc\properties\NeoRadiant Base.props" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\msvc\properties\DarkRadiant Base.props" />
+  <ImportGroup
+        Label="PropertySheets"
+        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+    >
+    <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform"
+        />
+    <Import Project="..\msvc\properties\NeoRadiant Base.props" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\msvc\properties\DarkRadiant Base.props" />
+  <ImportGroup
+        Label="PropertySheets"
+        Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
+    >
+    <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform"
+        />
+    <Import Project="..\msvc\properties\NeoRadiant Base.props" />
   </ImportGroup>
-  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
-    <Import Project="..\msvc\properties\DarkRadiant Base.props" />
+  <ImportGroup
+        Label="PropertySheets"
+        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+    >
+    <Import
+            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
+            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
+            Label="LocalAppDataPlatform"
+        />
+    <Import Project="..\msvc\properties\NeoRadiant Base.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(DarkRadiantRoot)build\output\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir
+        >$(NeoRadiantRoot)build\output\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(DarkRadiantRoot)build\output\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir
+        >$(NeoRadiantRoot)build\output\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <OutDir>$(DarkRadiantRoot)build\output\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir
+        >$(NeoRadiantRoot)build\output\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <OutDir>$(DarkRadiantRoot)build\output\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir
+        >$(NeoRadiantRoot)build\output\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
   </PropertyGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+  <ItemDefinitionGroup
+        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
+    >
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions
+            >WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -92,17 +142,22 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(DarkRadiantRoot)\tools\scripts\download_windeps.ps1"</Command>
-      <Message>Ensure Windows Dependencies are downloaded and extracted</Message>
+      <Command
+            >powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(NeoRadiantRoot)\tools\scripts\download_windeps.ps1"</Command>
+      <Message
+            >Ensure Windows Dependencies are downloaded and extracted</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+  <ItemDefinitionGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
+    >
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions
+            >WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -112,15 +167,18 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(DarkRadiantRoot)\tools\scripts\download_windeps.ps1"</Command>
-      <Message>Ensure Windows Dependencies are downloaded and extracted</Message>
+      <Command
+            >powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(NeoRadiantRoot)\tools\scripts\download_windeps.ps1"</Command>
+      <Message
+            >Ensure Windows Dependencies are downloaded and extracted</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions
+            >_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -128,17 +186,22 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(DarkRadiantRoot)\tools\scripts\download_windeps.ps1"</Command>
-      <Message>Ensure Windows Dependencies are downloaded and extracted</Message>
+      <Command
+            >powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(NeoRadiantRoot)\tools\scripts\download_windeps.ps1"</Command>
+      <Message
+            >Ensure Windows Dependencies are downloaded and extracted</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+  <ItemDefinitionGroup
+        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
+    >
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
-      <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions
+            >NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
     </ClCompile>
     <Link>
@@ -148,8 +211,10 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
     <PreBuildEvent>
-      <Command>powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(DarkRadiantRoot)\tools\scripts\download_windeps.ps1"</Command>
-      <Message>Ensure Windows Dependencies are downloaded and extracted</Message>
+      <Command
+            >powershell -ExecutionPolicy Bypass -NoProfile -NonInteractive -File "$(NeoRadiantRoot)\tools\scripts\download_windeps.ps1"</Command>
+      <Message
+            >Ensure Windows Dependencies are downloaded and extracted</Message>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>

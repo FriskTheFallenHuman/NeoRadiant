@@ -10,7 +10,7 @@ namespace ui
 namespace menu
 {
 
-/** 
+/**
  * greebo: The possible menu item types.
  */
 enum class ItemType
@@ -23,7 +23,7 @@ enum class ItemType
 	Separator,
 };
 
-// Interface of the menu items used by DarkRadiant's MenuManager
+// Interface of the menu items used by NeoRadiant's MenuManager
 class IMenuElement
 {
 public:

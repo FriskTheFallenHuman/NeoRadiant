@@ -53,7 +53,7 @@ public:
 	virtual wxFrame* getWxTopLevelWindow() = 0;
 
 	/**
-	 * Returns TRUE if DarkRadiant is currently "in focus", i.e. the app in the foreground.
+	 * Returns TRUE if NeoRadiant is currently "in focus", i.e. the app in the foreground.
 	 */
 	virtual bool isActiveApp() = 0;
 

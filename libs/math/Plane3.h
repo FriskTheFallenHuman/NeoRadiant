@@ -15,7 +15,7 @@
  *
  * Note about the stored values: in contrast to the Doom 3 Engine sources where the idPlane object
  * stores 4 floating point values a, b, c, d as in the plane equation a*x + b*y + c*z + d = 0,
- * DarkRadiant's Plane3 class stores the normal vector and the actual distance value, which is -d.
+ * NeoRadiant's Plane3 class stores the normal vector and the actual distance value, which is -d.
  * The Plane3::dist() method returns the same value as idPlane3::Dist(), just beware when using the dist
  * member variable in any of Plane3 backends.
  */

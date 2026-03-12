@@ -52,7 +52,7 @@ void XMLRegistry::saveToDisk()
     settings::SettingsManager manager(module::GlobalModuleRegistry().getApplicationContext());
     auto settingsPath = manager.getCurrentVersionSettingsFolder();
 
-    // Replace the version tag and set it to the current DarkRadiant version
+    // Replace the version tag and set it to the current NeoRadiant version
     copiedTree.deleteXPath("user//version");
     copiedTree.set("user/version", RADIANT_VERSION);
 
@@ -76,7 +76,7 @@ void XMLRegistry::saveToDisk()
     // Remove legacy <interface> node
     copiedTree.deleteXPath("user/ui/interface");
 
-    // Save the remaining /darkradiant/user tree to user.xml so that the current settings are preserved
+    // Save the remaining /neoradiant/user tree to user.xml so that the current settings are preserved
     copiedTree.exportToFile("user", settingsPath + "user.xml");
 
     _changesSinceLastSave = 0;

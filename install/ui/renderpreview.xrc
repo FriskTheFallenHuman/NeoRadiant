@@ -25,19 +25,19 @@
 								<label>startTimeButton</label>
 								<tooltip>Start Render Time</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:media-playback-start-ltr.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:media-playback-start-ltr.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 							</object>
 							<object class="tool" name="pauseTimeButton">
 								<label>pauseTimeButton</label>
 								<tooltip>Pause Render Time</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:media-playback-pause.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:media-playback-pause.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 							</object>
 							<object class="tool" name="stopTimeButton">
 								<label>stopTimeButton</label>
 								<tooltip>Stop Render Time</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:media-playback-stop.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:media-playback-stop.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 							</object>
 							<object class="separator" />
 							<object class="tool" name="prevButton">
@@ -88,14 +88,14 @@
 								<label>texturedModeButton</label>
 								<tooltip>Switch to Textured Mode</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:textureMode16.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:textureMode16.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<radio>1</radio>
 							</object>
 							<object class="tool" name="lightingModeButton">
 								<label>lightingModeButton</label>
 								<tooltip>Switch to Lighting Mode</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:lightingMode.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:lightingMode.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<radio>1</radio>
 							</object>
 						</object>
@@ -114,7 +114,7 @@
 								<label>gridButton</label>
 								<tooltip>Toggle a 16 unit wide Grid</tooltip>
 								<longhelp></longhelp>
-								<bitmap stock_id="darkradiant:grid_toggle.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
+								<bitmap stock_id="neoradiant:grid_toggle.png" stock_client="wxART_TOOLBAR">undefined.png</bitmap>
 								<toggle>1</toggle>
 							</object>
 						</object>

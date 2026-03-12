@@ -36,9 +36,9 @@ brushDef3
 }
 */
 
-// greebo: switch off optimisations for this section - the symptom is that brushes don't get a 
+// greebo: switch off optimisations for this section - the symptom is that brushes don't get a
 // valid d value assigned after the first call to addFace() - the callback triggers a series
-// of calls in the DarkRadiant main module (up to the Texture Tool), and after return the plane
+// of calls in the NeoRadiant main module (up to the Texture Tool), and after return the plane
 // gets wrong values assigned
 #if _MSC_VER >= 1600
 #pragma optimize( "", off )

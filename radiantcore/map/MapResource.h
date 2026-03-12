@@ -21,12 +21,12 @@ private:
     scene::IMapRootNodePtr _mapRoot;
 
     // Contains the absolute base path (e.g. c:/games/darkmod/) if the resourcePath
-    // points to a directory which is part of the VFS search paths. 
+    // points to a directory which is part of the VFS search paths.
     // Will be an empty string if the resource is pointing to a path outside the VFS.
 	std::string _path;
 
     // Either contains the path relative to the base path (e.g. "maps/arkham.map")
-    // or the full absolute path to the map (in case the resource path 
+    // or the full absolute path to the map (in case the resource path
     // is pointing to a path outside the VFS)
 	std::string _name;
 
@@ -71,7 +71,7 @@ protected:
     // May return an empty reference, may throw OperationException on failure
     virtual stream::MapResourceStream::Ptr openMapfileStream();
 
-    // Implementation-specific method to open the info file stream (.darkradiant) file
+    // Implementation-specific method to open the info file stream (.project) file
     // May return an empty reference, may throw OperationException on failure
     virtual stream::MapResourceStream::Ptr openInfofileStream();
 
@@ -92,7 +92,7 @@ private:
 
 	RootNodePtr loadMapNode();
 
-	// Opens a stream for the given path, which might be VFS path or an absolute one. 
+	// Opens a stream for the given path, which might be VFS path or an absolute one.
     // Throws IMapResource::OperationException on stream open failure.
 	stream::MapResourceStream::Ptr openFileStream(const std::string& path);
 

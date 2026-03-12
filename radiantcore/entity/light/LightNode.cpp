@@ -1042,7 +1042,7 @@ void LightNode::projectionChanged()
 
 /**
 * greebo: In TDM / Doom3, the idPlane object stores the plane's a,b,c,d
-* coefficients, in DarkRadiant, the fourth number in Plane3 is dist, which is -d
+* coefficients, in NeoRadiant, the fourth number in Plane3 is dist, which is -d
 * Previously, this routine just hard-cast the Plane3 object to a Vector4
 * which is wrong due to the fourth number being negated.
 */
@@ -1159,7 +1159,7 @@ void LightNode::updateProjection() const
     // Normalise all frustum planes
     _frustum.normalisePlanes();
 
-	// TDM uses an array of 6 idPlanes, these relate to DarkRadiant like this:
+	// TDM uses an array of 6 idPlanes, these relate to NeoRadiant like this:
 	// 0 = left, 1 = top, 2 = right, 3 = bottom, 4 = front, 5 = back
 	//rMessage() << "  Frustum Plane " << 0 << ": " << _frustum.left.normal() << ", dist: " << _frustum.left.dist() << std::endl;
 	//rMessage() << "  Frustum Plane " << 1 << ": " << _frustum.top.normal() << ", dist: " << _frustum.top.dist() << std::endl;

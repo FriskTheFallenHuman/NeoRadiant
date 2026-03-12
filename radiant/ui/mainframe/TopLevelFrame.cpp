@@ -17,7 +17,7 @@ namespace ui
 {
 
 TopLevelFrame::TopLevelFrame() :
-	wxFrame(nullptr, wxID_ANY, wxT("HellForge")),
+	wxFrame(nullptr, wxID_ANY, wxT("NeoRadiant")),
 	_topLevelContainer(nullptr),
 	_mainContainer(nullptr)
 {
@@ -45,7 +45,7 @@ TopLevelFrame::TopLevelFrame() :
         versionToolbar->Realize();
 
         auto sizer = new wxBoxSizer(wxHORIZONTAL);
-        
+
         sizer->Add(_toolbars[IMainFrame::Toolbar::TOP].get(), 1);
         sizer->Add(versionToolbar, 0, wxEXPAND);
 
@@ -82,7 +82,7 @@ TopLevelFrame::TopLevelFrame() :
 
 	// Set the window icon
 	wxIcon appIcon;
-	appIcon.CopyFromBitmap(wxutil::GetLocalBitmap("darkradiant_icon_64x64.png"));
+	appIcon.CopyFromBitmap(wxutil::GetLocalBitmap("neoradiant_icon_64x64.png"));
 	SetIcon(appIcon);
 
     // Redirect scroll events to the window below the cursor

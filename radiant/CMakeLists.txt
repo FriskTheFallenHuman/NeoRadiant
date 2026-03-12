@@ -1,4 +1,4 @@
-add_executable(hellforge
+add_executable(NeoRadiant
                camera/CameraSettings.cpp
                camera/CameraHintOverlay.cpp
                camera/CamWnd.cpp
@@ -191,16 +191,16 @@ add_executable(hellforge
                xyview/tools/MeasurementTool.cpp
                xyview/tools/PolygonTool.cpp
                xyview/OrthoView.cpp)
-target_compile_options(hellforge PRIVATE ${FREETYPE_CFLAGS} ${GLIB_CFLAGS} ${GTK3_CFLAGS})
-target_include_directories(hellforge PRIVATE .)
-target_link_libraries(hellforge PRIVATE
+target_compile_options(NeoRadiant PRIVATE ${FREETYPE_CFLAGS} ${GLIB_CFLAGS} ${GTK3_CFLAGS})
+target_include_directories(NeoRadiant PRIVATE .)
+target_link_libraries(NeoRadiant PRIVATE
                       math xmlutil scene wxutil module
                       ${GLIB_LIBRARIES}
                       ${GTK3_LIBRARIES})
 
 # Enable precompiled header for radiant
 if (${CMAKE_VERSION} VERSION_GREATER_EQUAL "3.16.0")
-target_precompile_headers(hellforge PRIVATE
+    target_precompile_headers(NeoRadiant PRIVATE
                           "$<$<COMPILE_LANGUAGE:CXX>:precompiled.h>")
 endif()
 
@@ -208,7 +208,7 @@ endif()
 # This copies more than needed but it doesn't matter: this is just for running a
 # developer build out of ${CMAKE_BINARY_DIR}, not for packaging.
 add_custom_command(
-    TARGET hellforge POST_BUILD
+    TARGET NeoRadiant POST_BUILD
     COMMAND
         ${CMAKE_COMMAND} -E copy_directory
         "${CMAKE_SOURCE_DIR}/install"

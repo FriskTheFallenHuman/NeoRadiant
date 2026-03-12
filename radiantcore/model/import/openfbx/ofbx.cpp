@@ -1,5 +1,4 @@
 #include "ofbx.h"
-#include <zlib.h>
 #include <cassert>
 #include <math.h>
 #include <ctype.h>

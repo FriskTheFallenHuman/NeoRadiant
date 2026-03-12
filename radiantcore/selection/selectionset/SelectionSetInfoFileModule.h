@@ -7,8 +7,8 @@ namespace selection
 {
 
 /**
- * Info file module importing/exporting the selection set mapping 
- * to the .darkradiant file of persistence between mapping sessions.
+ * Info file module importing/exporting the selection set mapping
+ * to the .project file of persistence between mapping sessions.
  */
 class SelectionSetInfoFileModule :
 	public map::IMapInfoFileModule

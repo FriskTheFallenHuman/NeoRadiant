@@ -427,7 +427,7 @@
                                                     <property name="window_name"></property>
                                                     <property name="window_style"></property>
                                                     <object class="notebookpage" expanded="1">
-                                                        <property name="bitmap">Load From Art Provider; darkradiant:icon_classname.png; </property>
+                                                        <property name="bitmap">Load From Art Provider; neoradiant:icon_classname.png; </property>
                                                         <property name="label">Properties</property>
                                                         <property name="select">0</property>
                                                         <object class="wxPanel" expanded="1">
@@ -490,7 +490,7 @@
                                                         </object>
                                                     </object>
                                                     <object class="notebookpage" expanded="1">
-                                                        <property name="bitmap">Load From Art Provider; darkradiant:icon_texture.png; </property>
+                                                        <property name="bitmap">Load From Art Provider; neoradiant:icon_texture.png; </property>
                                                         <property name="label">Materials</property>
                                                         <property name="select">0</property>
                                                         <object class="wxPanel" expanded="1">
@@ -553,7 +553,7 @@
                                                         </object>
                                                     </object>
                                                     <object class="notebookpage" expanded="1">
-                                                        <property name="bitmap">Load From Art Provider; darkradiant:cmenu_add_entity.png; </property>
+                                                        <property name="bitmap">Load From Art Provider; neoradiant:cmenu_add_entity.png; </property>
                                                         <property name="label">Related Entity Classes</property>
                                                         <property name="select">1</property>
                                                         <object class="wxPanel" expanded="1">

@@ -139,7 +139,7 @@ inline Frustum Frustum::createFromViewproj(const Matrix4& viewproj)
 {
     // greebo: Note that the usual plane-from-frustum equations which can be found
     // throughout the internet are referring to a plane format a,b,c,d whereas
-    // DarkRadiant uses a,b,c and dist, that's why the fourth terms in each line are negated.
+    // NeoRadiant uses a,b,c and dist, that's why the fourth terms in each line are negated.
 	return Frustum
 	(
 		Plane3(viewproj[3] - viewproj[0], viewproj[7] - viewproj[4], viewproj[11] - viewproj[ 8], -viewproj[15] + viewproj[12]).getNormalised(),

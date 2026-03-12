@@ -4,7 +4,7 @@
  */
 #pragma once
 
-// Render-related DarkRadiant interfaces
+// Render-related NeoRadiant interfaces
 #include "GLProgramAttributes.h"
 #include "irender.h"
 #include "irenderable.h"
