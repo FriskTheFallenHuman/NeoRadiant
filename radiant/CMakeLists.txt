@@ -163,6 +163,7 @@ add_executable(NeoRadiant
                ui/prefdialog/PreferenceItem.cpp
                ui/prefdialog/PrefPage.cpp
                ui/arch/ArchGeneratorDialog.cpp
+               ui/building/BuildingGeneratorDialog.cpp
                ui/cables/CableGeneratorDialog.cpp
                ui/cornerpatch/CornerPatchDialog.cpp
                ui/scatter/ScatterDialog.cpp
