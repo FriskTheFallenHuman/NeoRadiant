@@ -169,6 +169,7 @@ add_executable(NeoRadiant
                ui/stairs/StairsGeneratorDialog.cpp
                ui/terrain/TerrainGeneratorDialog.cpp
                ui/tilemap/TileMapDialog.cpp
+               ui/sweep/SweepDialog.cpp
                ui/script/ScriptMenu.cpp
                ui/script/ScriptWindow.cpp
                ui/selectionset/SelectionSetToolmenu.cpp
