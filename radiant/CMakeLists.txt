@@ -172,6 +172,7 @@ add_executable(NeoRadiant
                ui/terrain/TerrainGeneratorDialog.cpp
                ui/tilemap/TileMapDialog.cpp
                ui/sweep/SweepDialog.cpp
+               ui/osm/OsmImporterDialog.cpp
                ui/script/ScriptMenu.cpp
                ui/script/ScriptWindow.cpp
                ui/selectionset/SelectionSetToolmenu.cpp
