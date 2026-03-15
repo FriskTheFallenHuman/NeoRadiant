@@ -6,6 +6,7 @@
 		<menuItem name="open" caption="&amp;Open..." command="OpenMap" icon="file_open.png" />
 		<menuItem name="openMapFromProject" caption="&amp;Open Map from Project..." command="OpenMapFromProject" />
 		<menuItem name="import" caption="&amp;Import Map..." command="ImportMap" />
+		<menuItem name="osmImporter" caption="Import OSM..." command="OsmImporterDialog" />
 		<menuItem name="mergeMap" caption="&amp;Merge Map..." command="ToggleMapMergePanel" />
 		<menuItem name="loadprefab" caption="Import &amp;Prefab..." command="LoadPrefab" />
 		<menuSeparator />
@@ -213,20 +214,25 @@
 		<menuItem name="particleEditor" caption="Particle Editor..." command="ParticlesEditor" icon="particle16.png" />
 	</subMenu>
 
-	<subMenu name="brush" caption="B&amp;rush">
-		<menuItem name="prism" caption="Prism..." command="BrushPrism" />
-		<menuItem name="cone" caption="Cone..." command="BrushCone" />
-		<menuItem name="sphere" caption="Sphere..." command="BrushSphere" />
+	<subMenu name="brush" caption="Genera&amp;te">
+		<menuItem name="sweep" caption="Sweep..." command="SweepDialog" />
 		<menuItem name="stairsGenerator" caption="Stairs..." command="StairsGeneratorDialog" />
 		<menuItem name="cableGenerator" caption="Cables..." command="CableGeneratorDialog" />
 		<menuItem name="archGenerator" caption="Arch..." command="ArchGeneratorDialog" />
 		<menuItem name="cornerPatch" caption="Corner Patch..." command="CornerPatchDialog" />
-		<menuItem name="tileMap" caption="Tile Map..." command="TileMapDialog" />
-		<menuItem name="sweep" caption="Sweep..." command="SweepDialog" />
 		<menuItem name="buildingGenerator" caption="Building..." command="BuildingGeneratorDialog" />
-		<menuItem name="osmImporter" caption="Import OSM..." command="OsmImporterDialog" />
-		<menuSeparator />
+		<menuItem name="tileMap" caption="Tile Map..." command="TileMapDialog" />
+	</subMenu>
 
+	<subMenu name="brush" caption="B&amp;rush">
+		<subMenu name="primitives" caption="Primitives">
+			<menuItem name="prism" caption="Prism..." command="BrushPrism" />
+			<menuItem name="cone" caption="Cone..." command="BrushCone" />
+			<menuItem name="sphere" caption="Sphere..." command="BrushSphere" />
+		</subMenu>
+
+		<menuSeparator />
+  
 		<subMenu name="csg" caption="CSG">
 			<menuItem name="hollow" caption="Make &amp;Hollow" command="CSGHollow" icon="selection_makehollow.png" />
 			<menuItem name="makeRoom" caption="Make &amp;Room" command="CSGRoom" icon="selection_makeroom.png" />
