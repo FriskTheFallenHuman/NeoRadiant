@@ -443,11 +443,6 @@ void ShaderSystemInterface::registerInterface( lua_State* L )
 				lua_pushstdstring( L, lua_checkobject<Material>( L, 1, META_MATERIAL )->getRenderBumpArguments() );
 				return 1;
 			} },
-		{ "getFrobStageType",
-			[](lua_State* L)->int {
-				lua_pushinteger( L, ( lua_Integer )lua_checkobject<Material>( L, 1, META_MATERIAL )->getFrobStageType() );
-				return 1;
-			} },
 		{ "getNumStages",
 			[](lua_State* L)->int {
 				lua_pushinteger( L, ( lua_Integer )lua_checkobject<Material>( L, 1, META_MATERIAL )->getNumLayers() );
@@ -592,28 +587,6 @@ void ShaderSystemInterface::registerInterface( lua_State* L )
 		{ "swapStagePosition",
 			[](lua_State* L)->int {
 				lua_checkobject<Material>( L, 1, META_MATERIAL )->swapLayerPosition( ( int )luaL_checkinteger( L, 2 ), ( int )luaL_checkinteger( L, 3 ) );
-				return 0;
-			} },
-		{ "setFrobStageType",
-			[](lua_State* L)->int {
-				lua_checkobject<Material>( L, 1, META_MATERIAL )->setFrobStageType( static_cast<Material::FrobStageType>( ( int )luaL_checkinteger( L, 2 ) ) );
-				return 0;
-			} },
-		{ "setFrobStageMapExpressionFromString",
-			[](lua_State* L)->int {
-				lua_checkobject<Material>( L, 1, META_MATERIAL )->setFrobStageMapExpressionFromString( lua_checkstdstring( L, 2 ) );
-				return 0;
-			} },
-		{ "setFrobStageParameter",
-			[](lua_State* L)->int {
-				lua_checkobject<Material>( L, 1, META_MATERIAL )->setFrobStageParameter( ( std::size_t )luaL_checkinteger( L, 2 ), ( double )luaL_checknumber( L, 3 ) );
-				return 0;
-			} },
-		{ "setFrobStageRgbParameter",
-			[](lua_State* L)->int {
-				lua_checkobject<Material>( L, 1, META_MATERIAL )
-					->setFrobStageRgbParameter(
-						( std::size_t )luaL_checkinteger( L, 2 ), Vector3( ( float )luaL_checknumber( L, 3 ), ( float )luaL_checknumber( L, 4 ), ( float )luaL_checknumber( L, 5 ) ) );
 				return 0;
 			} },
 		{ nullptr, nullptr } };
@@ -809,18 +782,6 @@ void ShaderSystemInterface::registerInterface( lua_State* L )
 	lua_pushnumber( L, ( lua_Number )Material::SORT_ALMOST_NEAREST );
 	lua_setfield( L, -2, "ALMOST_NEAREST" );
 	lua_setfield( L, -2, "SortRequest" );
-
-	// FrobStageType
-	lua_newtable( L );
-	lua_pushinteger( L, ( lua_Integer )Material::FrobStageType::Default );
-	lua_setfield( L, -2, "NONE" );
-	lua_pushinteger( L, ( lua_Integer )Material::FrobStageType::Diffuse );
-	lua_setfield( L, -2, "DIFFUSE" );
-	lua_pushinteger( L, ( lua_Integer )Material::FrobStageType::Texture );
-	lua_setfield( L, -2, "TEXTURE" );
-	lua_pushinteger( L, ( lua_Integer )Material::FrobStageType::NoFrobStage );
-	lua_setfield( L, -2, "NOFROBSTAGE" );
-	lua_setfield( L, -2, "FrobStageType" );
 
 	lua_setglobal( L, "Material" );
 

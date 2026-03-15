@@ -159,7 +159,6 @@ add_executable(NeoRadiant
                ui/prefdialog/GameSetupDialog.cpp
                ui/prefdialog/GameSetupPage.cpp
                ui/prefdialog/GameSetupPageIdTech.cpp
-               ui/prefdialog/GameSetupPageTdm.cpp
                ui/prefdialog/PrefDialog.cpp
                ui/prefdialog/PreferenceItem.cpp
                ui/prefdialog/PrefPage.cpp

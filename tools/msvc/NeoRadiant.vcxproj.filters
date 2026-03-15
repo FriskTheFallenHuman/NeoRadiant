@@ -1,293 +1,219 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Project
-    ToolsVersion="4.0"
-    xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
->
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="src">
-      <UniqueIdentifier
-            >{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
     <Filter Include="src\camera">
-      <UniqueIdentifier
-            >{ad6d0e12-fb85-4133-aecd-986e24357256}</UniqueIdentifier>
+      <UniqueIdentifier>{ad6d0e12-fb85-4133-aecd-986e24357256}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\render">
-      <UniqueIdentifier
-            >{53ac0d31-452b-4324-88e2-3790b4c41113}</UniqueIdentifier>
+      <UniqueIdentifier>{53ac0d31-452b-4324-88e2-3790b4c41113}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\textool">
-      <UniqueIdentifier
-            >{d3a05c23-9351-4bd7-aaee-8f88331f691d}</UniqueIdentifier>
+      <UniqueIdentifier>{d3a05c23-9351-4bd7-aaee-8f88331f691d}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui">
-      <UniqueIdentifier
-            >{6ab81c73-2824-43aa-a528-7287cd029266}</UniqueIdentifier>
+      <UniqueIdentifier>{6ab81c73-2824-43aa-a528-7287cd029266}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\about">
-      <UniqueIdentifier
-            >{62deab2e-76e8-43c7-9ad5-714773c6e82a}</UniqueIdentifier>
+      <UniqueIdentifier>{62deab2e-76e8-43c7-9ad5-714773c6e82a}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\commandlist">
-      <UniqueIdentifier
-            >{14a6fb04-e685-4bb7-845c-767aed09a7db}</UniqueIdentifier>
+      <UniqueIdentifier>{14a6fb04-e685-4bb7-845c-767aed09a7db}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\common">
-      <UniqueIdentifier
-            >{4b55e91c-525f-4d29-aa2f-83142e69884e}</UniqueIdentifier>
+      <UniqueIdentifier>{4b55e91c-525f-4d29-aa2f-83142e69884e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\einspector">
-      <UniqueIdentifier
-            >{c1386db6-338d-4275-a9dd-dc418cfd4f49}</UniqueIdentifier>
+      <UniqueIdentifier>{c1386db6-338d-4275-a9dd-dc418cfd4f49}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\findshader">
-      <UniqueIdentifier
-            >{a67a7c88-b49d-40c0-a8b8-4d30506c37af}</UniqueIdentifier>
+      <UniqueIdentifier>{a67a7c88-b49d-40c0-a8b8-4d30506c37af}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\lightinspector">
-      <UniqueIdentifier
-            >{52a1d787-96a8-43a4-9391-9da3de977d2f}</UniqueIdentifier>
+      <UniqueIdentifier>{52a1d787-96a8-43a4-9391-9da3de977d2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\mapinfo">
-      <UniqueIdentifier
-            >{4ddafb25-9ca8-44f7-92e4-f32ceb4cd691}</UniqueIdentifier>
+      <UniqueIdentifier>{4ddafb25-9ca8-44f7-92e4-f32ceb4cd691}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\mediabrowser">
-      <UniqueIdentifier
-            >{e5922210-a649-49bf-b82e-beec1e60ed1c}</UniqueIdentifier>
+      <UniqueIdentifier>{e5922210-a649-49bf-b82e-beec1e60ed1c}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\modelselector">
-      <UniqueIdentifier
-            >{8c0a6529-685d-4a74-a652-4870ee22caf0}</UniqueIdentifier>
+      <UniqueIdentifier>{8c0a6529-685d-4a74-a652-4870ee22caf0}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\mru">
-      <UniqueIdentifier
-            >{bd30fbc0-75e7-4826-b71f-aeb81945df38}</UniqueIdentifier>
+      <UniqueIdentifier>{bd30fbc0-75e7-4826-b71f-aeb81945df38}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\ortho">
-      <UniqueIdentifier
-            >{cbc33ee1-5452-4e66-9944-bcc396424a17}</UniqueIdentifier>
+      <UniqueIdentifier>{cbc33ee1-5452-4e66-9944-bcc396424a17}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\overlay">
-      <UniqueIdentifier
-            >{afbc8694-b18c-4a5b-972e-827e16c93c24}</UniqueIdentifier>
+      <UniqueIdentifier>{afbc8694-b18c-4a5b-972e-827e16c93c24}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\particles">
-      <UniqueIdentifier
-            >{4f15398b-9ac4-4e93-aa5d-7c949b3f0577}</UniqueIdentifier>
+      <UniqueIdentifier>{4f15398b-9ac4-4e93-aa5d-7c949b3f0577}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\patch">
-      <UniqueIdentifier
-            >{c9bce99b-b047-4935-ab85-7eba4c2bfb4f}</UniqueIdentifier>
+      <UniqueIdentifier>{c9bce99b-b047-4935-ab85-7eba4c2bfb4f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\prefdialog">
-      <UniqueIdentifier
-            >{61a1660a-6222-4501-86c4-1117b3a0f484}</UniqueIdentifier>
+      <UniqueIdentifier>{61a1660a-6222-4501-86c4-1117b3a0f484}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\transform">
-      <UniqueIdentifier
-            >{5f2d2354-6f2c-4a2c-a101-7e00b074c825}</UniqueIdentifier>
+      <UniqueIdentifier>{5f2d2354-6f2c-4a2c-a101-7e00b074c825}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\terrain">
-      <UniqueIdentifier
-            >{d3a7f2c1-9b4e-4c8d-a1f5-6e2b3c4d5e6f}</UniqueIdentifier>
+      <UniqueIdentifier>{d3a7f2c1-9b4e-4c8d-a1f5-6e2b3c4d5e6f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\texturebrowser">
-      <UniqueIdentifier
-            >{bba8ced9-8962-417f-8958-a77cf55bf2ad}</UniqueIdentifier>
+      <UniqueIdentifier>{bba8ced9-8962-417f-8958-a77cf55bf2ad}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\splash">
-      <UniqueIdentifier
-            >{4709f637-3c47-4add-af03-d391b8fdbd9d}</UniqueIdentifier>
+      <UniqueIdentifier>{4709f637-3c47-4add-af03-d391b8fdbd9d}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\surfaceinspector">
-      <UniqueIdentifier
-            >{98a76e8b-b139-4483-b6c5-4230e5deba6e}</UniqueIdentifier>
+      <UniqueIdentifier>{98a76e8b-b139-4483-b6c5-4230e5deba6e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\layers">
-      <UniqueIdentifier
-            >{94c91149-7af7-400d-a5c5-42a4ff3f378a}</UniqueIdentifier>
+      <UniqueIdentifier>{94c91149-7af7-400d-a5c5-42a4ff3f378a}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\mainframe">
-      <UniqueIdentifier
-            >{66b8e83d-4957-4fde-aad3-11f47b5876cc}</UniqueIdentifier>
+      <UniqueIdentifier>{66b8e83d-4957-4fde-aad3-11f47b5876cc}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\brush">
-      <UniqueIdentifier
-            >{0ae68f58-f970-474c-9701-1681aa612cfb}</UniqueIdentifier>
+      <UniqueIdentifier>{0ae68f58-f970-474c-9701-1681aa612cfb}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\xyview">
-      <UniqueIdentifier
-            >{c770bd9e-5b03-48c4-8410-e4db36fd6057}</UniqueIdentifier>
+      <UniqueIdentifier>{c770bd9e-5b03-48c4-8410-e4db36fd6057}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\log">
-      <UniqueIdentifier
-            >{553b5fe4-8c45-46e9-8be9-f75585fbf389}</UniqueIdentifier>
+      <UniqueIdentifier>{553b5fe4-8c45-46e9-8be9-f75585fbf389}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\prefabselector">
-      <UniqueIdentifier
-            >{b7006f9d-0165-438c-8e93-907d54960cf5}</UniqueIdentifier>
+      <UniqueIdentifier>{b7006f9d-0165-438c-8e93-907d54960cf5}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\xyview\tools">
-      <UniqueIdentifier
-            >{b49559d6-86e4-48af-9446-5e04ef1fcfc9}</UniqueIdentifier>
+      <UniqueIdentifier>{b49559d6-86e4-48af-9446-5e04ef1fcfc9}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\camera\tools">
-      <UniqueIdentifier
-            >{3bb7f06e-3514-436e-aa6b-f86ef155dd08}</UniqueIdentifier>
+      <UniqueIdentifier>{3bb7f06e-3514-436e-aa6b-f86ef155dd08}</UniqueIdentifier>
     </Filter>
     <Filter Include="xml">
-      <UniqueIdentifier
-            >{c190fb09-213e-4459-b331-acd0648d3b2f}</UniqueIdentifier>
+      <UniqueIdentifier>{c190fb09-213e-4459-b331-acd0648d3b2f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\mousetool">
-      <UniqueIdentifier
-            >{569de02a-1a1c-46b7-9046-49bd1c575aba}</UniqueIdentifier>
+      <UniqueIdentifier>{569de02a-1a1c-46b7-9046-49bd1c575aba}</UniqueIdentifier>
     </Filter>
     <Filter Include="innosetup">
-      <UniqueIdentifier
-            >{cec4701a-4553-44d6-aec6-199afd8a38b3}</UniqueIdentifier>
+      <UniqueIdentifier>{cec4701a-4553-44d6-aec6-199afd8a38b3}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\aas">
-      <UniqueIdentifier
-            >{320a8b8c-db98-4f20-bb92-b66812bb5a53}</UniqueIdentifier>
+      <UniqueIdentifier>{320a8b8c-db98-4f20-bb92-b66812bb5a53}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\grid">
-      <UniqueIdentifier
-            >{26ca745d-bd90-4d70-beb3-89010a45515f}</UniqueIdentifier>
+      <UniqueIdentifier>{26ca745d-bd90-4d70-beb3-89010a45515f}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\modelexport">
-      <UniqueIdentifier
-            >{729325bd-525b-47e6-94cb-1abcc9d27ded}</UniqueIdentifier>
+      <UniqueIdentifier>{729325bd-525b-47e6-94cb-1abcc9d27ded}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\eclasstree">
-      <UniqueIdentifier
-            >{a9a3199e-0a04-4967-984b-b58241f17b36}</UniqueIdentifier>
+      <UniqueIdentifier>{a9a3199e-0a04-4967-984b-b58241f17b36}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\entitylist">
-      <UniqueIdentifier
-            >{cf31bdd4-5049-41b1-bfe6-fafd3b1e8692}</UniqueIdentifier>
+      <UniqueIdentifier>{cf31bdd4-5049-41b1-bfe6-fafd3b1e8692}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\eventmanager">
-      <UniqueIdentifier
-            >{9215c909-e37e-4fef-b0ce-04455bf61cf2}</UniqueIdentifier>
+      <UniqueIdentifier>{9215c909-e37e-4fef-b0ce-04455bf61cf2}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\filters">
-      <UniqueIdentifier
-            >{b15324e3-378b-43fe-abfd-1ee2d99c5bd7}</UniqueIdentifier>
+      <UniqueIdentifier>{b15324e3-378b-43fe-abfd-1ee2d99c5bd7}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\settings">
-      <UniqueIdentifier
-            >{89cfcc22-4783-4193-a6c6-ad49ec9f05f4}</UniqueIdentifier>
+      <UniqueIdentifier>{89cfcc22-4783-4193-a6c6-ad49ec9f05f4}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\filters\editor">
-      <UniqueIdentifier
-            >{9cc90f16-363b-40e1-84ae-be23c59e06c0}</UniqueIdentifier>
+      <UniqueIdentifier>{9cc90f16-363b-40e1-84ae-be23c59e06c0}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\selectionset">
-      <UniqueIdentifier
-            >{44f6abf2-2b6d-46ce-8c41-291f862855f6}</UniqueIdentifier>
+      <UniqueIdentifier>{44f6abf2-2b6d-46ce-8c41-291f862855f6}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\map">
-      <UniqueIdentifier
-            >{8d1f0555-13d0-4735-ad5e-26bdf8578bc6}</UniqueIdentifier>
+      <UniqueIdentifier>{8d1f0555-13d0-4735-ad5e-26bdf8578bc6}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\selection">
-      <UniqueIdentifier
-            >{fcadd723-1718-42a6-82d4-41aabf92dabe}</UniqueIdentifier>
+      <UniqueIdentifier>{fcadd723-1718-42a6-82d4-41aabf92dabe}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\clipboard">
-      <UniqueIdentifier
-            >{a12b340c-f537-4113-bc7c-2bbfb35b8d0b}</UniqueIdentifier>
+      <UniqueIdentifier>{a12b340c-f537-4113-bc7c-2bbfb35b8d0b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\statusbar">
-      <UniqueIdentifier
-            >{ef5c6dc4-3f56-434e-b371-f2804f9088ed}</UniqueIdentifier>
+      <UniqueIdentifier>{ef5c6dc4-3f56-434e-b371-f2804f9088ed}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\gl">
-      <UniqueIdentifier
-            >{360f8d9f-f078-4296-9633-913d79de1b79}</UniqueIdentifier>
+      <UniqueIdentifier>{360f8d9f-f078-4296-9633-913d79de1b79}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\script">
-      <UniqueIdentifier
-            >{28ae583f-8545-491c-abcc-5e459c3d357b}</UniqueIdentifier>
+      <UniqueIdentifier>{28ae583f-8545-491c-abcc-5e459c3d357b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\mapselector">
-      <UniqueIdentifier
-            >{6ddb8b69-4e5a-4c82-b7d4-aa1306342340}</UniqueIdentifier>
+      <UniqueIdentifier>{6ddb8b69-4e5a-4c82-b7d4-aa1306342340}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\favourites">
-      <UniqueIdentifier
-            >{7622b801-2cd2-4a68-b36c-1ed469312464}</UniqueIdentifier>
+      <UniqueIdentifier>{7622b801-2cd2-4a68-b36c-1ed469312464}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\toolbar">
-      <UniqueIdentifier
-            >{bceb5724-df70-4343-aeee-c6310eb63097}</UniqueIdentifier>
+      <UniqueIdentifier>{bceb5724-df70-4343-aeee-c6310eb63097}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\menu">
-      <UniqueIdentifier
-            >{9ee6e7e2-936f-4337-9c0a-bdf9db86349e}</UniqueIdentifier>
+      <UniqueIdentifier>{9ee6e7e2-936f-4337-9c0a-bdf9db86349e}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\animationpreview">
-      <UniqueIdentifier
-            >{562e8fd0-cd8f-448b-ba69-90e8f4a85b11}</UniqueIdentifier>
+      <UniqueIdentifier>{562e8fd0-cd8f-448b-ba69-90e8f4a85b11}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\colourscheme">
-      <UniqueIdentifier
-            >{f198ee8a-abfc-41e7-b3a5-9087c21695d6}</UniqueIdentifier>
+      <UniqueIdentifier>{f198ee8a-abfc-41e7-b3a5-9087c21695d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\commandpalette">
-      <UniqueIdentifier
-            >{a1b2c3d4-e5f6-7890-abcd-ef1234567890}</UniqueIdentifier>
+      <UniqueIdentifier>{a1b2c3d4-e5f6-7890-abcd-ef1234567890}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\materials">
-      <UniqueIdentifier
-            >{d855833c-6204-4825-ba61-c4e143ba50ce}</UniqueIdentifier>
+      <UniqueIdentifier>{d855833c-6204-4825-ba61-c4e143ba50ce}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\materials\editor">
-      <UniqueIdentifier
-            >{d374722a-7ea0-4a6e-9954-69e32a7cbec8}</UniqueIdentifier>
+      <UniqueIdentifier>{d374722a-7ea0-4a6e-9954-69e32a7cbec8}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\merge">
-      <UniqueIdentifier
-            >{dcd24411-0e8c-45d3-8f5d-8b4f7faab72b}</UniqueIdentifier>
+      <UniqueIdentifier>{dcd24411-0e8c-45d3-8f5d-8b4f7faab72b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\textool\tools">
-      <UniqueIdentifier
-            >{05468cce-ffef-47f1-9a5e-d4278f0ae3c4}</UniqueIdentifier>
+      <UniqueIdentifier>{05468cce-ffef-47f1-9a5e-d4278f0ae3c4}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\console">
-      <UniqueIdentifier
-            >{66e30145-e977-405c-9507-fc783318215a}</UniqueIdentifier>
+      <UniqueIdentifier>{66e30145-e977-405c-9507-fc783318215a}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\decalshooter">
-      <UniqueIdentifier
-            >{fe90a752-ef9b-4501-a9c2-e5b3f41c2259}</UniqueIdentifier>
+      <UniqueIdentifier>{fe90a752-ef9b-4501-a9c2-e5b3f41c2259}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\fx">
-      <UniqueIdentifier
-            >{7d1fd900-f463-401a-bceb-d04af2bd05f3}</UniqueIdentifier>
+      <UniqueIdentifier>{7d1fd900-f463-401a-bceb-d04af2bd05f3}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\skin">
-      <UniqueIdentifier
-            >{fb0a245f-4bbd-42a0-a877-c3189952d1ac}</UniqueIdentifier>
+      <UniqueIdentifier>{fb0a245f-4bbd-42a0-a877-c3189952d1ac}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\cables">
-      <UniqueIdentifier
-            >{c3d4e5f6-a7b8-9012-cdef-234567890abc}</UniqueIdentifier>
+      <UniqueIdentifier>{c3d4e5f6-a7b8-9012-cdef-234567890abc}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\stairs">
-      <UniqueIdentifier
-            >{b2c3d4e5-f6a7-8901-bcde-f12345678901}</UniqueIdentifier>
+      <UniqueIdentifier>{b2c3d4e5-f6a7-8901-bcde-f12345678901}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\array">
-      <UniqueIdentifier
-            >{43eee746-f4e6-481b-8fd5-a5fadfd55788}</UniqueIdentifier>
+      <UniqueIdentifier>{43eee746-f4e6-481b-8fd5-a5fadfd55788}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\ui\scatter">
-      <UniqueIdentifier
-            >{41fb15cf-e351-4f2a-97a8-8278c61c6a75}</UniqueIdentifier>
+      <UniqueIdentifier>{41fb15cf-e351-4f2a-97a8-8278c61c6a75}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -342,9 +268,7 @@
     <ClCompile Include="..\..\radiant\ui\einspector\BooleanPropertyEditor.cpp">
       <Filter>src\ui\einspector</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\einspector\ClassnamePropertyEditor.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\einspector\ClassnamePropertyEditor.cpp">
       <Filter>src\ui\einspector</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\einspector\ColourPropertyEditor.cpp">
@@ -485,9 +409,7 @@
     <ClCompile Include="..\..\radiant\ui\mousetool\BindToolDialog.cpp">
       <Filter>src\ui\mousetool</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\texturebrowser\TextureBrowserManager.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\texturebrowser\TextureBrowserManager.cpp">
       <Filter>src\ui\texturebrowser</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\prefdialog\PreferenceItem.cpp">
@@ -515,9 +437,6 @@
       <Filter>src\ui\prefdialog</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\prefdialog\GameSetupPage.cpp">
-      <Filter>src\ui\prefdialog</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\radiant\ui\prefdialog\GameSetupPageTdm.cpp">
       <Filter>src\ui\prefdialog</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\eclasstree\EClassTree.cpp">
@@ -559,9 +478,7 @@
     <ClCompile Include="..\..\radiant\ui\Documentation.cpp">
       <Filter>src\ui</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\filters\FilterOrthoContextMenuItem.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\filters\FilterOrthoContextMenuItem.cpp">
       <Filter>src\ui\filters</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\filters\FilterContextMenu.cpp">
@@ -597,9 +514,7 @@
     <ClCompile Include="..\..\radiant\ui\selectionset\SelectionSetToolmenu.cpp">
       <Filter>src\ui\selectionset</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\modelexport\ExportCollisionModelDialog.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\modelexport\ExportCollisionModelDialog.cpp">
       <Filter>src\ui\modelexport</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\map\StartupMapLoader.cpp">
@@ -665,9 +580,7 @@
     <ClCompile Include="..\..\radiant\camera\CameraWndManager.cpp">
       <Filter>src\camera</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\favourites\FavouritesUserInterfaceModule.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\favourites\FavouritesUserInterfaceModule.cpp">
       <Filter>src\ui\favourites</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\statusbar\StatusBarManager.cpp">
@@ -709,14 +622,10 @@
     <ClCompile Include="..\..\radiant\ui\animationpreview\AnimationPreview.cpp">
       <Filter>src\ui\animationpreview</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\animationpreview\MD5AnimationChooser.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\animationpreview\MD5AnimationChooser.cpp">
       <Filter>src\ui\animationpreview</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\animationpreview\MD5AnimationViewer.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\animationpreview\MD5AnimationViewer.cpp">
       <Filter>src\ui\animationpreview</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\common\DialogManager.cpp">
@@ -740,9 +649,7 @@
     <ClCompile Include="..\..\radiant\ui\materials\MaterialPopulator.cpp">
       <Filter>src\ui\materials</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\materials\MaterialThumbnailBrowser.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\materials\MaterialThumbnailBrowser.cpp">
       <Filter>src\ui\materials</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\materials\MaterialTreeView.cpp">
@@ -751,9 +658,7 @@
     <ClCompile Include="..\..\radiant\ui\materials\editor\MaterialEditor.cpp">
       <Filter>src\ui\materials\editor</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\materials\editor\MaterialEditorModule.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\materials\editor\MaterialEditorModule.cpp">
       <Filter>src\ui\materials\editor</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\materials\editor\MaterialPreview.cpp">
@@ -768,9 +673,7 @@
     <ClCompile Include="..\..\radiant\map\AutoSaveTimer.cpp">
       <Filter>src\map</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\textool\tools\TextureToolManipulateMouseTool.cpp"
-        >
+    <ClCompile Include="..\..\radiant\textool\tools\TextureToolManipulateMouseTool.cpp">
       <Filter>src\textool\tools</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\selection\SceneManipulateMouseTool.cpp">
@@ -851,14 +754,10 @@
     <ClCompile Include="..\..\radiant\ui\terrain\TerrainGeneratorDialog.cpp">
       <Filter>src\ui\terrain</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\texturebrowser\TextureThumbnailBrowser.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\texturebrowser\TextureThumbnailBrowser.cpp">
       <Filter>src\ui\texturebrowser</Filter>
     </ClCompile>
-    <ClCompile
-            Include="..\..\radiant\ui\texturebrowser\TextureBrowserPanel.cpp"
-        >
+    <ClCompile Include="..\..\radiant\ui\texturebrowser\TextureBrowserPanel.cpp">
       <Filter>src\ui\texturebrowser</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\skin\SkinEditor.cpp">
@@ -1130,9 +1029,7 @@
     <ClInclude Include="..\..\radiant\ui\modelselector\ModelPopulator.h">
       <Filter>src\ui\modelselector</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\ui\texturebrowser\TextureBrowserManager.h"
-        >
+    <ClInclude Include="..\..\radiant\ui\texturebrowser\TextureBrowserManager.h">
       <Filter>src\ui\texturebrowser</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\prefdialog\PreferenceItem.h">
@@ -1163,9 +1060,6 @@
       <Filter>src\ui\prefdialog</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\prefdialog\GameSetupPage.h">
-      <Filter>src\ui\prefdialog</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\radiant\ui\prefdialog\GameSetupPageTdm.h">
       <Filter>src\ui\prefdialog</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\eclasstree\EClassTree.h">
@@ -1273,9 +1167,7 @@
     <ClInclude Include="..\..\radiant\ui\selectionset\SelectionSetToolmenu.h">
       <Filter>src\ui\selectionset</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\ui\modelexport\ExportCollisionModelDialog.h"
-        >
+    <ClInclude Include="..\..\radiant\ui\modelexport\ExportCollisionModelDialog.h">
       <Filter>src\ui\modelexport</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\map\StartupMapLoader.h">
@@ -1413,9 +1305,7 @@
     <ClInclude Include="..\..\radiant\ui\animationpreview\AnimationPreview.h">
       <Filter>src\ui\animationpreview</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\ui\animationpreview\MD5AnimationChooser.h"
-        >
+    <ClInclude Include="..\..\radiant\ui\animationpreview\MD5AnimationChooser.h">
       <Filter>src\ui\animationpreview</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\animationpreview\MD5AnimationViewer.h">
@@ -1496,9 +1386,7 @@
     <ClInclude Include="..\..\radiant\textool\tools\TextureToolSelectionTool.h">
       <Filter>src\textool\tools</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\textool\tools\TextureToolManipulateMouseTool.h"
-        >
+    <ClInclude Include="..\..\radiant\textool\tools\TextureToolManipulateMouseTool.h">
       <Filter>src\textool\tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\selection\SceneManipulateMouseTool.h">
@@ -1507,9 +1395,7 @@
     <ClInclude Include="..\..\radiant\textool\TexToolModeToggles.h">
       <Filter>src\textool</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\textool\tools\TextureToolCycleSelectionTool.h"
-        >
+    <ClInclude Include="..\..\radiant\textool\tools\TextureToolCycleSelectionTool.h">
       <Filter>src\textool\tools</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\FileSaveConfirmationHandler.h">
@@ -1578,9 +1464,7 @@
     <ClInclude Include="..\..\radiant\ui\mainframe\PropertyNotebook.h">
       <Filter>src\ui\mainframe</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\ui\surfaceinspector\SurfaceInspectorControl.h"
-        >
+    <ClInclude Include="..\..\radiant\ui\surfaceinspector\SurfaceInspectorControl.h">
       <Filter>src\ui\surfaceinspector</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\layers\LayerControlPanel.h">
@@ -1595,9 +1479,7 @@
     <ClInclude Include="..\..\radiant\ui\patch\PatchInspectorControl.h">
       <Filter>src\ui\patch</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\ui\lightinspector\LightInspectorControl.h"
-        >
+    <ClInclude Include="..\..\radiant\ui\lightinspector\LightInspectorControl.h">
       <Filter>src\ui\lightinspector</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\transform\TransformPanelControl.h">
@@ -1648,17 +1530,13 @@
     <ClInclude Include="..\..\radiant\ui\terrain\TerrainGeneratorDialog.h">
       <Filter>src\ui\terrain</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\ui\texturebrowser\TextureThumbnailBrowser.h"
-        >
+    <ClInclude Include="..\..\radiant\ui\texturebrowser\TextureThumbnailBrowser.h">
       <Filter>src\ui\texturebrowser</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\texturebrowser\TextureBrowserPanel.h">
       <Filter>src\ui\texturebrowser</Filter>
     </ClInclude>
-    <ClInclude
-            Include="..\..\radiant\ui\texturebrowser\TextureDirectoryBrowser.h"
-        >
+    <ClInclude Include="..\..\radiant\ui\texturebrowser\TextureDirectoryBrowser.h">
       <Filter>src\ui\texturebrowser</Filter>
     </ClInclude>
     <ClInclude Include="..\..\radiant\ui\skin\SkinEditor.h">

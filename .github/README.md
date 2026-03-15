@@ -38,6 +38,8 @@ NeoRadiant is built on Windows using *Microsoft Visual Studio*, the free Communi
 
 When installing Studio please make sure to enable the "Desktop Development with C++" workload.
 
+For editing wxWidgets Forms Builder (.fb) you need [v3.9.0](https://github.com/wxFormBuilder/wxFormBuilder/releases/tag/v3.9.0) of wxFormBuilder, has anything above that is not supported.
+
 ## Build
 
 The main Visual C++ solution file is located in the root folder of this repository:

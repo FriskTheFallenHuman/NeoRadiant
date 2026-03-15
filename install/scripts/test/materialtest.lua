@@ -61,7 +61,6 @@ print("DecalInfo.endColour: "   .. tostring(newMaterial:getDecalInfo().endColour
 print("Coverage: "              .. tostring(newMaterial:getCoverage()))
 print("LightFalloffCubeMap: "   .. tostring(newMaterial:getLightFalloffCubeMapType()))
 print("RenderBumpArgs: "        .. tostring(newMaterial:getRenderBumpArguments()))
-print("FrobStage Type: "        .. tostring(newMaterial:getFrobStageType()))
 
 newMaterial:setSortRequest(Material.SortRequest.NEAREST)
 newMaterial:setClampType(Material.ClampType.NOREPEAT)
@@ -75,19 +74,6 @@ newMaterial:setSpectrum(5)
 newMaterial:setIsFogLight(true)
 newMaterial:setIsBlendLight(false)
 newMaterial:setDescription("New Material")
-
-newMaterial:setFrobStageType(Material.FrobStageType.DIFFUSE)
-newMaterial:setFrobStageParameter(0, 0.4)
-newMaterial:setFrobStageRgbParameter(1, 0.1, 0.2, 0.3)
-
-print(string.format("\nMaterial definition with frobstage_diffuse:\n%s\n{%s}\n",
-    newMaterial:getName(), newMaterial:getDefinition()))
-
-newMaterial:setFrobStageType(Material.FrobStageType.TEXTURE)
-newMaterial:setFrobStageMapExpressionFromString("textures/common/white")
-
-print(string.format("\nMaterial definition with frobstage_texture:\n%s\n{%s}\n",
-    newMaterial:getName(), newMaterial:getDefinition()))
 
 local stageIndex = newMaterial:addStage(MaterialStage.Type.BLEND)
 print("Material has now " .. tostring(newMaterial:getNumStages()) .. " stages")

@@ -60,7 +60,6 @@ constexpr std::pair<const char*, Material::Flags> MaterialFlagKeywords[]
     { "noPortalFog", Material::FLAG_NOPORTALFOG },
     { "unsmoothedTangents", Material::FLAG_UNSMOOTHEDTANGENTS },
     { "mirror", Material::FLAG_MIRROR },
-    { "isLightgemSurf", Material::FLAG_ISLIGHTGEMSURF },
 };
 
 inline std::string getStringForMaterialFlag(Material::Flags flag)
@@ -192,7 +191,6 @@ constexpr std::pair<const char*, Material::SortRequest> PredefinedSortValues[]
     { "close", Material::SORT_CLOSE },
     { "almostnearest", Material::SORT_ALMOST_NEAREST },
     { "nearest", Material::SORT_NEAREST },
-    { "afterfog", Material::SORT_AFTER_FOG },
     { "postprocess", Material::SORT_POST_PROCESS },
     { "portalsky", Material::SORT_PORTAL_SKY },
 };
@@ -398,27 +396,6 @@ inline std::string getStringForClampType(ClampType type)
         if (type == pair.second)
         {
             return pair.first;
-        }
-    }
-
-    return std::string();
-}
-
-constexpr std::pair<Material::FrobStageType, const char*> FrobStageTypeNames[]
-{
-    { Material::FrobStageType::Default, "" },
-    { Material::FrobStageType::Diffuse, "frobstage_diffuse" },
-    { Material::FrobStageType::Texture, "frobstage_texture" },
-    { Material::FrobStageType::NoFrobStage, "frobstage_none" },
-};
-
-inline std::string getStringForFrobStageType(Material::FrobStageType type)
-{
-    for (const auto& pair : FrobStageTypeNames)
-    {
-        if (type == pair.first)
-        {
-            return pair.second;
         }
     }
 

@@ -689,31 +689,6 @@ std::ostream& operator<<(std::ostream& stream, ShaderTemplate& shaderTemplate)
         stream << *layer;
     }
 
-    // FrobStage keywords
-    if (shaderTemplate.getFrobStageType() != Material::FrobStageType::Default)
-    {
-        stream << "\n\t";
-        stream << getStringForFrobStageType(shaderTemplate.getFrobStageType());
-
-        if (shaderTemplate.getFrobStageType() == Material::FrobStageType::Texture)
-        {
-            stream << " ";
-            const auto& expr = shaderTemplate.getFrobStageMapExpression();
-            stream << (expr ? expr->getExpressionString() : "_white"); // don't export invalid syntax
-        }
-
-        if (shaderTemplate.getFrobStageType() == Material::FrobStageType::Diffuse ||
-            shaderTemplate.getFrobStageType() == Material::FrobStageType::Texture)
-        {
-            stream << " ";
-            writeScalarOrVector3(stream, shaderTemplate.getFrobStageRgbParameter(0));
-            stream << " ";
-            writeScalarOrVector3(stream, shaderTemplate.getFrobStageRgbParameter(1));
-        }
-
-        stream << "\n";
-    }
-
     return stream;
 }
 

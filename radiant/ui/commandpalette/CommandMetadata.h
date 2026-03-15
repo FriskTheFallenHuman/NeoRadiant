@@ -347,20 +347,6 @@ inline const std::unordered_map<std::string, CommandInfo>& getCommandMetadata()
 		// Terrain
 		{"TerrainGeneratorDialog",      {"Terrain Generator",               "Generate terrain from a heightmap", CmdCategory::Patch}},
 
-		// Game connection (TDM)
-		{"GameConnectionBackSyncCamera",  {"Sync Camera from Game",         "Move camera to the player's in-game position", CmdCategory::Camera}},
-		{"GameConnectionPauseGame",       {"Pause Game",                    "Pause the connected game instance"}},
-		{"GameConnectionReloadMap",       {"Game: Reload Map",              "Tell the game to reload the current map", CmdCategory::Map}},
-		{"GameConnectionUpdateMap",       {"Game: Update Map",              "Push map changes to the running game", CmdCategory::Map}},
-
-		// TDM-specific editors
-		{"ConversationEditor",          {"Conversation Editor",             "Edit AI conversation scripts", CmdCategory::Entity}},
-		{"DifficultyEditor",            {"Difficulty Editor",               "Edit mission difficulty settings"}},
-		{"StimResponseEditor",          {"Stim/Response Editor",            "Edit entity stimulus and response setup", CmdCategory::Entity}},
-		{"ReadableEditorDialog",        {"Readable Editor",                 "Edit in-game readable documents", CmdCategory::Entity}},
-		{"MissionInfoEditDialog",       {"Mission Info Editor",             "Edit mission metadata and description", CmdCategory::Map}},
-		{"FixupMapDialog",              {"Fixup Map",                       "Apply batch fixes to the map", CmdCategory::Map}},
-
 		// Git integration
 		{"GitFetch",                    {"Git: Fetch",                      "Fetch updates from the remote repository"}},
 

@@ -143,7 +143,7 @@ D3DeclarationViewCtrl::D3DeclarationViewCtrl(wxWindow* parent) :
 	SetStyleMapping(18, Error);
 };
 
-// D3 & TDM materials
+// D3
 
 D3MaterialSourceViewCtrl::D3MaterialSourceViewCtrl(wxWindow* parent) :
 	D3DeclarationViewCtrl(parent)

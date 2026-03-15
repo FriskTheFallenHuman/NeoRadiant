@@ -1041,7 +1041,7 @@ void LightNode::projectionChanged()
 }
 
 /**
-* greebo: In TDM / Doom3, the idPlane object stores the plane's a,b,c,d
+* greebo: In Doom3, the idPlane object stores the plane's a,b,c,d
 * coefficients, in NeoRadiant, the fourth number in Plane3 is dist, which is -d
 * Previously, this routine just hard-cast the Plane3 object to a Vector4
 * which is wrong due to the fourth number being negated.
@@ -1133,9 +1133,6 @@ void LightNode::updateProjection() const
 	//	rMessage() << "  Plane " << i << ": " << lightProject[i].normal() << ", dist: " << lightProject[i].dist() << std::endl;
 	//}
 
-	// greebo: Comparing this to the engine sources, all frustum planes in TDM
-	// appear to be negated, their normals are pointing outwards.
-
     // we want the planes of s=0, s=q, t=0, and t=q
     _frustum.left = -lightProject[0];
     _frustum.top = -lightProject[1];
@@ -1158,15 +1155,6 @@ void LightNode::updateProjection() const
 
     // Normalise all frustum planes
     _frustum.normalisePlanes();
-
-	// TDM uses an array of 6 idPlanes, these relate to NeoRadiant like this:
-	// 0 = left, 1 = top, 2 = right, 3 = bottom, 4 = front, 5 = back
-	//rMessage() << "  Frustum Plane " << 0 << ": " << _frustum.left.normal() << ", dist: " << _frustum.left.dist() << std::endl;
-	//rMessage() << "  Frustum Plane " << 1 << ": " << _frustum.top.normal() << ", dist: " << _frustum.top.dist() << std::endl;
-	//rMessage() << "  Frustum Plane " << 2 << ": " << _frustum.right.normal() << ", dist: " << _frustum.right.dist() << std::endl;
-	//rMessage() << "  Frustum Plane " << 3 << ": " << _frustum.bottom.normal() << ", dist: " << _frustum.bottom.dist() << std::endl;
-	//rMessage() << "  Frustum Plane " << 4 << ": " << _frustum.front.normal() << ", dist: " << _frustum.front.dist() << std::endl;
-	//rMessage() << "  Frustum Plane " << 5 << ": " << _frustum.back.normal() << ", dist: " << _frustum.back.dist() << std::endl;
 
     const Vector3& t = _projVectors.transformed.target;
     const Vector3& u = _projVectors.transformed.up;

@@ -35,7 +35,6 @@ varying vec4 var_Colour; // colour to be multiplied on the final fragment
 varying vec3 var_WorldLightDirection; // direction the light is coming from in world space
 varying vec3 var_LocalViewerDirection; // viewer direction in local space
 
-// Function ported from TDM tdm_shadowmaps.glsl, determining the cube map face for the given direction
 vec3 CubeMapDirectionToUv(vec3 v, out int faceIdx)
 {
     vec3 v1 = abs(v);
@@ -77,7 +76,6 @@ vec3 CubeMapDirectionToUv(vec3 v, out int faceIdx)
     return v1;
 }
 
-// Function ported from TDM tdm_shadowmaps.glsl, picking the depth value from the shadow map
 float getDepthValueForVector(in sampler2D shadowMapTexture, vec4 shadowRect, vec3 lightVec)
 {
     // Determine face index and cube map sampling vector
@@ -126,7 +124,6 @@ void main()
 
     if (!u_IsAmbientLight)
     {
-        // Ported from TDM interaction.common.fs.glsl
         vec4 fresnelParms = vec4(1.0, .23, .5, 1.0);
         vec4 fresnelParms2 = vec4(.2, .023, 120.0, 4.0);
         vec4 lightParms = vec4(.7, 1.8, 10.0, 30.0);
@@ -185,7 +182,6 @@ void main()
     }
     else
     {
-        // Ported from TDM's interaction.ambient.fs
         vec4 light = vec4(attenuation_xy * attenuation_z, 1);
 
         vec3 localNormal = vec3(bumpTexel.x, bumpTexel.y, sqrt(max(1. - bumpTexel.x*bumpTexel.x - bumpTexel.y*bumpTexel.y, 0)));

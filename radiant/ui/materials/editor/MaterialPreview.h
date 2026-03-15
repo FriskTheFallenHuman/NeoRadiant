@@ -61,8 +61,6 @@ public:
     const MaterialPtr& getMaterial();
     void setMaterial(const MaterialPtr& material);
 
-    void enableFrobHighlight(bool enable);
-
     // Light management
     std::string getLightClassname();
     void setLightClassname(const std::string& className);

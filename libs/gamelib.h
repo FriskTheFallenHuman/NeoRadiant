@@ -38,15 +38,13 @@ inline T getValue(const std::string& localXPath, T defaultVal = T())
 }
 
 /**
- * Returns the current "mod" part of the full path. For Doom3-style games this is the part
- * relative to the engine path. For TDM-style games there's not necessarily a fs_game or 
- * fs_game_base set, in this case we fall back to the current game's name.
+ * Returns the current "mod" part of the full path. For any idtech4 game this is the part
+ * relative to the engine path.
  */
 inline std::string getModPath(const std::string& fullPath)
 {
     std::string relPath = os::getRelativePathMinusFilename(fullPath, registry::getValue<std::string>(RKEY_ENGINE_PATH));
 
-    // For the TDM game we don't necessarily have a "base" or "fs_game" directory
     // Fall back to the game name instead
     if (relPath.empty())
     {

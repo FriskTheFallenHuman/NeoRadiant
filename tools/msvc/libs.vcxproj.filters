@@ -272,9 +272,6 @@
     <ClInclude Include="..\..\libs\stream\TemporaryOutputStream.h">
       <Filter>stream</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\libs\materials\FrobStageSetup.h">
-      <Filter>materials</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\libs\render\VertexHashing.h">
       <Filter>render</Filter>
     </ClInclude>

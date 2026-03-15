@@ -78,8 +78,7 @@ public:
      *
      * Precompressed images cannot be used as input for image manipulation
      * operations in shaders, due to quality loss. Note that not all DDS images
-     * are necessarily compressed (although uncompressed DDS images are rarely
-     * used in TDM).
+     * are necessarily compressed
      */
     virtual bool isPrecompressed() const {
         return false;

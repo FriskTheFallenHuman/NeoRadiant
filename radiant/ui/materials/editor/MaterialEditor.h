@@ -158,7 +158,6 @@ private:
 
     void updateBasicPageFromMaterial();
     void updateBasicImagePreview();
-    void updateBasicFrobStageControls();
     void updateStageControls();
     void updateStageBlendControls();
     void updateStageTextureControls();
@@ -205,9 +204,6 @@ private:
     void _onDuplicateStage(wxCommandEvent& ev);
     void _onSortRequestChanged(wxCommandEvent& ev);
     void _onBasicMapEntryChanged(const std::string& entryName, IShaderLayer::Type type);
-    void _onBasicAddFrobStages(wxCommandEvent& ev);
-    void _onBasicRemoveFrobStages(wxCommandEvent& ev);
-    void _onBasicTestFrobStages(wxMouseEvent& ev);
     void _onClose(wxCommandEvent& ev);
     void _onReloadImages(wxCommandEvent& ev);
     void _onSourceTextChanged(wxStyledTextEvent& ev);

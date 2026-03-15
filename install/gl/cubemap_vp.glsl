@@ -9,7 +9,7 @@ void main()
 {
     vec3 texcoord = gl_Vertex.xyz - u_view_origin;
 
-    // Rotate the skybox 90 degrees about the z axis to match what the TDM engine is displaying
+    // Rotate the skybox 90 degrees about the z axis
     var_cubeMapTexCoord = vec3(-texcoord.y, texcoord.x, texcoord.z);
 
     // transform vertex position into homogenous clip-space

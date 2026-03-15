@@ -250,14 +250,6 @@ void MaterialPreview::updateSceneMaterials()
     updateRoomSkin(backgroundMaterial);
 }
 
-void MaterialPreview::enableFrobHighlight(bool enable)
-{
-    if (!_entity) return;
-
-    _entity->tryGetEntity()->setKeyValue("shaderParm11", enable ? "1" : "0");
-    queueDraw();
-}
-
 void MaterialPreview::onMaterialChanged()
 {
     queueDraw();

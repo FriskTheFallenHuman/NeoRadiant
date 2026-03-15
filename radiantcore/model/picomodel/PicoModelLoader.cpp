@@ -182,7 +182,7 @@ std::string PicoModelLoader::DetermineDefaultMaterial(picoSurface_t* picoSurface
         }
     }
 
-    // #4644: Doom3 / TDM don't use the *MATERIAL_NAME in ASE models, only *BITMAP is used
+    // #4644: Doom3 don't use the *MATERIAL_NAME in ASE models, only *BITMAP is used
     // Use the fallback (introduced in #2499) only when the game allows it
     if (game::current::getValue<bool>("/modelFormat/ase/useMaterialNameIfNoBitmapFound"))
     {

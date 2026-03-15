@@ -243,7 +243,7 @@ std::ostream& operator<< (std::ostream& os, IShaderLayer::Ptr p)
 
 void RegularLight::InteractionDrawCall::submit(const ObjectList& objects)
 {
-    // Every material without bump defines an implicit _flat bump (see in TDM sources: Material::AddImplicitStages)
+    // Every material without bump defines an implicit _flat bump
     if (!_bump)
     {
         _bump = &_defaultBumpStage;

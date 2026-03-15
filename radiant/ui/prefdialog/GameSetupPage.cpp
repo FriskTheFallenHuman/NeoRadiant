@@ -2,7 +2,6 @@
 
 #include "itextstream.h"
 #include "GameSetupPageIdTech.h"
-#include "GameSetupPageTdm.h"
 #include <functional>
 
 namespace ui
@@ -33,11 +32,6 @@ void GameSetupPage::EnsureDefaultPages()
 		_registeredPages[GameSetupPageIdTech::TYPE()] = [](wxWindow* parent, const game::IGamePtr& game)
 		{ 
 			return new GameSetupPageIdTech(parent, game);
-		};
-
-		_registeredPages[GameSetupPageTdm::TYPE()] = [](wxWindow* parent, const game::IGamePtr& game)
-		{
-			return new GameSetupPageTdm(parent, game);
 		};
 	}
 }

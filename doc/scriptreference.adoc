@@ -391,11 +391,11 @@ print(src.contents)
 `mesh`:: Path to the mesh file.
 `skin`:: Skin property (empty if none).
 `parent`:: Parent def name.
-`anims`:: Lua table (string → string) of animation name → file mappings.
+`anims`:: Lua table (string => string) of animation name => file mappings.
 
 [source,lua]
 ----
-local modelDef = GlobalEntityClassManager:findModel("tdm_ai_citywatch")
+local modelDef = GlobalEntityClassManager:findModel("admin_bfgcase")
 for animName, animFile in pairs(modelDef.anims) do
     print(animName .. " = " .. animFile)
 end
@@ -751,7 +751,6 @@ Holds all materials parsed from `.mtr` files.
 `int getSpectrum()`:: Spectrum value (default 0).
 `table getDecalInfo()`:: Returns a table with `stayMilliSeconds`, `fadeMilliSeconds`, `startColour`, `endColour`.
 `Material.Coverage getCoverage()`:: Coverage type.
-`Material.FrobStageType getFrobStageType()`:: Frob stage type.
 `int getNumStages()` / `MaterialStage getStage(int index)` / `table getAllStages()`:: Stage access.
 
 ===== Write methods
@@ -771,10 +770,6 @@ an exception is thrown.
 `setIsAmbientLight(bool)` / `setIsBlendLight(bool)` / `setIsFogLight(bool)` / `setIsCubicLight(bool)`:: Set light type flags.
 `int addStage(MaterialStage.Type type)`:: Add a stage, returns its index.
 `removeStage(int index)` / `int duplicateStage(int index)` / `swapStagePosition(int first, int second)`:: Stage manipulation.
-`setFrobStageType(Material.FrobStageType type)`:: Set frob stage type.
-`setFrobStageMapExpressionFromString(string expr)`:: Set frob map expression.
-`setFrobStageParameter(int index, float value)`:: Set frob stage parameter (uniform value).
-`setFrobStageRgbParameter(int index, float x, float y, float z)`:: Set frob stage RGB parameter as three separate numbers.
 `EditableMaterialStage getEditableStage(int index)`:: Returns the writable stage interface.
 
 ==== Material Enumerations
@@ -828,17 +823,6 @@ A Lua table returned by `getDecalInfo()` with fields:
 ===== Material.Coverage
 
 `TRANSLUCENT`, `PERFORATED`, `OPAQUE`, `SOLID`
-
-===== Material.FrobStageType
-
-[cols="1,2",options="header"]
-|===
-|Lua constant |C++ enum value
-|`NONE` |`FrobStageType::Default`
-|`DIFFUSE` |`FrobStageType::Diffuse`
-|`TEXTURE` |`FrobStageType::Texture`
-|`NOFROBSTAGE` |`FrobStageType::NoFrobStage`
-|===
 
 === MaterialStage
 

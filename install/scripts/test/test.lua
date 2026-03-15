@@ -86,15 +86,15 @@ myOwnMaterial:setDeclFilePath("materials/", "script_test.mtr")
 GlobalDeclarationManager:saveDeclaration(myOwnMaterial)
 
 -- Test the EClassManager interface
-local eclass = GlobalEntityClassManager:findClass("atdm:func_shooter")
+local eclass = GlobalEntityClassManager:findClass("alphalabs1_imp")
 print(eclass:getAttribute("editor_usage"):getValue())
 
 if not eclass:isNull() then
     local shooter = GlobalEntityCreator:createEntity(eclass)
 end
 
-local modelDef = GlobalEntityClassManager:findModel("tdm_ai_citywatch")
-print("ModelDef mesh for tdm_ai_citywatch = " .. modelDef.mesh)
+local modelDef = GlobalEntityClassManager:findModel("admin_bfgcase")
+print("ModelDef mesh for admin_bfgcase = " .. modelDef.mesh)
 
 for anim, animFile in pairs(modelDef.anims) do
     print(anim .. " = " .. animFile)
@@ -201,7 +201,7 @@ GlobalFileSystem:forEachFile("skins/", "skin", function(filename)
     print("Found file: " .. filename)
 end, 99)
 
-local filecontents = GlobalFileSystem:readTextFile("skins/tdm_ai_guard_citywatch.skin")
+local filecontents = GlobalFileSystem:readTextFile("skins/skins_characters_npcs.skin")
 print(filecontents)
 
 -- Test the Grid Interface
@@ -280,7 +280,7 @@ end
 print("")
 
 -- Test SoundManager
-local soundshader = GlobalSoundManager:getSoundShader("tdm_ai_lady_alertdown_to_idle")
+local soundshader = GlobalSoundManager:getSoundShader("admin_swann_i_dont_think")
 if not soundshader:isNull() then
     print("Sound shader: " .. soundshader:getName())
     local radii = soundshader:getRadii()
