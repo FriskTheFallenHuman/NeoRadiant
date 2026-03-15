@@ -1,152 +1,111 @@
 #include "SelectionSetInterface.h"
-
-#include "imap.h"
-#include "iselection.h"
+#include "../LuaHelper.h"
 
 namespace script
 {
 
-ScriptSelectionSet::ScriptSelectionSet(const selection::ISelectionSetPtr& set) :
-	_set(set)
-{}
+constexpr const char* META_SELSET = "NeoRadiant.SelectionSet";
 
-const std::string& ScriptSelectionSet::getName()
+static selection::ISelectionSetManager& getSetMgr( lua_State* L )
 {
-	return (_set) ? _set->getName() : _emptyStr;
+	auto root = GlobalMapModule().getRoot();
+	if( !root )
+		luaL_error( L, "No map is currently loaded" );
+	return root->getSelectionSetManager();
 }
 
-bool ScriptSelectionSet::empty()
+void SelectionSetInterface::registerInterface( lua_State* L )
 {
-	return (_set) ? _set->empty() : true;
-}
+	static luaL_Reg setMethods[] =
+		{ { "getName",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<selection::ISelectionSet>( L, 1, META_SELSET )->getName() );
+				return 1;
+			} },
+		{ "isEmpty",
+			[](lua_State* L)->int {
+				lua_pushboolean( L, lua_checkobject<selection::ISelectionSet>( L, 1, META_SELSET )->empty() );
+				return 1;
+			} },
+		{ "select",
+			[](lua_State* L)->int {
+				lua_checkobject<selection::ISelectionSet>( L, 1, META_SELSET )->select();
+				return 0;
+			} },
+		{ "deselect",
+			[](lua_State* L)->int {
+				lua_checkobject<selection::ISelectionSet>( L, 1, META_SELSET )->deselect();
+				return 0;
+			} },
+		{ "clear",
+			[](lua_State* L)->int {
+				lua_checkobject<selection::ISelectionSet>( L, 1, META_SELSET )->clear();
+				return 0;
+			} },
+		{ "assignFromCurrentScene",
+			[](lua_State* L)->int {
+				lua_checkobject<selection::ISelectionSet>( L, 1, META_SELSET )->assignFromCurrentScene();
+				return 0;
+			} },
+		{ "addNode",
+			[](lua_State* L)->int {
+				auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, 2, "NeoRadiant.SceneNode" ) );
+				if( ud && ud->node )
+					lua_checkobject<selection::ISelectionSet>( L, 1, META_SELSET )->addNode( ud->node );
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_SELSET, setMethods );
 
-void ScriptSelectionSet::select()
-{
-	if (_set) _set->select();
-}
+	static luaL_Reg mgr[] =
+		{ { "findSelectionSet",
+			[](lua_State* L)->int {
+				auto s = getSetMgr( L ).findSelectionSet( lua_checkstdstring( L, 2 ) );
+				if( !s ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, s.get(), META_SELSET );
+				return 1;
+		} },
+		{ "createSelectionSet",
+			[](lua_State* L)->int {
+				auto s	  = getSetMgr( L ).createSelectionSet( lua_checkstdstring( L, 2 ) );
+				if( !s ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, s.get(), META_SELSET );
+				return 1;
+			} },
+		{ "deleteSelectionSet",
+			[](lua_State* L)->int {
+				getSetMgr( L ).deleteSelectionSet( lua_checkstdstring( L, 2 ) );
+				return 0;
+			} },
+		{ "deleteAllSelectionSets",
+			[](lua_State* L)->int {
+				getSetMgr( L ).deleteAllSelectionSets();
+				return 0;
+			} },
+		{ "foreachSelectionSet",
+			[](lua_State* L)->int {
+				luaL_checktype( L, 2, LUA_TFUNCTION );
+				lua_pushvalue( L, 2 );
+				int ref	  = luaL_ref( L, LUA_REGISTRYINDEX );
+				getSetMgr( L ).foreachSelectionSet( [&]( const selection::ISelectionSetPtr& s ) {
+					lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+					lua_pushobject( L, s.get(), META_SELSET );
+					if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+						lua_pop( L, 1 );
+				} );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.SelectionSetManager", mgr );
 
-void ScriptSelectionSet::deselect()
-{
-	if (_set) _set->deselect();
-}
-
-void ScriptSelectionSet::clear()
-{
-	if (_set) _set->clear();
-}
-
-void ScriptSelectionSet::assignFromCurrentScene()
-{
-	if (_set) _set->assignFromCurrentScene();
-}
-
-std::string ScriptSelectionSet::_emptyStr;
-
-// ---------------------------
-
-inline selection::ISelectionSetManager& GetMapSelectionSetManager()
-{
-	if (!GlobalMapModule().getRoot())
-	{
-		throw std::runtime_error("No map loaded.");
-	}
-
-	return GlobalMapModule().getRoot()->getSelectionSetManager();
-}
-
-void SelectionSetInterface::foreachSelectionSet(selection::ISelectionSetManager::Visitor& visitor)
-{
-	try
-	{
-		GetMapSelectionSetManager().foreachSelectionSet(visitor);
-	}
-	catch (const std::runtime_error& ex)
-	{
-		rError() << ex.what() << std::endl;
-	}
-}
-
-ScriptSelectionSet SelectionSetInterface::createSelectionSet(const std::string& name)
-{
-	try
-	{
-		return ScriptSelectionSet(GetMapSelectionSetManager().createSelectionSet(name));
-	}
-	catch (const std::runtime_error & ex)
-	{
-		rError() << ex.what() << std::endl;
-		return ScriptSelectionSet(selection::ISelectionSetPtr());
-	}
-}
-
-void SelectionSetInterface::deleteSelectionSet(const std::string& name)
-{
-	try
-	{
-		GetMapSelectionSetManager().deleteSelectionSet(name);
-	}
-	catch (const std::runtime_error & ex)
-	{
-		rError() << ex.what() << std::endl;
-	}
-}
-
-void SelectionSetInterface::deleteAllSelectionSets()
-{
-	try
-	{
-		GetMapSelectionSetManager().deleteAllSelectionSets();
-	}
-	catch (const std::runtime_error & ex)
-	{
-		rError() << ex.what() << std::endl;
-	}
-}
-
-ScriptSelectionSet SelectionSetInterface::findSelectionSet(const std::string& name)
-{
-	try
-	{
-		return ScriptSelectionSet(GetMapSelectionSetManager().findSelectionSet(name));
-	}
-	catch (const std::runtime_error & ex)
-	{
-		rError() << ex.what() << std::endl;
-		return ScriptSelectionSet(selection::ISelectionSetPtr());
-	}
-}
-
-// IScriptInterface implementation
-void SelectionSetInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	// Expose the SelectionSystem::Visitor interface
-	py::class_<selection::ISelectionSetManager::Visitor, SelectionSetVisitorWrapper> visitor(scope, "SelectionSetVisitor");
-
-	visitor.def(py::init<>());
-	visitor.def("visit", &selection::ISelectionSetManager::Visitor::visit);
-
-	// Add SelectionSet declaration
-	py::class_<ScriptSelectionSet> selectionSet(scope, "SelectionSet");
-
-	selectionSet.def(py::init<const selection::ISelectionSetPtr&>());
-	selectionSet.def("getName", &ScriptSelectionSet::getName, py::return_value_policy::reference);
-	selectionSet.def("empty", &ScriptSelectionSet::empty);
-	selectionSet.def("clear", &ScriptSelectionSet::clear);
-	selectionSet.def("select", &ScriptSelectionSet::select);
-	selectionSet.def("deselect", &ScriptSelectionSet::deselect);
-	selectionSet.def("assignFromCurrentScene", &ScriptSelectionSet::assignFromCurrentScene);
-
-	// Add the module declaration to the given python namespace
-	py::class_<SelectionSetInterface> selectionSetManager(scope, "SelectionSetManager");
-
-	selectionSetManager.def("foreachSelectionSet", &SelectionSetInterface::foreachSelectionSet);
-	selectionSetManager.def("createSelectionSet", &SelectionSetInterface::createSelectionSet);
-	selectionSetManager.def("deleteSelectionSet", &SelectionSetInterface::deleteSelectionSet);
-	selectionSetManager.def("deleteAllSelectionSets", &SelectionSetInterface::deleteAllSelectionSets);
-	selectionSetManager.def("findSelectionSet", &SelectionSetInterface::findSelectionSet);
-
-	// Now point the Python variable "GlobalSelectionSetManager" to this instance
-	globals["GlobalSelectionSetManager"] = this;
+	lua_setglobal_object( L, "GlobalSelectionSetManager", this, "NeoRadiant.SelectionSetManager" );
 }
 
 } // namespace script

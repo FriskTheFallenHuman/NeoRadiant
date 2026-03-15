@@ -1,37 +1,31 @@
 #include "CommandSystemInterface.h"
-
+#include "../LuaHelper.h"
 #include "icommandsystem.h"
-#include <pybind11/pybind11.h>
 
-namespace script 
+namespace script
 {
 
-void CommandSystemInterface::execute(const std::string& buffer)
+void CommandSystemInterface::registerInterface( lua_State* L )
 {
-	// Just wrap the call
-	GlobalCommandSystem().execute(buffer);
-}
-
-void CommandSystemInterface::addStatement(const std::string& statementName, const std::string& str)
-{
-	GlobalCommandSystem().addStatement(statementName, str);
-}
-
-void CommandSystemInterface::removeCommand(const std::string& name) 
-{
-	GlobalCommandSystem().removeCommand(name);
-}
-
-void CommandSystemInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	pybind11::class_<CommandSystemInterface> commandSys(scope, "CommandSystem");
-
-	commandSys.def("execute", &CommandSystemInterface::execute);
-	commandSys.def("addStatement", &CommandSystemInterface::addStatement);
-	commandSys.def("removeCommand", &CommandSystemInterface::removeCommand);
-
-	// Now point the Python variable "GlobalCommandSystem" to this instance
-	globals["GlobalCommandSystem"] = this;
+	static const luaL_Reg methods[] =
+		{ { "execute",
+			[](lua_State* L)->int {
+				GlobalCommandSystem().execute( lua_checkstdstring( L, 2 ) );
+				return 0;
+			} },
+		{ "addStatement",
+			[](lua_State* L)->int {
+				GlobalCommandSystem().addStatement( lua_checkstdstring( L, 2 ), lua_checkstdstring( L, 3 ) );
+				return 0;
+			} },
+		{ "removeCommand",
+			[](lua_State* L)->int {
+				GlobalCommandSystem().removeCommand( lua_checkstdstring( L, 2 ) );
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.CommandSystem", methods );
+	lua_setglobal_object( L, "GlobalCommandSystem", this, "NeoRadiant.CommandSystem" );
 }
 
 } // namespace script

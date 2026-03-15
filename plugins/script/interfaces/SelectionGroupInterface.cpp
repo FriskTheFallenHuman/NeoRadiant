@@ -1,203 +1,128 @@
 #include "SelectionGroupInterface.h"
-
-#include "imap.h"
-#include "itextstream.h"
-#include <pybind11/pybind11.h>
+#include "../LuaHelper.h"
+#include "SceneGraphInterface.h"
+#include "iselectiongroup.h"
 
 namespace script
 {
 
-namespace
+constexpr const char* META_SELGROUP = "NeoRadiant.SelectionGroup";
+
+static selection::ISelectionGroupManager& getGroupMgr( lua_State* L )
 {
+	auto root = GlobalMapModule().getRoot();
+	if( !root )
+		luaL_error( L, "No map is currently loaded" );
+	return root->getSelectionGroupManager();
+}
 
-inline selection::ISelectionGroupManager& getMapGroupManager()
+void SelectionGroupInterface::registerInterface( lua_State* L )
 {
-	if (!GlobalMapModule().getRoot())
-	{
-		throw std::runtime_error("No map loaded.");
-	}
+	static luaL_Reg groupMethods[] =
+		{ { "getId",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, ( lua_Integer )lua_checkobject<selection::ISelectionGroup>( L, 1, META_SELGROUP )->getId() );
+				return 1;
+			} },
+		{ "setName",
+			[](lua_State* L)->int {
+				lua_checkobject<selection::ISelectionGroup>( L, 1, META_SELGROUP )->setName( lua_checkstdstring( L, 2 ) );
+				return 0;
+			} },
+		{ "getName",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<selection::ISelectionGroup>( L, 1, META_SELGROUP )->getName() );
+				return 1;
+			} },
+		{ "addNode",
+			[](lua_State* L)->int {
+				auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, 2, "NeoRadiant.SceneNode" ) );
+				if( ud && ud->node )
+					lua_checkobject<selection::ISelectionGroup>( L, 1, META_SELGROUP )->addNode( ud->node );
+				return 0;
+			} },
+		{ "removeNode",
+			[](lua_State* L)->int {
+				auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, 2, "NeoRadiant.SceneNode" ) );
+				if( ud && ud->node )
+					lua_checkobject<selection::ISelectionGroup>( L, 1, META_SELGROUP )->removeNode( ud->node );
+				return 0;
+			} },
+		{ "size",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, ( lua_Integer )lua_checkobject<selection::ISelectionGroup>( L, 1, META_SELGROUP )->size() );
+				return 1;
+			} },
+		{ "setSelected",
+			[](lua_State* L)->int {
+				lua_checkobject<selection::ISelectionGroup>( L, 1, META_SELGROUP )->setSelected( lua_toboolean( L, 2 ) != 0 );
+				return 0;
+			} },
+		{ "foreachNode",
+			[](lua_State* L)->int {
+				luaL_checktype( L, 2, LUA_TFUNCTION );
+				lua_pushvalue( L, 2 );
+				int ref = luaL_ref( L, LUA_REGISTRYINDEX );
+				lua_checkobject<selection::ISelectionGroup>( L, 1, META_SELGROUP )->foreachNode( [&]( const scene::INodePtr& n ) {
+					lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+					lua_pushscenenode( L, n );
+					if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+						lua_pop( L, 1 );
+				} );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_SELGROUP, groupMethods );
 
-	return GlobalMapModule().getRoot()->getSelectionGroupManager();
+	static luaL_Reg mgr[] =
+		{ { "createSelectionGroup",
+			[](lua_State* L)->int {
+				auto g = getGroupMgr( L ).createSelectionGroup();
+				if( !g ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, g.get(), META_SELGROUP );
+				return 1;
+			} },
+		{ "deleteSelectionGroup",
+			[](lua_State* L)->int {
+				getGroupMgr( L ).deleteSelectionGroup( ( std::size_t )luaL_checkinteger( L, 2 ) );
+				return 0;
+			} },
+		{ "deleteAllSelectionGroups",
+			[](lua_State* L)->int {
+				getGroupMgr( L ).deleteAllSelectionGroups();
+				return 0;
+			} },
+		{ "getSelectionGroup",
+			[](lua_State* L)->int {
+				auto g	  = getGroupMgr( L ).getSelectionGroup( ( std::size_t )luaL_checkinteger( L, 2 ) );
+				if( !g ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, g.get(), META_SELGROUP );
+				return 1;
+			} },
+		{ "foreachSelectionGroup",
+			[](lua_State* L)->int {
+				luaL_checktype( L, 2, LUA_TFUNCTION );
+				lua_pushvalue( L, 2 );
+				int ref	  = luaL_ref( L, LUA_REGISTRYINDEX );
+				getGroupMgr( L ).foreachSelectionGroup( [&]( selection::ISelectionGroup& g ) {
+					lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+					lua_pushobject( L, &g, META_SELGROUP );
+					if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+						lua_pop( L, 1 );
+				} );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.SelectionGroupManager", mgr );
+	lua_setglobal_object( L, "GlobalSelectionGroupManager", this, "NeoRadiant.SelectionGroupManager" );
 }
 
-}
-
-ScriptSelectionGroup::ScriptSelectionGroup(const selection::ISelectionGroupPtr& group) :
-	_group(group)
-{}
-
-std::size_t ScriptSelectionGroup::getId()
-{
-	return _group ? _group->getId() : 0;
-}
-
-const std::string& ScriptSelectionGroup::getName()
-{
-	return _group ? _group->getName() : _emptyStr;
-}
-
-void ScriptSelectionGroup::setName(const std::string& name)
-{
-	if (_group)
-	{
-		_group->setName(name);
-	}
-}
-
-void ScriptSelectionGroup::addNode(const ScriptSceneNode& node)
-{
-	if (_group)
-	{
-		_group->addNode(node);
-	}
-}
-
-void ScriptSelectionGroup::removeNode(const scene::INodePtr& node)
-{
-	if (_group)
-	{
-		_group->removeNode(node);
-	}
-}
-
-std::size_t ScriptSelectionGroup::size()
-{
-	return _group ? _group->size() : 0;
-}
-
-void ScriptSelectionGroup::setSelected(int selected)
-{
-	if (_group)
-	{
-		_group->setSelected(static_cast<bool>(selected));
-	}
-}
-
-void ScriptSelectionGroup::foreachNode(SelectionGroupVisitor& visitor)
-{
-	if (_group)
-	{
-		_group->foreachNode([&](const scene::INodePtr& node)
-		{
-			visitor.visit(node);
-		});
-	}
-}
-
-std::string ScriptSelectionGroup::_emptyStr;
-
-// -----------------------------------
-
-ScriptSelectionGroup SelectionGroupInterface::createSelectionGroup()
-{
-	try
-	{
-		return ScriptSelectionGroup(getMapGroupManager().createSelectionGroup());
-	}
-	catch (const std::runtime_error& ex)
-	{
-		rError() << ex.what() << std::endl;
-		return ScriptSelectionGroup(selection::ISelectionGroupPtr());
-	}
-}
-
-ScriptSelectionGroup SelectionGroupInterface::getSelectionGroup(std::size_t id)
-{
-	try
-	{
-		return ScriptSelectionGroup(getMapGroupManager().getSelectionGroup(id));
-	}
-	catch (const std::runtime_error& ex)
-	{
-		rError() << ex.what() << std::endl;
-		return ScriptSelectionGroup(selection::ISelectionGroupPtr());
-	}
-}
-
-ScriptSelectionGroup SelectionGroupInterface::findOrCreateSelectionGroup(std::size_t id)
-{
-	try
-	{
-		return ScriptSelectionGroup(getMapGroupManager().findOrCreateSelectionGroup(id));
-	}
-	catch (const std::runtime_error& ex)
-	{
-		rError() << ex.what() << std::endl;
-		return ScriptSelectionGroup(selection::ISelectionGroupPtr());
-	}
-}
-
-void SelectionGroupInterface::setGroupSelected(std::size_t id, int selected)
-{
-	try
-	{
-		getMapGroupManager().setGroupSelected(id, static_cast<bool>(selected));
-	}
-	catch (const std::exception& ex)
-	{
-		rError() << ex.what() << std::endl;
-	}
-}
-
-void SelectionGroupInterface::deleteAllSelectionGroups()
-{
-	try
-	{
-		getMapGroupManager().deleteAllSelectionGroups();
-	}
-	catch (const std::exception & ex)
-	{
-		rError() << ex.what() << std::endl;
-	}
-}
-
-void SelectionGroupInterface::deleteSelectionGroup(std::size_t id)
-{
-	try
-	{
-		getMapGroupManager().deleteSelectionGroup(id);
-	}
-	catch (const std::exception & ex)
-	{
-		rError() << ex.what() << std::endl;
-	}
-}
-
-// IScriptInterface implementation
-void SelectionGroupInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	// Expose the SelectionGroupVisitor interface
-	py::class_<SelectionGroupVisitor, SelectionGroupVisitorWrapper> visitor(scope, "SelectionGroupVisitor");
-
-	visitor.def(py::init<>());
-	visitor.def("visit", &SelectionGroupVisitor::visit);
-
-	// Add SelectionGroup declaration
-	py::class_<ScriptSelectionGroup> selectionGroup(scope, "SelectionGroup");
-
-	selectionGroup.def(py::init<const selection::ISelectionGroupPtr&>());
-	selectionGroup.def("getId", &ScriptSelectionGroup::getId);
-	selectionGroup.def("getName", &ScriptSelectionGroup::getName, py::return_value_policy::reference);
-	selectionGroup.def("setName", &ScriptSelectionGroup::setName);
-	selectionGroup.def("addNode", &ScriptSelectionGroup::addNode);
-	selectionGroup.def("removeNode", &ScriptSelectionGroup::removeNode);
-	selectionGroup.def("size", &ScriptSelectionGroup::size);
-	selectionGroup.def("setSelected", &ScriptSelectionGroup::setSelected);
-	selectionGroup.def("foreachNode", &ScriptSelectionGroup::foreachNode);
-
-	// Add the module declaration to the given python namespace
-	py::class_<SelectionGroupInterface> selectionGroupManager(scope, "SelectionGroupManager");
-
-	selectionGroupManager.def("createSelectionGroup", &SelectionGroupInterface::createSelectionGroup);
-	selectionGroupManager.def("getSelectionGroup", &SelectionGroupInterface::getSelectionGroup);
-	selectionGroupManager.def("findOrCreateSelectionGroup", &SelectionGroupInterface::findOrCreateSelectionGroup);
-	selectionGroupManager.def("setGroupSelected", &SelectionGroupInterface::setGroupSelected);
-	selectionGroupManager.def("deleteAllSelectionGroups", &SelectionGroupInterface::deleteAllSelectionGroups);
-	selectionGroupManager.def("deleteSelectionGroup", &SelectionGroupInterface::deleteSelectionGroup);
-
-	// Now point the Python variable "GlobalSelectionGroupManager" to this instance
-	globals["GlobalSelectionGroupManager"] = this;
-}
-
-
-}
+} // namespace script

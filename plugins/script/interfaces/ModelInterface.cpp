@@ -1,191 +1,139 @@
 #include "ModelInterface.h"
-
-#include <pybind11/pybind11.h>
-#include "imodelsurface.h"
-#include "modelskin.h"
+#include "../LuaHelper.h"
 
 namespace script
 {
 
-int ScriptModelSurface::getNumVertices() const
+constexpr const char* META_MODEL	 = "NeoRadiant.Model";
+constexpr const char* META_MODELSURF = "NeoRadiant.ModelSurface";
+
+void				  ModelInterface::registerInterface( lua_State* L )
 {
-	return _surface.getNumVertices();
-}
+	// IModelSurface
+	static luaL_Reg surfMethods[] =
+		{ { "getNumVertices",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, lua_checkobject<model::IModelSurface>( L, 1, META_MODELSURF )->getNumVertices() );
+				return 1;
+			} },
+		{ "getNumTriangles",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, lua_checkobject<model::IModelSurface>( L, 1, META_MODELSURF )->getNumTriangles() );
+				return 1;
+			} },
+		{ "getDefaultMaterial",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<model::IModelSurface>( L, 1, META_MODELSURF )->getDefaultMaterial() );
+				return 1;
+			} },
+		{ "getActiveMaterial",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<model::IModelSurface>( L, 1, META_MODELSURF )->getActiveMaterial() );
+				return 1;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_MODELSURF, surfMethods );
 
-int ScriptModelSurface::getNumTriangles() const
-{
-	return _surface.getNumTriangles();
-}
+	// IModel
+	static luaL_Reg modelMethods[] =
+		{ { "getFilename",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<model::IModel>( L, 1, META_MODEL )->getFilename() );
+				return 1;
+			} },
+		{ "getModelPath",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<model::IModel>( L, 1, META_MODEL )->getModelPath() );
+				return 1;
+			} },
+		{ "getSurfaceCount",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, lua_checkobject<model::IModel>( L, 1, META_MODEL )->getSurfaceCount() );
+				return 1;
+			} },
+		{ "getVertexCount",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, lua_checkobject<model::IModel>( L, 1, META_MODEL )->getVertexCount() );
+				return 1;
+			} },
+		{ "getPolyCount",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, lua_checkobject<model::IModel>( L, 1, META_MODEL )->getPolyCount() );
+				return 1;
+			} },
+		{ "getSurface",
+			[](lua_State* L)->int {
+				auto* m			   = lua_checkobject<model::IModel>( L, 1, META_MODEL );
+				int idx			   = ( int )luaL_checkinteger( L, 2 ) - 1;
+				if( idx < 0 || idx >= m->getSurfaceCount() ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, &const_cast<model::IModelSurface&>( m->getSurface( ( unsigned )idx ) ), META_MODELSURF );
+				return 1;
+			} },
+		{ "getLocalBounds",
+			[](lua_State* L)->int {
+				const AABB& bb			   = lua_checkobject<model::IModel>( L, 1, META_MODEL )->localAABB();
+				lua_pushaabb( L, bb );
+				return 1;
+			} },
+		{ "getMaterials",
+			[](lua_State* L)->int {
+				auto* m			   = lua_checkobject<model::IModel>( L, 1, META_MODEL );
+				lua_newtable( L );
+				for( int i = 0; i < m->getSurfaceCount(); ++i ) {
+					lua_pushstdstring( L, m->getSurface( ( unsigned )i ).getActiveMaterial() );
+					lua_rawseti( L, -2, i + 1 );
+				}
+				return 1;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_MODEL, modelMethods );
 
-const MeshVertex& ScriptModelSurface::getVertex(int vertexIndex) const
-{
-	return _surface.getVertex(vertexIndex);
-}
+	luaL_getmetatable( L, "NeoRadiant.SceneNode" );
 
-model::ModelPolygon ScriptModelSurface::getPolygon(int polygonIndex) const
-{
-	return _surface.getPolygon(polygonIndex);
-}
+	lua_pushcfunction( L, [](lua_State* L)->int {
+		auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, 1, "NeoRadiant.SceneNode" ) );
+		lua_pushboolean( L, ud && ud->node && Node_getModel( ud->node ) != nullptr );
+		return 1;
+	} );
+	lua_setfield( L, -2, "isModel" );
 
-std::string ScriptModelSurface::getDefaultMaterial() const
-{
-	return _surface.getDefaultMaterial();
-}
+	lua_pushcfunction( L, [](lua_State* L)->int {
+		auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, 1, "NeoRadiant.SceneNode" ) );
+		if( !ud || !ud->node ) {
+			lua_pushnil( L );
+			return 1;
+		}
+		auto modelNode = Node_getModel( ud->node );
+		if( !modelNode ) {
+			lua_pushnil( L );
+			return 1;
+		}
+		lua_pushobject( L, &modelNode->getIModel(), META_MODEL );
+		return 1;
+	} );
+	lua_setfield( L, -2, "getModel" );
 
-std::string ScriptModelSurface::getActiveMaterial() const
-{
-	return _surface.getActiveMaterial();
-}
+	lua_pop( L, 1 ); // pop metatable
 
-// ----------- ScriptModelNode -----------
+	// ModelCache
+	static luaL_Reg cache[] =
+		{ { "getModel",
+			[](lua_State* L)->int {
+				auto m = GlobalModelCache().getModel( lua_checkstdstring( L, 2 ) );
+				if( !m ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, m.get(), META_MODEL );
+				return 1;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.ModelCache", cache );
 
-// Constructor, checks if the passed node is actually an entity
-ScriptModelNode::ScriptModelNode(const scene::INodePtr& node) :
-	ScriptSceneNode((node != NULL && Node_isModel(node)) ? node : scene::INodePtr())
-{}
-
-std::string ScriptModelNode::getFilename()
-{
-	model::ModelNodePtr modelNode = Node_getModel(*this);
-	if (modelNode == NULL) return "";
-
-	return modelNode->getIModel().getFilename();
-}
-
-std::string ScriptModelNode::getModelPath()
-{
-	model::ModelNodePtr modelNode = Node_getModel(*this);
-	if (modelNode == NULL) return "";
-
-	return modelNode->getIModel().getModelPath();
-}
-
-int ScriptModelNode::getSurfaceCount()
-{
-	model::ModelNodePtr modelNode = Node_getModel(*this);
-	if (modelNode == NULL) return -1;
-
-	return modelNode->getIModel().getSurfaceCount();
-}
-
-int ScriptModelNode::getVertexCount()
-{
-	model::ModelNodePtr modelNode = Node_getModel(*this);
-	if (modelNode == NULL) return -1;
-
-	return modelNode->getIModel().getVertexCount();
-}
-
-int ScriptModelNode::getPolyCount()
-{
-	model::ModelNodePtr modelNode = Node_getModel(*this);
-	if (modelNode == NULL) return -1;
-
-	return modelNode->getIModel().getPolyCount();
-}
-
-ScriptModelSurface ScriptModelNode::getSurface(int surfaceNum)
-{
-	model::ModelNodePtr modelNode = Node_getModel(*this);
-	if (modelNode == NULL) throw std::runtime_error("Empty model node.");
-
-	return ScriptModelSurface(modelNode->getIModel().getSurface(surfaceNum));
-}
-
-model::StringList ScriptModelNode::getActiveMaterials()
-{
-	model::ModelNodePtr modelNode = Node_getModel(*this);
-	if (modelNode == NULL) return model::StringList();
-
-	// Get the list of default shaders from this model, this is without any skins applied
-	model::StringList materials = modelNode->getIModel().getActiveMaterials();
-
-	// Check if the model is a skinned one, so let's check for active skins
-	auto skinnedModel = std::dynamic_pointer_cast<SkinnedModel>(modelNode);
-
-	if (skinnedModel)
-	{
-		// This is a skinned model, get the surface remap
-		std::string curSkin = skinnedModel->getSkin();
-
-		auto skin = GlobalModelSkinCache().findSkin(curSkin);
-
-        if (skin)
-        {
-            for (auto& material : materials)
-            {
-                std::string remap = skin->getRemap(material);
-
-                if (remap.empty()) continue;
-
-                // Remapping found, use this material instead of the default material
-                material = remap;
-            }
-        }
-	}
-
-	return materials;
-}
-
-// Checks if the given SceneNode structure is a ModelNode
-bool ScriptModelNode::isModel(const ScriptSceneNode& node) {
-	return Node_isModel(node);
-}
-
-// "Cast" service for Python, returns a ScriptModelNode.
-// The returned node is non-NULL if the cast succeeded
-ScriptModelNode ScriptModelNode::getModel(const ScriptSceneNode& node) {
-	// Try to cast the node onto a model
-	model::ModelNodePtr modelNode = Node_getModel(node);
-
-	// Construct a modelNode (contained node is NULL if not a model)
-	return ScriptModelNode(modelNode != NULL
-                           ? node
-                           : ScriptSceneNode(scene::INodePtr()));
-}
-
-void ModelInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	py::class_<MeshVertex> vertex(scope, "MeshVertex");
-
-	vertex.def_readwrite("texcoord", &MeshVertex::texcoord);
-	vertex.def_readwrite("normal", &MeshVertex::normal);
-	vertex.def_readwrite("vertex", &MeshVertex::vertex);
-	vertex.def_readwrite("tangent", &MeshVertex::tangent);
-	vertex.def_readwrite("bitangent", &MeshVertex::bitangent);
-	vertex.def_readwrite("colour", &MeshVertex::colour);
-
-    // Register the old name as alias to MeshVertex
-    scope.add_object("ArbitraryMeshVertex", vertex);
-
-	py::class_<model::ModelPolygon> poly(scope, "ModelPolygon");
-
-	poly.def_readonly("a", &model::ModelPolygon::a);
-	poly.def_readonly("b", &model::ModelPolygon::b);
-	poly.def_readonly("c", &model::ModelPolygon::c);
-
-	// Add the ModelSurface interface
-	py::class_<ScriptModelSurface> surface(scope, "ModelSurface");
-
-	surface.def(py::init<const model::IModelSurface&>());
-	surface.def("getNumVertices", &ScriptModelSurface::getNumVertices);
-	surface.def("getNumTriangles", &ScriptModelSurface::getNumTriangles);
-	surface.def("getVertex", &ScriptModelSurface::getVertex, py::return_value_policy::reference);
-	surface.def("getPolygon", &ScriptModelSurface::getPolygon);
-	surface.def("getDefaultMaterial", &ScriptModelSurface::getDefaultMaterial);
-	surface.def("getActiveMaterial", &ScriptModelSurface::getActiveMaterial);
-
-	// Add the ModelNode interface
-	py::class_<ScriptModelNode, ScriptSceneNode> modelNode(scope, "ModelNode");
-
-	modelNode.def(py::init<const scene::INodePtr&>());
-	modelNode.def("getFilename", &ScriptModelNode::getFilename);
-	modelNode.def("getModelPath", &ScriptModelNode::getModelPath);
-	modelNode.def("getSurfaceCount", &ScriptModelNode::getSurfaceCount);
-	modelNode.def("getVertexCount", &ScriptModelNode::getVertexCount);
-	modelNode.def("getPolyCount", &ScriptModelNode::getPolyCount);
-	modelNode.def("getActiveMaterials", &ScriptModelNode::getActiveMaterials);
-	modelNode.def("getSurface", &ScriptModelNode::getSurface);
+	lua_setglobal_object( L, "GlobalModelCache", this, "NeoRadiant.ModelCache" );
 }
 
 } // namespace script

@@ -1,87 +1,113 @@
 #include "SelectionInterface.h"
+#include "../LuaHelper.h"
 
-namespace script 
+namespace script
 {
 
-const SelectionInfo& SelectionInterface::getSelectionInfo() 
+void SelectionInterface::registerInterface( lua_State* L )
 {
-	return GlobalSelectionSystem().getSelectionInfo();
-}
+	static const luaL_Reg methods[] =
+		{ { "getSelectionInfo",
+			[](lua_State* L)->int {
+				const SelectionInfo& si = GlobalSelectionSystem().getSelectionInfo();
+				lua_newtable( L );
+				lua_pushinteger( L, si.totalCount );
+				lua_setfield( L, -2, "totalCount" );
+				lua_pushinteger( L, si.brushCount );
+				lua_setfield( L, -2, "brushCount" );
+				lua_pushinteger( L, si.patchCount );
+				lua_setfield( L, -2, "patchCount" );
+				lua_pushinteger( L, si.entityCount );
+				lua_setfield( L, -2, "entityCount" );
+				lua_pushinteger( L, si.componentCount );
+				lua_setfield( L, -2, "componentCount" );
+				return 1;
+			} },
+		{ "foreachSelected",
+			[](lua_State* L)->int {
+				luaL_checktype( L, 2, LUA_TFUNCTION );
+				lua_pushvalue( L, 2 );
+				int		  ref		= luaL_ref( L, LUA_REGISTRYINDEX );
+				struct V : selection::SelectionSystem::Visitor {
+					lua_State* L;
+					int		   ref;
+					void	   visit( const scene::INodePtr& n ) const override
+					{
+						lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+						lua_pushscenenode( L, n );
+						if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+							lua_pop( L, 1 );
+					}
+				};
+				V		  v;
+				v.L					= L;
+				v.ref				= ref;
+				GlobalSelectionSystem().foreachSelected( v );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ "foreachSelectedComponent",
+			[](lua_State* L)->int {
+				luaL_checktype( L, 2, LUA_TFUNCTION );
+				lua_pushvalue( L, 2 );
+				int		  ref		= luaL_ref( L, LUA_REGISTRYINDEX );
+				struct V : selection::SelectionSystem::Visitor {
+					lua_State* L;
+					int		   ref;
+					void	   visit( const scene::INodePtr& n ) const override
+					{
+						lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+						lua_pushscenenode( L, n );
+						if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+							lua_pop( L, 1 );
+					}
+				};
+				V		  v;
+				v.L					= L;
+				v.ref				= ref;
+				GlobalSelectionSystem().foreachSelectedComponent( v );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ "foreachSelectedFace",
+			[](lua_State* L)->int {
+				luaL_checktype( L, 2, LUA_TFUNCTION );
+				lua_pushvalue( L, 2 );
+				int		  ref		= luaL_ref( L, LUA_REGISTRYINDEX );
+				GlobalSelectionSystem().foreachFace( [&]( IFace& face ) {
+					lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+					lua_pushface( L, &face );
+					if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+						lua_pop( L, 1 );
+				} );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ "setSelectedAll",
+			[](lua_State* L)->int {
+				GlobalSelectionSystem().setSelectedAll( lua_toboolean( L, 2 ) != 0 );
+				return 0;
+			} },
+		{ "setSelectedAllComponents",
+			[](lua_State* L)->int {
+				GlobalSelectionSystem().setSelectedAllComponents( lua_toboolean( L, 2 ) != 0 );
+				return 0;
+			} },
+		{ "ultimateSelected",
+			[](lua_State* L)->int {
+				lua_pushscenenode( L, GlobalSelectionSystem().ultimateSelected() );
+				return 1;
+			} },
+		{ "penultimateSelected",
+			[](lua_State* L)->int {
+				lua_pushscenenode( L, GlobalSelectionSystem().penultimateSelected() );
+				return 1;
+			} },
 
-void SelectionInterface::foreachSelected(const selection::SelectionSystem::Visitor& visitor)
-{
-	GlobalSelectionSystem().foreachSelected(visitor);
-}
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.SelectionSystem", methods );
 
-void SelectionInterface::foreachSelectedComponent(const selection::SelectionSystem::Visitor& visitor)
-{
-	GlobalSelectionSystem().foreachSelectedComponent(visitor);
-}
-
-void SelectionInterface::foreachSelectedFace(SelectedFaceVisitor& visitor)
-{
-    GlobalSelectionSystem().foreachFace([&](IFace& face)
-    {
-        visitor.visitFace(face);
-    });
-}
-
-void SelectionInterface::setSelectedAll(int selected)
-{
-	GlobalSelectionSystem().setSelectedAll(static_cast<bool>(selected));
-}
-
-void SelectionInterface::setSelectedAllComponents(int selected)
-{
-	GlobalSelectionSystem().setSelectedAllComponents(static_cast<bool>(selected));
-}
-
-ScriptSceneNode SelectionInterface::ultimateSelected()
-{
-	return GlobalSelectionSystem().ultimateSelected();
-}
-
-ScriptSceneNode SelectionInterface::penultimateSelected() 
-{
-	return GlobalSelectionSystem().penultimateSelected();
-}
-
-// IScriptInterface implementation
-void SelectionInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	// Expose the SelectionInfo structure
-	py::class_<SelectionInfo> selInfo(scope, "SelectionInformation");
-	selInfo.def(py::init<>());
-	selInfo.def_readonly("totalCount", &SelectionInfo::totalCount);
-	selInfo.def_readonly("patchCount", &SelectionInfo::patchCount);
-	selInfo.def_readonly("brushCount", &SelectionInfo::brushCount);
-	selInfo.def_readonly("entityCount", &SelectionInfo::entityCount);
-	selInfo.def_readonly("componentCount", &SelectionInfo::componentCount);
-
-	// Expose the SelectionSystem::Visitor interface
-	py::class_<selection::SelectionSystem::Visitor, SelectionVisitorWrapper> visitor(scope, "SelectionVisitor");
-	visitor.def(py::init<>());
-	visitor.def("visit", &selection::SelectionSystem::Visitor::visit);
-
-    // Expose the SelectionFaceVisitor interface
-    py::class_<SelectedFaceVisitor, SelectedFaceVisitorWrapper> faceVisitor(scope, "SelectedFaceVisitor");
-    faceVisitor.def(py::init<>());
-    faceVisitor.def("visitFace", &SelectedFaceVisitor::visitFace);
-
-	// Add the module declaration to the given python namespace
-	py::class_<SelectionInterface> selSys(scope, "SelectionSystem");
-
-	selSys.def("getSelectionInfo", &SelectionInterface::getSelectionInfo, py::return_value_policy::reference);
-	selSys.def("foreachSelected", &SelectionInterface::foreachSelected);
-	selSys.def("foreachSelectedComponent", &SelectionInterface::foreachSelectedComponent);
-	selSys.def("foreachSelectedFace", &SelectionInterface::foreachSelectedFace);
-	selSys.def("setSelectedAll", &SelectionInterface::setSelectedAll);
-	selSys.def("setSelectedAllComponents", &SelectionInterface::setSelectedAllComponents);
-	selSys.def("ultimateSelected", &SelectionInterface::ultimateSelected);
-	selSys.def("penultimateSelected", &SelectionInterface::penultimateSelected);
-
-	// Now point the Python variable "GlobalSelectionSystem" to this instance
-	globals["GlobalSelectionSystem"] = this;
+	lua_setglobal_object( L, "GlobalSelectionSystem", this, "NeoRadiant.SelectionSystem" );
 }
 
 } // namespace script

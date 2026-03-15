@@ -9,8 +9,7 @@ namespace script
 
 // Singleton vector carrying scene::INodePtrs
 // Used to prevent auto-destruction on node creation
-class SceneNodeBuffer :
-	public std::vector<scene::INodePtr>
+class SceneNodeBuffer : public std::vector<scene::INodePtr>
 {
 public:
 	static SceneNodeBuffer& Instance();

@@ -1,93 +1,77 @@
 #include "MapInterface.h"
 
-#include <pybind11/pybind11.h>
+#include "../LuaHelper.h"
 
 #include "imap.h"
 
-namespace script 
+namespace script
 {
 
-ScriptSceneNode MapInterface::getWorldSpawn()
+void MapInterface::registerInterface( lua_State* L )
 {
-	return ScriptSceneNode(GlobalMapModule().getWorldspawn());
-}
+	// MapEditMode constants
+	lua_pushinteger( L, ( lua_Integer )IMap::EditMode::Normal );
+	lua_setglobal( L, "MAP_MODE_NORMAL" );
+	lua_pushinteger( L, ( lua_Integer )IMap::EditMode::Merge );
+	lua_setglobal( L, "MAP_MODE_MERGE" );
 
-std::string MapInterface::getMapName()
-{
-	return GlobalMapModule().getMapName();
-}
+	static const luaL_Reg methods[] =
+		{ { "getWorldSpawn",
+			[](lua_State* L)->int {
+				lua_pushscenenode( L, GlobalMapModule().getWorldspawn() );
+				return 1;
+			} },
+		{ "getMapName",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, GlobalMapModule().getMapName() );
+				return 1;
+			} },
+		{ "getRoot",
+			[](lua_State* L)->int {
+				lua_pushscenenode( L, GlobalMapModule().getRoot() );
+				return 1;
+			} },
+		{ "isModified",
+			[](lua_State* L)->int {
+				lua_pushboolean( L, GlobalMapModule().isModified() );
+				return 1;
+			} },
+		{ "getEditMode",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, ( lua_Integer )GlobalMapModule().getEditMode() );
+				return 1;
+			} },
+		{ "setEditMode",
+			[](lua_State* L)->int {
+				GlobalMapModule().setEditMode( static_cast<IMap::EditMode>( luaL_checkinteger( L, 2 ) ) );
+				return 0;
+			} },
+		{ "showPointFile",
+			[](lua_State* L)->int {
+				std::string p			= lua_checkstdstring( L, 2 );
+				if( !p.empty() )
+					GlobalMapModule().showPointFile( p );
+				return 0;
+			} },
+		{ "isPointTraceVisible",
+			[](lua_State* L)->int {
+				lua_pushboolean( L, GlobalMapModule().isPointTraceVisible() );
+				return 1;
+			} },
+		{ "getPointFileList",
+			[](lua_State* L)->int {
+				lua_newtable( L );
+				int		  i			= 1;
+				GlobalMapModule().forEachPointfile( [&]( const fs::path& p ) {
+					lua_pushstdstring( L, p.string() );
+					lua_rawseti( L, -2, i++ );
+				} );
+				return 1;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.Map", methods );
 
-IMap::EditMode MapInterface::getEditMode()
-{
-    return GlobalMapModule().getEditMode();
-}
-
-void MapInterface::setEditMode(IMap::EditMode mode)
-{
-    GlobalMapModule().setEditMode(mode);
-}
-
-ScriptSceneNode MapInterface::getRoot()
-{
-    return ScriptSceneNode(GlobalMapModule().getRoot());
-}
-
-bool MapInterface::isModified()
-{
-    return GlobalMapModule().isModified();
-}
-
-void MapInterface::showPointFile(const std::string& filePath)
-{
-    if (!filePath.empty())
-    {
-        GlobalMapModule().showPointFile(filePath);
-    }
-}
-
-bool MapInterface::isPointTraceVisible()
-{
-    return GlobalMapModule().isPointTraceVisible();
-}
-
-std::vector<std::string> MapInterface::getPointFileList()
-{
-    std::vector<std::string> files;
-
-    GlobalMapModule().forEachPointfile([&](const fs::path& path)
-    {
-        files.push_back(path.string());
-    });
-
-    return files;
-}
-
-// IScriptInterface implementation
-void MapInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-    // Add the module declaration to the given python namespace
-	py::class_<MapInterface> map(scope, "Map");
-
-    // Expose the edit mode enum
-    py::enum_<IMap::EditMode>(scope, "MapEditMode")
-        .value("Normal", IMap::EditMode::Normal)
-        .value("Merge", IMap::EditMode::Merge)
-        .export_values();
-
-	map.def("getWorldSpawn", &MapInterface::getWorldSpawn);
-	map.def("getMapName", &MapInterface::getMapName);
-	map.def("getRoot", &MapInterface::getRoot);
-	map.def("isModified", &MapInterface::isModified);
-
-    map.def("getEditMode", &MapInterface::getEditMode);
-    map.def("setEditMode", &MapInterface::setEditMode);
-
-    map.def("showPointFile", &MapInterface::showPointFile);
-    map.def("isPointTraceVisible", &MapInterface::isPointTraceVisible);
-    map.def("getPointFileList", &MapInterface::getPointFileList);
-
-	// Now point the Python variable "GlobalMap" to this instance
-	globals["GlobalMap"] = this;
+	lua_setglobal_object( L, "GlobalMap", this, "NeoRadiant.Map" );
 }
 
 } // namespace script

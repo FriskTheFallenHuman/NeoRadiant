@@ -5,7 +5,7 @@
 #include "wxutil/PanedPosition.h"
 
 class wxCommandEvent;
-namespace wxutil { class PythonSourceViewCtrl; }
+namespace wxutil { class LuaSourceViewCtrl; }
 
 class wxSplitterWindow;
 
@@ -20,7 +20,7 @@ private:
 	wxutil::ConsoleView* _outView;
     wxSplitterWindow* _paned;
 
-	wxutil::PythonSourceViewCtrl* _view;
+	wxutil::LuaSourceViewCtrl* _view;
 
     wxutil::PanedPosition _panedPosition;
 

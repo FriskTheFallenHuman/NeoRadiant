@@ -1,289 +1,166 @@
 #include "PatchInterface.h"
+#include "../LuaHelper.h"
 
-#include <pybind11/pybind11.h>
-#include <pybind11/stl_bind.h>
-
-#include "ipatch.h"
-#include "itextstream.h"
-
-#include "../SceneNodeBuffer.h"
-
-namespace script 
+namespace script
 {
 
-ScriptPatchNode::ScriptPatchNode(const scene::INodePtr& node) :
-	ScriptSceneNode((node != NULL && Node_isPatch(node)) ? node : scene::INodePtr())
-{}
+constexpr const char* META_PATCH = "NeoRadiant.PatchNode";
 
-bool ScriptPatchNode::isPatch(const ScriptSceneNode& node)
+static void lua_pushpatchcontrol( lua_State* L, const PatchControl& pc )
 {
-	return Node_isPatch(node);
+	lua_newtable( L );
+	lua_pushvec3( L, pc.vertex );
+	lua_setfield( L, -2, "vertex" );
+	lua_pushvec2( L, pc.texcoord );
+	lua_setfield( L, -2, "texcoord" );
 }
 
-ScriptPatchNode ScriptPatchNode::getPatch(const ScriptSceneNode& node) 
+void PatchInterface::registerInterface( lua_State* L )
 {
-	// Try to cast the node onto a patch
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(
-		static_cast<scene::INodePtr>(node)
-	);
+	static luaL_Reg patchMethods[] =
+		{ { "getShader",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<IPatch>( L, 1, META_PATCH )->getShader() );
+				return 1;
+			} },
+		{ "setShader",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->setShader( lua_checkstdstring( L, 2 ) );
+				return 0;
+			} },
+		{ "getWidth",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, ( lua_Integer )lua_checkobject<IPatch>( L, 1, META_PATCH )->getWidth() );
+				return 1;
+			} },
+		{ "getHeight",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, ( lua_Integer )lua_checkobject<IPatch>( L, 1, META_PATCH )->getHeight() );
+				return 1;
+			} },
+		{ "setDims",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->setDims( ( std::size_t )luaL_checkinteger( L, 2 ), ( std::size_t )luaL_checkinteger( L, 3 ) );
+				return 0;
+			} },
+		{ "ctrlAt",
+			[](lua_State* L)->int {
+				auto* p			   = lua_checkobject<IPatch>( L, 1, META_PATCH );
+				std::size_t col = ( std::size_t )luaL_checkinteger( L, 2 ) - 1;
+				std::size_t row = ( std::size_t )luaL_checkinteger( L, 3 ) - 1;
+				lua_pushpatchcontrol( L, p->ctrlAt( row, col ) );
+				return 1;
+			} },
+		{ "controlPointsChanged",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->controlPointsChanged();
+				return 0;
+			} },
+		{ "isValid",
+			[](lua_State* L)->int {
+				lua_pushboolean( L, lua_checkobject<IPatch>( L, 1, META_PATCH )->isValid() );
+				return 1;
+			} },
+		{ "subdivisionsFixed",
+			[](lua_State* L)->int {
+				lua_pushboolean( L, lua_checkobject<IPatch>( L, 1, META_PATCH )->subdivisionsFixed() );
+				return 1;
+			} },
+		{ "getSubdivisions",
+			[](lua_State* L)->int {
+				const auto& s			   = lua_checkobject<IPatch>( L, 1, META_PATCH )->getSubdivisions();
+				lua_pushinteger( L, s.x() );
+				lua_pushinteger( L, s.y() );
+				return 2;
+			} },
+		{ "setFixedSubdivisions",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->setFixedSubdivisions( lua_toboolean( L, 2 ) != 0, Subdivisions( ( int )luaL_checkinteger( L, 3 ), ( int )luaL_checkinteger( L, 4 ) ) );
+				return 0;
+			} },
+		{ "appendPoints",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->appendPoints( lua_toboolean( L, 2 ) != 0, lua_toboolean( L, 3 ) != 0 );
+				return 0;
+			} },
+		{ "insertRemove",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->insertRemove( lua_toboolean( L, 2 ) != 0, lua_toboolean( L, 3 ) != 0, lua_toboolean( L, 4 ) != 0 );
+				return 0;
+			} },
+		{ "invertMatrix",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->invertMatrix();
+				return 0;
+			} },
+		{ "transposeMatrix",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->transposeMatrix();
+				return 0;
+			} },
+		{ "normaliseTexture",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->normaliseTexture();
+				return 0;
+			} },
+		{ "fitTexture",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->fitTexture( ( float )luaL_checknumber( L, 2 ), ( float )luaL_checknumber( L, 3 ) );
+				return 0;
+			} },
+		{ "flipTexture",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->flipTexture( ( int )luaL_checkinteger( L, 2 ) );
+				return 0;
+			} },
+		{ "undoSave",
+			[](lua_State* L)->int {
+				lua_checkobject<IPatch>( L, 1, META_PATCH )->undoSave();
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_PATCH, patchMethods );
 
-	// Construct a patchNode (contained node may be NULL)
-	return (patchNode != NULL) ? ScriptPatchNode(node) : ScriptPatchNode(scene::INodePtr());
-}
+	luaL_getmetatable( L, "NeoRadiant.SceneNode" );
 
-void ScriptPatchNode::setDims(std::size_t width, std::size_t height)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
+	lua_pushcfunction( L, [](lua_State* L)->int {
+		auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, 1, "NeoRadiant.SceneNode" ) );
+		lua_pushboolean( L, ud && ud->node && Node_isPatch( ud->node ) );
+		return 1;
+	} );
+	lua_setfield( L, -2, "isPatch" );
 
-	patchNode->getPatch().setDims(width, height);
-}
+	lua_pushcfunction( L, [](lua_State* L)->int {
+		auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, 1, "NeoRadiant.SceneNode" ) );
+		if( !ud || !ud->node || !Node_isPatch( ud->node ) ) {
+			lua_pushnil( L );
+			return 1;
+		}
+		IPatch* p = Node_getIPatch( ud->node );
+		if( !p ) {
+			lua_pushnil( L );
+			return 1;
+		}
+		lua_pushobject( L, p, META_PATCH );
+		return 1;
+	} );
+	lua_setfield( L, -2, "getPatch" );
 
-std::size_t ScriptPatchNode::getWidth() const
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return 0;
+	lua_pop( L, 1 );
 
-	return patchNode->getPatch().getWidth();
-}
+	static luaL_Reg creator[] = {
+		{ "createPatch",
+			[](lua_State* L)->int {
+				auto type = static_cast<patch::PatchDefType>( luaL_optinteger( L, 2, 0 ) );
+				auto node	  = GlobalPatchModule().createPatch( type );
+				lua_pushscenenode( L, node );
+				return 1;
+			} },
+		{ nullptr, nullptr }
+	};
+	lua_registerclass( L, "NeoRadiant.PatchCreator", creator );
 
-std::size_t ScriptPatchNode::getHeight() const
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return 0;
-
-	return patchNode->getPatch().getHeight();
-}
-
-PatchMesh ScriptPatchNode::getTesselatedPatchMesh() const
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return PatchMesh();
-
-	return patchNode->getPatch().getTesselatedPatchMesh();
-}
-
-PatchControl& ScriptPatchNode::ctrlAt(std::size_t row, std::size_t col)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return _emptyPatchControl;
-
-	IPatch& patch = patchNode->getPatch();
-
-	if (row > patch.getHeight() || col > patch.getWidth())
-	{
-		rError() << "One or more patch control indices out of bounds: " << row << "," << col << std::endl;
-		return _emptyPatchControl;
-	}
-
-	return patchNode->getPatch().ctrlAt(row, col);
-}
-
-void ScriptPatchNode::insertColumns(std::size_t colIndex)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
-
-	return patchNode->getPatch().insertColumns(colIndex);
-}
-
-void ScriptPatchNode::insertRows(std::size_t rowIndex)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
-
-	return patchNode->getPatch().insertRows(rowIndex);
-}
-
-void ScriptPatchNode::removePoints(int columns, std::size_t index)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
-
-	return patchNode->getPatch().removePoints(static_cast<bool>(columns), index);
-}
-
-void ScriptPatchNode::appendPoints(int columns, int beginning)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
-
-	return patchNode->getPatch().appendPoints(static_cast<bool>(columns), static_cast<bool>(beginning));
-}
-
-bool ScriptPatchNode::isValid() const
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return false;
-
-	return patchNode->getPatch().isValid();
-}
-
-bool ScriptPatchNode::isDegenerate() const
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return true;
-
-	return patchNode->getPatch().isDegenerate();
-}
-
-void ScriptPatchNode::controlPointsChanged()
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
-
-	patchNode->getPatch().controlPointsChanged();
-}
-
-void ScriptPatchNode::translateTexture(float s, float t)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
-
-	patchNode->getPatch().translateTexture(s, t);
-}
-
-const std::string& ScriptPatchNode::getShader() const
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return _emptyShader;
-
-	return patchNode->getPatch().getShader();
-}
-
-void ScriptPatchNode::setShader(const std::string& name)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
-
-	patchNode->getPatch().setShader(name);
-}
-
-bool ScriptPatchNode::hasVisibleMaterial()
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return false;
-
-	return patchNode->getPatch().hasVisibleMaterial();
-}
-
-bool ScriptPatchNode::subdivisionsFixed() const
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return false;
-
-	return patchNode->getPatch().subdivisionsFixed();
-}
-
-Subdivisions ScriptPatchNode::getSubdivisions() const
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return Subdivisions();
-
-	return patchNode->getPatch().getSubdivisions();
-}
-
-void ScriptPatchNode::setFixedSubdivisions(int isFixed, const Subdivisions& divisions)
-{
-	IPatchNodePtr patchNode = std::dynamic_pointer_cast<IPatchNode>(_node.lock());
-	if (patchNode == NULL) return;
-
-	patchNode->getPatch().setFixedSubdivisions(static_cast<bool>(isFixed), divisions);
-}
-
-// Initialise static members
-const std::string ScriptPatchNode::_emptyShader;
-PatchControl ScriptPatchNode::_emptyPatchControl;
-
-ScriptSceneNode PatchInterface::createPatchDef2()
-{
-	// Create a new patch and return the script scene node
-	scene::INodePtr node = GlobalPatchModule().createPatch(patch::PatchDefType::Def2);
-
-	// Add the node to the buffer otherwise it will be deleted immediately,
-	// as ScriptSceneNodes are using weak_ptrs.
-	SceneNodeBuffer::Instance().push_back(node);
-
-	return ScriptSceneNode(node);
-}
-
-ScriptSceneNode PatchInterface::createPatchDef3()
-{
-	// Create a new patch and return the script scene node
-	scene::INodePtr node = GlobalPatchModule().createPatch(patch::PatchDefType::Def3);
-
-	// Add the node to the buffer otherwise it will be deleted immediately,
-	// as ScriptSceneNodes are using weak_ptrs.
-	SceneNodeBuffer::Instance().push_back(node);
-
-	return ScriptSceneNode(node);
-}
-
-void PatchInterface::registerInterface(py::module& scope, py::dict& globals) 
-{
-	py::class_<PatchControl> patchControl(scope, "PatchMeshControl");
-	patchControl.def_readwrite("vertex", &PatchControl::vertex);
-	patchControl.def_readwrite("texcoord", &PatchControl::texcoord);
-
-	py::class_<Subdivisions> subdivisions(scope, "Subdivisions");
-	subdivisions.def(py::init<unsigned int, unsigned int>());
-	subdivisions.def(py::init<const Subdivisions&>());
-
-	// greebo: Pick the correct overload - this is hard to read, but it is necessary
-	subdivisions.def("x", static_cast<unsigned int& (Subdivisions::*)()>(&Subdivisions::x), 
-		py::return_value_policy::reference);
-	subdivisions.def("y", static_cast<unsigned int& (Subdivisions::*)()>(&Subdivisions::y), 
-		py::return_value_policy::reference);
-
-	py::class_<VertexNT> patchVertex(scope, "PatchMeshVertex");
-
-	patchVertex.def(py::init<>());
-	patchVertex.def_readwrite("vertex", &VertexNT::vertex);
-	patchVertex.def_readwrite("texcoord", &VertexNT::texcoord);
-	patchVertex.def_readwrite("normal", &VertexNT::normal);
-
-	// Declare the VertexNT vector
-	py::bind_vector< std::vector<VertexNT> >(scope, "PatchMeshVertices");
-
-	py::class_<PatchMesh> patchMesh(scope, "PatchMesh");
-	patchMesh.def(py::init<>());
-	patchMesh.def_readonly("width", &PatchMesh::width);
-	patchMesh.def_readonly("height", &PatchMesh::height);
-	patchMesh.def_readonly("vertices", &PatchMesh::vertices);
-
-	// Define a PatchNode interface
-	py::class_<ScriptPatchNode, ScriptSceneNode> patchNode(scope, "PatchNode");
-
-	patchNode.def(py::init<const scene::INodePtr&>());
-	patchNode.def("setDims", &ScriptPatchNode::setDims);
-	patchNode.def("getWidth", &ScriptPatchNode::getWidth);
-	patchNode.def("getHeight", &ScriptPatchNode::getHeight);
-	patchNode.def("ctrlAt", &ScriptPatchNode::ctrlAt, py::return_value_policy::reference_internal);
-	patchNode.def("insertColumns", &ScriptPatchNode::insertColumns);
-	patchNode.def("insertRows", &ScriptPatchNode::insertRows);
-	patchNode.def("removePoints", &ScriptPatchNode::removePoints);
-	patchNode.def("appendPoints", &ScriptPatchNode::appendPoints);
-	patchNode.def("isValid", &ScriptPatchNode::isValid);
-	patchNode.def("isDegenerate", &ScriptPatchNode::isDegenerate);
-	patchNode.def("getShader", &ScriptPatchNode::getShader, py::return_value_policy::reference);
-	patchNode.def("setShader", &ScriptPatchNode::setShader);
-	patchNode.def("hasVisibleMaterial", &ScriptPatchNode::hasVisibleMaterial);
-	patchNode.def("subdivionsFixed", &ScriptPatchNode::subdivisionsFixed); // typo used to be there in previous releases, leave it in there for compatibility reasons
-	patchNode.def("subdivisionsFixed", &ScriptPatchNode::subdivisionsFixed);
-	patchNode.def("getSubdivisions", &ScriptPatchNode::getSubdivisions);
-	patchNode.def("setFixedSubdivisions", &ScriptPatchNode::setFixedSubdivisions);
-	patchNode.def("controlPointsChanged", &ScriptPatchNode::controlPointsChanged);
-	patchNode.def("translateTexture", &ScriptPatchNode::translateTexture);
-	patchNode.def("getTesselatedPatchMesh", &ScriptPatchNode::getTesselatedPatchMesh);
-
-	// Define the GlobalPatchCreator interface
-	py::class_<PatchInterface> patchCreator(scope, "PatchCreator");
-
-	patchCreator.def("createPatchDef2", &PatchInterface::createPatchDef2);
-	patchCreator.def("createPatchDef3", &PatchInterface::createPatchDef3);
-
-	// Now point the Python variable "GlobalPatchCreator" to this instance
-	globals["GlobalPatchCreator"] = this;
+	lua_setglobal_object( L, "GlobalPatchCreator", this, "NeoRadiant.PatchCreator" );
 }
 
 } // namespace script

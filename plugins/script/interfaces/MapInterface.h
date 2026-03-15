@@ -5,29 +5,19 @@
 
 #include "SceneGraphInterface.h"
 
+struct lua_State;
+
 namespace script
 {
 
 /**
  * greebo: This class provides the script interface for the GlobalMap module.
  */
-class MapInterface :
-	public IScriptInterface
+class MapInterface : public IScriptInterface
 {
 public:
-    ScriptSceneNode getWorldSpawn();
-    std::string getMapName();
-    bool isModified();
-    ScriptSceneNode getRoot();
-    IMap::EditMode getEditMode();
-    void setEditMode(IMap::EditMode mode);
-
-    void showPointFile(const std::string& filePath);
-    bool isPointTraceVisible();
-    std::vector<std::string> getPointFileList();
-
 	// IScriptInterface implementation
-	void registerInterface(py::module& scope, py::dict& globals) override;
+	void registerInterface( lua_State* L ) override;
 };
 
 } // namespace script

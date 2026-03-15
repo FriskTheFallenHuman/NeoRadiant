@@ -61,34 +61,55 @@ void SourceViewCtrl::SetStyleMapping(int elementIndex, Element elementType)
     StyleSetVisible(elementIndex, (style.fontstyle & Hidden) == 0);
 }
 
-// Python specific
+// Lua specific
 
-PythonSourceViewCtrl::PythonSourceViewCtrl(wxWindow* parent) :
+LuaSourceViewCtrl::LuaSourceViewCtrl(wxWindow* parent) :
 	SourceViewCtrl(parent)
 {
-	// Set up styling for Python
-	SetLexer(wxSTC_LEX_PYTHON);
+	// Set up styling for Lua (wxSTC_LEX_LUA)
+	SetLexer(wxSTC_LEX_LUA);
 
-	// The Python Lexer can recognise 14 different types of source elements
-	// We map these types to different styles/appearances
-	SetStyleMapping(0, Default);
-	SetStyleMapping(1, CommentLine);
-	SetStyleMapping(2, Number);
-	SetStyleMapping(3, String);
-	SetStyleMapping(4, Character);
-	SetStyleMapping(5, Keyword1);
-	SetStyleMapping(6, Default);
-	SetStyleMapping(7, Default);
-	SetStyleMapping(8, Default);
-	SetStyleMapping(9, Default);
+	// Lua lexer style
+	SetStyleMapping(0,  Default);
+	SetStyleMapping(1,  CommentDoc);
+	SetStyleMapping(2,  CommentLine);
+	SetStyleMapping(3,  CommentDoc);
+	SetStyleMapping(4,  Number);
+	SetStyleMapping(5,  Keyword1);
+	SetStyleMapping(6,  String);
+	SetStyleMapping(7,  Character);
+	SetStyleMapping(8,  String);        // literal [[...]] strings
+	SetStyleMapping(9,  Preprocessor);
 	SetStyleMapping(10, Operator);
 	SetStyleMapping(11, Identifier);
-	SetStyleMapping(12, Default);
-	SetStyleMapping(13, StringEOL);
+	SetStyleMapping(12, StringEOL);
+	SetStyleMapping(13, Keyword2);      // stdlib / NeoRadiant globals
+	SetStyleMapping(14, Keyword3);
+	SetStyleMapping(15, Keyword4);
 
-	SetKeyWords(0, "and as assert break class continue def del elif else except exec "
-		"finally for from global if import in is lambda not None or pass "
-		"print raise return try while with yield");
+	// Lua 5.4 language keywords
+	SetKeyWords(0,
+		"and break do else elseif end false for function goto "
+		"if in local nil not or repeat return then true until while");
+
+	// Standard library
+	SetKeyWords(1,
+		"assert collectgarbage dofile error getmetatable ipairs load "
+		"loadfile next pairs pcall print rawequal rawget rawlen rawset "
+		"require select setmetatable tonumber tostring type xpcall "
+		"coroutine debug io math os package string table utf8 ");
+
+	// NeoRadiant scripting globals
+	SetKeyWords(2,
+		"GlobalSceneGraph GlobalSelectionSystem GlobalCommandSystem "
+		"GlobalRegistry GlobalMap GlobalGrid GlobalGameManager "
+		"GlobalMaterialManager GlobalDeclarationManager GlobalSoundManager "
+		"GlobalLayerManager GlobalCameraManager GlobalFxManager "
+		"GlobalSelectionSetManager GlobalSelectionGroupManager "
+		"GlobalEntityClassManager GlobalEntityCreator GlobalFileSystem "
+		"Radiant Dialog Vector2 Vector3 Vector4 AABB "
+		"Declaration MapEditMode BrushDetailFlag "
+		"Material MaterialStage");
 };
 
 // D3 declarations

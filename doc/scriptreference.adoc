@@ -1,0 +1,1100 @@
+= NeoRadiant Script Reference
+:toc: left
+:toclevels: 3
+:icons:
+:iconsdir: img
+
+NeoRadiant offers a *Lua* scripting interface which provides access to the most
+important editor functions, including the Virtual File System, the Shader System,
+the Scenegraph, entity manipulation, layers, sound, dialogs and more.
+
+== Entering Script Code
+
+Script code can be executed by:
+
+. Entering it ad-hoc in the scripting window (Script tab in the properties panel).
+. Saving it as a `.lua` file in `install/scripts/` and running it with
+  `RunScript yourfile.lua` in the command console.
+
+Scripts are reloaded and re-executed every time `RunScript` is invoked, so
+editing and testing is fast.
+
+A comprehensive API demonstration is in `scripts/test.lua`.
+
+== Classes and Methods
+
+=== GlobalSceneGraph
+
+When a map is loaded, the *SceneGraph* is populated with *SceneNodes*
+representing brushes, patches, entities and models. Each scenegraph has a
+single root.
+
+`SceneNode root()`::
+  Returns the root node of the global scenegraph. Can return a NULL node if
+  no map is loaded.
+
+=== SceneNode
+
+A SceneNode is the general node object. Actual types are BrushNode, PatchNode,
+EntityNode or ModelNode.
+
+`bool isNull()`::
+  Returns true if this is an empty NULL node.
+`addToContainer(SceneNode newContainer)`::
+  Adds this node as a child of the given container.
+`removeFromParent()`::
+  Removes this node from its parent.
+`AABB getWorldAABB()`::
+  Returns the absolute bounding box of this node (including children).
+`SceneNode getParent()`::
+  Returns the parent node (NULL if no parent).
+`string getNodeType()`::
+  Returns the type string: `"map"`, `"entity"`, `"patch"`, `"brush"`,
+  `"model"`, `"particle"`, `"entityconnection"`, `"mergeaction"`, `"unknown"`.
+`traverse(function visitor)`::
+  Traverses this node and all children. The function receives each node;
+  return `true` to continue, `false` to skip children.
+`traverseChildren(function visitor)`::
+  Traverses only the children of this node.
+`setSelected(bool isSelected)`::
+  Sets the selection status.
+`invertSelected()`::
+  Inverts the selection status.
+`bool isSelected()`::
+  Returns the current selection status.
+
+=== SceneGraph Traversal
+
+Pass a plain Lua function to `traverse()`. Return `true` to continue into
+children, `false` to skip them.
+
+[source,lua]
+----
+-- Skip entity children
+GlobalSceneGraph:root():traverse(function(node)
+    if node:isEntity() then
+        return false  -- don't traverse entity children
+    end
+    return true
+end)
+----
+
+The optional *post* visit is not supported in the function-based API. If you
+need post-visit behaviour, track state in a local closure.
+
+=== Special SceneNode Types
+
+Every SceneNode exposes the following type-check and cast methods:
+
+* `bool isBrush()` / `BrushNode getBrush()`
+* `bool isEntity()` / `EntityNode getEntity()`
+* `bool isPatch()` / `PatchNode getPatch()`
+* `bool isModel()` / `ModelNode getModel()`
+
+[source,lua]
+----
+local brush = node:getBrush()
+if not brush:isNull() then
+    print("Brush with " .. tostring(brush:getNumFaces()) .. " faces")
+end
+----
+
+==== BrushNode
+
+`int getNumFaces()`::
+  Number of faces.
+`Face getFace(int faceIndex)`::
+  Returns the face (1-based index in Lua).
+`bool empty()`::
+  True if the brush has no faces.
+`bool hasContributingFaces()`::
+  True if there are non-degenerate faces.
+`removeEmptyFaces()`::
+  Removes degenerate faces.
+`setShader(string shader)`::
+  Sets the shader on all faces.
+`bool hasShader(string shaderName)`::
+  True if any face uses this shader.
+`bool hasVisibleMaterial()`::
+  True if any face has a visible shader.
+`undoSave()`::
+  Saves state to the undo stack before manipulation.
+`getDetailFlag()`::
+  Returns the detail/structural flag (`BrushDetailFlag.Detail` or
+  `BrushDetailFlag.Structural`).
+`setDetailFlag(BrushDetailFlag flag)`::
+  Sets the detail/structural flag.
+
+==== Face
+
+`undoSave()`::
+  Saves current state to the undo stack.
+`setShader(string shader)` / `string getShader()`::
+  Sets or gets the face shader.
+`shiftTexdef(float s, float t)`::
+  Shifts the texture.
+`scaleTexdef(float s_scale, float t_scale)`::
+  Scales the texture.
+`rotateTexdef(float angle)`::
+  Rotates the texture.
+`fitTexture(float s_repeat, float t_repeat)`::
+  Fits the texture.
+`flipTexture(int axis)`::
+  Flips the texture (0 = x-axis, 1 = y-axis).
+`normaliseTexture()`::
+  Translates the texture towards the origin.
+`Winding getWinding()`::
+  Returns the winding (Lua array of vertex tables).
+
+==== Winding
+
+The winding is returned as a Lua table (array) of vertex structures.
+Each entry has:
+
+`vertex`:: `Vector3` 3D coordinates
+`texcoord`:: `Vector2` UV coordinates
+`tangent`:: `Vector3`
+`bitangent`:: `Vector3`
+`normal`:: `Vector3`
+`adjacent`:: unsigned index of the adjacent vertex
+
+[source,lua]
+----
+local winding = face:getWinding()
+for _, v in ipairs(winding) do
+    print(v.vertex:x() .. "," .. v.vertex:y() .. "," .. v.vertex:z())
+end
+----
+
+==== PatchNode
+
+`setDims(int width, int height)`::
+  Sets patch dimensions.
+`int getWidth()` / `int getHeight()`::
+  Width (columns) and height (rows).
+`PatchControl ctrlAt(int row, int col)`::
+  Returns the control point (0-based row/col).
+`string getShader()` / `setShader(string shader)`::
+  Gets or sets the shader name.
+`bool hasVisibleMaterial()`::
+  True if the patch has a visible material.
+`insertColumns(int colIndex)` / `insertRows(int rowIndex)`::
+  Inserts two columns or rows around the given index.
+`insertRemove(bool insert, bool columns, bool first)`::
+  Insert or remove columns/rows.
+`appendPoints(bool columns, bool beginning)`::
+  Appends two rows or columns.
+`bool isValid()`::
+  True if the patch has no invalid control points.
+`bool isDegenerate()`::
+  True if all control vertices are at the same spot.
+`bool subdivionsFixed()` / `bool subdivisionsFixed()`::
+  True if this is a patchDef3 (fixed tessellation). Note: the first spelling
+  retains the original typo for compatibility.
+`Subdivisions getSubdivisions()`::
+  Returns x/y subdivision values.
+`setFixedSubdivisions(bool isFixed, Subdivisions divisions)`::
+  Sets fixed subdivision.
+`controlPointsChanged()`::
+  Rebuilds the tessellation after control point changes.
+`PatchMesh getTesselatedPatchMesh()`::
+  Returns a read-only tessellated mesh.
+`translateTexture(float s, float t)`::
+  Shifts the texture by texel amounts.
+
+==== PatchMesh
+
+`width` / `height`::
+  Dimensions of the tessellated matrix.
+`vertices`::
+  Lua array of `PatchMeshVertex` objects. Access the vertex at column _w_,
+  row _h_ as `vertices[h * width + w + 1]` (1-based).
+
+===== PatchMeshVertex
+
+`Vector3 vertex`::
+  3D point.
+`Vector2 texcoord`::
+  UV coordinates.
+`Vector3 normal`::
+  Normal vector.
+
+===== PatchControl
+
+`vertex`:: `Vector3` control point position.
+`texcoord`:: `Vector2` texture coordinates.
+
+===== Subdivisions
+
+`x()`:: Horizontal subdivision count.
+`y()`:: Vertical subdivision count.
+
+==== EntityNode
+
+`string getKeyValue(string key)`::
+  Returns the spawnarg value.
+`setKeyValue(string key, string value)`::
+  Sets a spawnarg.
+`forEachKeyValue(function visitor)`::
+  Iterates all spawnargs: `function(key, value)`.
+`bool isModel()`::
+  True if this entity is a model entity.
+`bool isOfType(string className)`::
+  True if this entity is of or inherits from the class.
+`bool isInherited(string key)`::
+  True if the key is inherited.
+`EntityClass getEntityClass()`::
+  Returns the entityDef for this entity.
+`table getKeyValuePairs(string prefix)`::
+  Returns an array of `{key, value}` pairs matching the prefix.
+
+[source,lua]
+----
+local ws = GlobalMap:getWorldSpawn():getEntity()
+ws:forEachKeyValue(function(key, val)
+    print(key .. " = " .. val)
+end)
+----
+
+==== ModelNode
+
+`string getFilename()`::
+  Model filename (no path).
+`string getModelPath()`::
+  VFS path of the model.
+`int getSurfaceCount()`::
+  Number of material surfaces.
+`int getVertexCount()` / `int getPolyCount()`::
+  Total vertex and triangle counts.
+`table getActiveMaterials()`::
+  Returns a Lua array of material name strings.
+`ModelSurface getSurface(int surfaceIndex)`::
+  Returns a surface (0-based index).
+
+===== ModelSurface
+
+`string getDefaultMaterial()` / `string getActiveMaterial()`::
+  Default (unskinned) and currently active (possibly skinned) material names.
+`int getNumTriangles()` / `int getNumVertices()`::
+  Triangle and vertex counts.
+`MeshVertex getVertex(int index)`::
+  Returns vertex (0-based index).
+`ModelPolygon getPolygon(int index)`::
+  Returns polygon (0-based index).
+
+===== MeshVertex
+
+`Vector2 texcoord`, `Vector3 vertex`, `Vector3 normal`, `Vector3 tangent`,
+`Vector3 bitangent`, `Vector3 colour`
+
+===== ModelPolygon
+
+`MeshVertex a`, `MeshVertex b`, `MeshVertex c`
+
+=== GlobalDeclarationManager
+
+Manages declarations (Materials, Skins, ModelDefs, etc.) from `.mtr`, `.skin`
+and `.def` files.
+
+`Declaration findDeclaration(Declaration.Type type, string name)`::
+  Finds a named declaration (NULL if not found).
+`Declaration findOrCreateDeclaration(Declaration.Type type, string name)`::
+  Finds or creates a declaration.
+`foreachDeclaration(Declaration.Type type, function visitor)`::
+  Visits each declaration: `function(decl)`.
+`bool renameDeclaration(Declaration.Type type, string oldName, string newName)`::
+  Renames a declaration.
+`removeDeclaration(Declaration.Type type, string name)`::
+  Removes a declaration from memory (does not touch the source file).
+`reloadDeclarations()`::
+  Reloads all declarations from disk.
+`saveDeclaration(Declaration decl)`::
+  Saves the declaration to its file.
+
+==== Declaration.Type
+
+`Declaration.Type.Material`, `Declaration.Type.Table`,
+`Declaration.Type.EntityDef`, `Declaration.Type.SoundShader`,
+`Declaration.Type.ModelDef`, `Declaration.Type.Particle`,
+`Declaration.Type.Skin`
+
+==== Declaration
+
+`bool isNull()`::
+  True if this is a NULL object.
+`string getDeclName()`::
+  Returns the declaration name.
+`Type getDeclType()`::
+  Returns the declaration type.
+`DeclarationBlockSource getDeclSource()`::
+  Returns the source block (replaces the old `getBlockSyntax`).
+`setDeclSource(DeclarationBlockSource src)`::
+  Assigns a new source block.
+`string getDeclFilePath()`::
+  Returns the mod-relative file path.
+`setDeclFilePath(string folder, string filename)`::
+  Sets the file location for saving.
+
+==== DeclarationBlockSource
+
+The source block holds raw text content (everything between the outermost
+curly braces).
+
+`typeName`:: Type name as in the source file.
+`name`:: Declaration name.
+`contents`:: Raw inner content (read/write).
+`modName`:: Mod/FM name this block was declared in.
+
+[source,lua]
+----
+local caulk = GlobalDeclarationManager:findDeclaration(
+    Declaration.Type.Material, "textures/common/caulk")
+local src = caulk:getDeclSource()
+print(src.contents)
+----
+
+=== Entity Classes
+
+==== GlobalEntityClassManager
+
+`EntityClass findClass(string name)`::
+  Finds the entityDef by name.
+`forEachEntityClass(function visitor)`::
+  Visits each entityDef: `function(eclass)`.
+`ModelDef findModel(string name)`::
+  Finds a modelDef by name.
+`forEachModelDef(function visitor)`::
+  Visits each modelDef: `function(modelDef)`.
+
+==== EntityClass
+
+`bool isNull()`::
+  True if this is a NULL eclass.
+`bool isOfType(string className)`::
+  True if this class inherits from the given name.
+`EntityClassAttribute getAttribute(string key)`::
+  Returns the named attribute.
+`string getDefFileName()`::
+  Returns the `.def` file path.
+
+==== EntityClassAttribute
+
+`getName()`:: Returns the attribute key.
+`getValue()`:: Returns the attribute value.
+`getType()`:: Returns the type string (`"string"`, `"bool"`, `"float"`, etc.).
+`getDescription()`:: Returns the `editor_*` description.
+`inherited`:: True if inherited from a parent entityDef.
+
+==== ModelDef
+
+`name`:: ModelDef name.
+`mesh`:: Path to the mesh file.
+`skin`:: Skin property (empty if none).
+`parent`:: Parent def name.
+`anims`:: Lua table (string → string) of animation name → file mappings.
+
+[source,lua]
+----
+local modelDef = GlobalEntityClassManager:findModel("tdm_ai_citywatch")
+for animName, animFile in pairs(modelDef.anims) do
+    print(animName .. " = " .. animFile)
+end
+----
+
+=== GlobalEntityCreator
+
+`SceneNode createEntity(string entityClassName)`::
+  Creates an entity by class name.
+`SceneNode createEntity(EntityClass eclass)`::
+  Creates an entity from an EntityClass object.
+
+=== GlobalCommandSystem
+
+`execute(string command)`::
+  Executes a named command.
+`addStatement(string name, string str)`::
+  Adds a new named statement.
+`removeCommand(string name)`::
+  Removes a named command.
+
+[source,lua]
+----
+GlobalCommandSystem:execute('texscale "0 0.1"')
+----
+
+=== GlobalFileSystem
+
+Accesses the Virtual File System (mod folders and PK4 contents).
+
+`forEachFile(string baseDir, string extension, function visitor, int depth)`::
+  Traverses VFS files, calling `function(filename)` for each match.
+`string findFile(string relativeFilename)`::
+  Returns the absolute path.
+`string findRoot(string absFilename)`::
+  Returns the VFS root for an absolute path.
+`string readTextFile(string relativeFilename)`::
+  Returns the full text content of a file.
+`int getFileCount(string filename)`::
+  Returns matching file count in the VFS.
+
+[source,lua]
+----
+GlobalFileSystem:forEachFile("skins/", "skin", function(filename)
+    print("Found: " .. filename)
+end, 99)
+----
+
+=== GlobalGameManager
+
+`string getUserEnginePath()`::
+  Returns the user-local engine path.
+`string getModPath()`::
+  Returns the current mod path.
+`string getModBasePath()`::
+  Returns the mod base path.
+`Game currentGame()`::
+  Returns the active game object.
+`table getVFSSearchPaths()`::
+  Returns a Lua array of VFS search path strings.
+
+==== Game
+
+`string getKeyValue(string key)`::
+  Returns a value from the `.game` file.
+
+=== GlobalRegistry
+
+Persistent XML-based key/value store. Use XPath-style keys such as
+`user/scripts/myScript/lastPath`.
+
+`string get(string path)`::
+  Returns the stored value (empty string if not set).
+`set(string path, string value)`::
+  Stores a value.
+
+=== GlobalGrid
+
+`int getGridPower()`::
+  Returns current grid size as power of two (range −3..8).
+`setGridSize(int gridPower)`::
+  Sets the current grid size by power of two.
+`float getGridSize()`::
+  Returns the grid size in world units (0.125..256).
+`gridDown()` / `gridUp()`::
+  Decreases or increases the grid size.
+
+=== GlobalMap
+
+`SceneNode getWorldSpawn()`::
+  Returns the worldspawn node (NULL if none).
+`SceneNode getRoot()`::
+  Returns the map root node.
+`bool isModified()`::
+  True if the map has unsaved changes.
+`string getMapName()`::
+  Returns the map filename (`"unnamed.map"` if unsaved).
+`MapEditMode getEditMode()`::
+  Returns `MapEditMode.Normal` or `MapEditMode.Merge`.
+`setEditMode(MapEditMode mode)`::
+  Sets the edit mode.
+`table getPointFileList()`::
+  Returns a Lua array of available point file paths.
+`showPointFile(string path)`::
+  Loads and displays a point file.
+`bool isPointTraceVisible()`::
+  True if a point file trace is active.
+
+=== Math Objects
+
+==== Vector2
+
+`x()`, `y()`:: Component accessors.
+`float getLength()` / `float getLengthSquared()`:: Length methods.
+`float dot(Vector2 other)`:: Inner product.
+`Vector2 crossProduct(Vector2 other)`:: Cross product.
+
+==== Vector3
+
+`x()`, `y()`, `z()`:: Component accessors.
+`float getLength()` / `float getLengthSquared()`:: Length methods.
+`float dot(Vector3 other)`:: Inner product.
+`Vector3 crossProduct(Vector3 other)`:: Cross product.
+`Vector3 getNormalised()`:: Returns a normalised copy.
+`normalise()`:: Normalises in place.
+`Vector3 getInversed()`:: Returns `<1/x, 1/y, 1/z>`.
+`float angle(Vector3 other)`:: Angle between vectors.
+`bool isParallel(Vector3 other)`:: True if parallel.
+
+The operators `+`, `-`, `+=`, `-=` are supported between same-type vectors.
+
+[source,lua]
+----
+local v = Vector3(1, 0, 0) + Vector3(0, 1, 0)
+----
+
+==== Vector4 / Quaternion
+
+`x()`, `y()`, `z()`, `w()`:: Component accessors.
+`float dot(Vector4 other)`:: Inner product.
+`Vector3 getProjected()`:: Projects to 3D by dividing by w.
+
+==== AABB
+
+`AABB()`:: Empty (invalid) bounding box.
+`AABB(Vector3 origin, Vector3 extents)`:: Constructs a valid AABB.
+`origin`:: Center Vector3 (field, not method).
+`extents`:: Half-extents Vector3 (field, not method).
+`bool isValid()`:: True if valid.
+`float getRadius()`:: Length of the extents vector.
+`includePoint(Vector3 pt)`:: Expands to include a point.
+`includeAABB(AABB other)`:: Expands to include another AABB.
+
+=== GlobalRadiant
+
+Provides convenience methods for finding entities in the active map.
+
+IMPORTANT: These methods return `nil` (not a NULL node) if no map is loaded.
+Always check the result before calling methods on it.
+
+`EntityNode findEntityByClassname(string name)`::
+  Returns the first entity with the given classname. Returns `nil` or a NULL
+  node if not found.
+`EntityNode findEntityByName(string name)`::
+  Returns the entity with the given `name` spawnarg. Returns `nil` or a NULL
+  node if not found.
+
+[source,lua]
+----
+local ws = Radiant:findEntityByClassname("worldspawn")
+if ws and not ws:isNull() then
+    ws:setKeyValue("test", "success")
+end
+----
+
+=== GlobalSelectionSystem
+
+`SelectionInfo getSelectionInfo()`::
+  Returns current selection counters.
+`foreachSelected(function visitor)`::
+  Visits selected nodes: `function(node)`.
+`foreachSelectedComponent(function visitor)`::
+  Visits selected components.
+`foreachSelectedFace(function visitor)`::
+  Visits selected faces: `function(face)`.
+`setSelectedAll(bool selected)`::
+  Sets selection state of all scene objects.
+`setSelectedAllComponents(bool selected)`::
+  Sets selection state of all components.
+`SceneNode ultimateSelected()`::
+  Returns the last selected node (throws if empty).
+`SceneNode penultimateSelected()`::
+  Returns the second-to-last selected node.
+
+==== SelectionInfo
+
+[cols="1,2",options="header"]
+|===
+|Field |Description
+|`totalCount` |Total selected nodes
+|`entityCount` |Selected entity nodes
+|`brushCount` |Selected brush nodes
+|`patchCount` |Selected patch nodes
+|`componentCount` |Selected components (vertices, edges, faces)
+|===
+
+=== GlobalSelectionSetManager
+
+`createSelectionSet(string name)`::
+  Creates a named selection set.
+`deleteSelectionSet(string name)`::
+  Deletes a named selection set.
+`foreachSelectionSet(function visitor)`::
+  Visits all sets: `function(selectionSet)`.
+
+==== SelectionSet
+
+`string getName()`:: Returns the set name.
+`assignFromCurrentScene()`:: Captures the current selection.
+`select()` / `deselect()`:: Selects or deselects all members.
+`clear()`:: Empties the set.
+`bool empty()`:: True if the set has no members.
+
+=== GlobalSelectionGroupManager
+
+Groups are per-map (accessed via the map root, not a global singleton).
+
+IMPORTANT: All methods return `nil` if no map is currently loaded.
+
+`SelectionGroup createSelectionGroup()`::
+  Creates a new group.
+`SelectionGroup getSelectionGroup(int id)`::
+  Returns the group with the given ID.
+`SelectionGroup findOrCreateSelectionGroup(int id)`::
+  Returns or creates the group.
+`setGroupSelected(int id, bool selected)`::
+  Selects/deselects all group members.
+`deleteAllSelectionGroups()`::
+  Removes all groups.
+`deleteSelectionGroup(int id)`::
+  Removes one group.
+
+==== SelectionGroup
+
+`int getId()`:: Returns the group ID.
+`string getName()` / `setName(string name)`:: Gets or sets the group name.
+`addNode(SceneNode node)` / `removeNode(SceneNode node)`:: Adds or removes a node.
+`int size()`:: Number of members.
+`clear()`:: Empties the group.
+`setSelected(bool selected)`:: Selects or deselects all members.
+`foreachNode(function visitor)`:: Visits all members: `function(node)`.
+
+[source,lua]
+----
+local group = GlobalSelectionGroupManager:createSelectionGroup()
+if group then
+    GlobalSelectionSystem:foreachSelected(function(node)
+        group:addNode(node)
+    end)
+    group:foreachNode(function(node)
+        print("Member: " .. node:getNodeType())
+    end)
+end
+----
+
+=== GlobalLayerManager
+
+Layer management. Accessed via the map root's layer manager — the
+`GlobalLayerManager` shortcut is provided by the scripting system.
+
+IMPORTANT: Requires an active map. Returns `nil` if none is loaded.
+
+`int createLayer(string name)`::
+  Creates a new layer, returns the ID.
+`int createLayer(string name, int id)`::
+  Creates a layer with a specific ID.
+`deleteLayer(string name)`::
+  Deletes the named layer.
+`foreachLayer(function visitor)`::
+  Visits all layers: `function(id, name)`.
+`int getLayerID(string name)`::
+  Returns the layer ID (−1 if not found).
+`string getLayerName(int id)`::
+  Returns the layer name.
+`bool layerExists(int id)`::
+  True if the layer exists.
+`bool renameLayer(int id, string newName)`::
+  Renames a layer, returns true on success.
+`int getFirstVisibleLayer()`::
+  Returns the first visible layer ID.
+`int getActiveLayer()` / `setActiveLayer(int id)`::
+  Gets or sets the active layer.
+`bool layerIsVisible(int id)` / `bool layerIsVisible(string name)`::
+  Returns visibility by ID or name.
+`setLayerVisibility(string name, bool visible)` / `setLayerVisibility(int id, bool visible)`::
+  Sets visibility.
+`addSelectionToLayer(int id)` / `moveSelectionToLayer(int id)` / `removeSelectionFromLayer(int id)`::
+  Modifies which layer the current selection belongs to. Also available by name.
+`setSelected(int id, bool selected)`::
+  Selects/deselects all layer members.
+
+[source,lua]
+----
+GlobalLayerManager:foreachLayer(function(id, name)
+    print(tostring(id) .. ": " .. name)
+end)
+----
+
+=== GlobalMaterialManager
+
+Holds all materials parsed from `.mtr` files.
+
+`foreachMaterial(function visitor)`::
+  Visits each material: `function(material)`.
+`Material getMaterial(string name)`::
+  Returns the material (NULL if not found). Also available as `getMaterialForName`.
+`bool materialExists(string name)`::
+  True if the material exists.
+`bool materialCanBeModified(string name)`::
+  True if the material is editable (i.e. not in a PK4).
+`Material createEmptyMaterial(string name)`::
+  Creates a new empty material.
+`Material copyMaterial(string original, string copy)`::
+  Creates a copy. Returns `nil` if the source is in a PK4.
+`bool renameMaterial(string oldName, string newName)`::
+  Renames a material.
+`removeMaterial(string name)`::
+  Removes a material.
+`saveMaterial(string name)`::
+  Saves a material to disk.
+
+==== Material
+
+===== Read methods
+
+`bool isNull()`:: True if this is a default/placeholder material.
+`string getName()`:: Full material name.
+`string getShaderFileName()`:: Source `.mtr` filename.
+`string getDescription()`:: Description string.
+`bool isModified()`:: True if modified programmatically.
+`string getDefinition()`:: Source text between the outermost braces.
+`bool isVisible()`:: True if not filtered.
+`bool isAmbientLight()` / `bool isBlendLight()` / `bool isFogLight()` / `bool isCubicLight()`:: Light type flags.
+`float getSortRequest()` / `float getPolygonOffset()`:: Sort and offset values.
+`Material.ClampType getClampType()`:: Texture repeat behaviour.
+`Material.CullType getCullType()`:: Cull type.
+`int getMaterialFlags()`:: Combined `Material.Flag` bits.
+`int getSurfaceFlags()`:: Combined `Material.SurfaceFlag` bits.
+`Material.SurfaceType getSurfaceType()`:: Surface type.
+`Material.DeformType getDeformType()`:: Deform type.
+`string getDeformExpressionString(int index)`:: Deform expression (index 0..2).
+`string getDeformDeclName()`:: Particle def name for `PARTICLE`/`PARTICLE2` deforms.
+`int getSpectrum()`:: Spectrum value (default 0).
+`table getDecalInfo()`:: Returns a table with `stayMilliSeconds`, `fadeMilliSeconds`, `startColour`, `endColour`.
+`Material.Coverage getCoverage()`:: Coverage type.
+`Material.FrobStageType getFrobStageType()`:: Frob stage type.
+`int getNumStages()` / `MaterialStage getStage(int index)` / `table getAllStages()`:: Stage access.
+
+===== Write methods
+
+NOTE: All write methods require `materialCanBeModified` to be true, otherwise
+an exception is thrown.
+
+`setShaderFileName(string path)` / `setDescription(string desc)`:: Set file and description.
+`setEditorImageExpressionFromString(string expr)`:: Set the `qer_editorimage` expression.
+`setSortRequest(float value)`:: Set sort order.
+`setPolygonOffset(float offset)`:: Set polygon offset.
+`setClampType(Material.ClampType type)` / `setCullType(Material.CullType type)`:: Set clamp and cull.
+`setMaterialFlag(Material.Flag flag)` / `clearMaterialFlag(Material.Flag flag)`:: Set/clear a material flag.
+`setSurfaceFlag(Material.SurfaceFlag flag)` / `clearSurfaceFlag(Material.SurfaceFlag flag)`:: Set/clear a surface flag.
+`setSurfaceType(Material.SurfaceType type)`:: Set surface type.
+`setSpectrum(int spectrum)`:: Set spectrum.
+`setIsAmbientLight(bool)` / `setIsBlendLight(bool)` / `setIsFogLight(bool)` / `setIsCubicLight(bool)`:: Set light type flags.
+`int addStage(MaterialStage.Type type)`:: Add a stage, returns its index.
+`removeStage(int index)` / `int duplicateStage(int index)` / `swapStagePosition(int first, int second)`:: Stage manipulation.
+`setFrobStageType(Material.FrobStageType type)`:: Set frob stage type.
+`setFrobStageMapExpressionFromString(string expr)`:: Set frob map expression.
+`setFrobStageParameter(int index, float value)`:: Set frob stage parameter (uniform value).
+`setFrobStageRgbParameter(int index, float x, float y, float z)`:: Set frob stage RGB parameter as three separate numbers.
+`EditableMaterialStage getEditableStage(int index)`:: Returns the writable stage interface.
+
+==== Material Enumerations
+
+===== Material.SurfaceType
+
+`DEFAULT`, `METAL`, `STONE`, `FLESH`, `WOOD`, `CARDBOARD`, `LIQUID`, `GLASS`,
+`PLASTIC`, `RICOCHET`, `AASOBSTACLE`, `SURFTYPE10`..`SURFTYPE15`
+
+===== Material.Flag
+
+`NOSHADOWS`, `NOSELFSHADOW`, `FORCESHADOWS`, `NOOVERLAYS`, `FORCEOVERLAYS`,
+`TRANSLUCENT`, `FORCEOPAQUE`, `NOFOG`, `NOPORTALFOG`, `UNSMOOTHEDTANGENTS`,
+`MIRROR`, `POLYGONOFFSET`, `ISLIGHTGEMSURF`
+
+===== Material.SurfaceFlag
+
+`SOLID`, `OPAQUE`, `WATER`, `PLAYERCLIP`, `MONSTERCLIP`, `MOVEABLECLIP`,
+`IKCLIP`, `BLOOD`, `TRIGGER`, `AASSOLID`, `AASOBSTACLE`, `FLASHLIGHT_TRIGGER`,
+`NONSOLID`, `NULLNORMAL`, `AREAPORTAL`, `NOCARVE`, `DISCRETE`, `NOFRAGMENT`,
+`SLICK`, `COLLISION`, `NOIMPACT`, `NODAMAGE`, `LADDER`, `NOSTEPS`, `GUISURF`
+
+===== Material.SortRequest
+
+`NEAREST`, `PORTAL_SKY`, `DECAL`, `FAR`, `MEDIUM`, `CLOSE`, `ALMOST_NEAREST`,
+`AFTER_FOG`, `POST_PROCESS`
+
+===== Material.ClampType
+
+`REPEAT`, `NOREPEAT`, `ZEROCLAMP`, `ALPHAZEROCLAMP`
+
+NOTE: `ClampType` is a global enum in the C++ codebase, exposed in Lua as
+`Material.ClampType` for convenience. The same values apply to both
+`Material:setClampType()` and `EditableMaterialStage:setClampType()`.
+
+===== Material.CullType
+
+`BACK`, `FRONT`, `NONE`
+
+===== Material.DeformType
+
+`NONE`, `SPRITE`, `TUBE`, `FLARE`, `EXPAND`, `MOVE`, `TURBULENT`, `EYEBALL`,
+`PARTICLE`, `PARTICLE2`
+
+===== Material.DecalInfo
+
+A Lua table returned by `getDecalInfo()` with fields:
+`stayMilliSeconds`, `fadeMilliSeconds`, `startColour` (table `{r,g,b,a}`),
+`endColour` (table `{r,g,b,a}`)
+
+===== Material.Coverage
+
+`TRANSLUCENT`, `PERFORATED`, `OPAQUE`, `SOLID`
+
+===== Material.FrobStageType
+
+[cols="1,2",options="header"]
+|===
+|Lua constant |C++ enum value
+|`NONE` |`FrobStageType::Default`
+|`DIFFUSE` |`FrobStageType::Diffuse`
+|`TEXTURE` |`FrobStageType::Texture`
+|`NOFROBSTAGE` |`FrobStageType::NoFrobStage`
+|===
+
+=== MaterialStage
+
+Read-only stage interface. Use `getEditableStage` for modification.
+
+`MaterialStage.Type getType()`:: Stage type.
+`MaterialStage.MapType getMapType()`:: Map type.
+`string getMapExpressionString()`:: Map expression string.
+`int getStageFlags()`:: Combined `MaterialStage.Flag` bits.
+`table getBlendFuncStrings()`:: Returns a 2-element array `{src, dst}`.
+`Material.ClampType getClampType()`:: Per-stage clamp type.
+`MaterialStage.TexGenType getTexGenType()`:: TexGen type.
+`string getTexGenExpressionString(int index)`:: TexGen expression (index 0..2).
+`string getColourExpressionString(MaterialStage.ColourComponent selector)`:: Colour expression.
+`MaterialStage.VertexColourMode getVertexColourMode()`:: Vertex colour mode.
+`table getTransformations()`:: Array of `{type, expression1, expression2}` tables.
+`table getRenderMapSize()`:: Returns `{x, y}` table with render map dimensions.
+`string getAlphaTestExpressionString()`:: Alpha test expression.
+`string getConditionExpressionString()`:: Condition expression.
+`string getVertexProgram()` / `string getFragmentProgram()`:: Program names.
+`int getNumVertexParms()` / `int getNumFragmentMaps()`:: Count of vertex parms and fragment maps.
+`table getVertexParm(int index)`:: Returns `{index, expressions}` table.
+`table getFragmentMap(int index)`:: Returns `{index, options, mapExpression}` table.
+`float getPrivatePolygonOffset()`:: Private polygon offset.
+
+=== EditableMaterialStage
+
+All `MaterialStage` read methods, plus:
+
+`setStageFlag(MaterialStage.Flag flag)` / `clearStageFlag(MaterialStage.Flag flag)`::
+  Set or clear a stage flag.
+`setMapType(MaterialStage.MapType type)`::
+  Set the map type.
+`setMapExpressionFromString(string expr)`::
+  Set the map expression.
+`setBlendFuncStrings(table blendFuncs)`::
+  Pass a Lua array: `{"gl_one", "gl_zero"}`.
+`setAlphaTestExpressionFromString(string expr)`::
+  Set the alpha test expression.
+`int addTransformation(MaterialStage.TransformType type, string expr1, string expr2)`::
+  Appends a new transformation, returns its index.
+`updateTransformation(int index, TransformType type, string expr1, string expr2)`::
+  Updates an existing transformation.
+`removeTransformation(int index)`::
+  Removes a transformation.
+`setColourExpressionFromString(MaterialStage.ColourComponent selector, string expr)`::
+  Sets the R/G/B/A/RGB/RGBA colour expression.
+`setConditionExpressionFromString(string expr)`::
+  Sets the condition expression.
+`setTexGenType(MaterialStage.TexGenType type)`::
+  Sets the texgen type.
+`setTexGenExpressionFromString(int index, string expr)`::
+  Sets a wobblesky texgen expression (index 0..2).
+`setVertexColourMode(MaterialStage.VertexColourMode mode)`::
+  Sets the vertex colour mode.
+`setClampType(Material.ClampType type)`::
+  Overrides the per-material clamp type for this stage.
+`setPrivatePolygonOffset(float offset)`::
+  Sets the private polygon offset.
+`setRenderMapSize(float width, float height)`::
+  Sets render map dimensions as two separate numbers (not a Vector2).
+`setSoundMapWaveForm(bool waveForm)`::
+  Sets the waveform flag for SoundMap stages.
+`setVideoMapProperties(string filePath, bool looping)`::
+  Sets path and loop flag for VideoMap stages.
+
+=== Stage Structures and Enumerations
+
+==== MaterialStage.Type
+
+`BUMP`, `DIFFUSE`, `SPECULAR`, `BLEND`
+
+==== MaterialStage.MapType
+
+`MAP`, `CUBEMAP`, `CAMERACUBEMAP`, `VIDEOMAP`, `SOUNDMAP`,
+`MIRRORRENDERMAP`, `REMOTERENDERMAP`
+
+==== MaterialStage.Flag
+
+`IGNORE_ALPHATEST`, `FILTER_NEAREST`, `FILTER_LINEAR`, `HIGHQUALITY`,
+`FORCE_HIGHQUALITY`, `NO_PICMIP`, `MASK_RED`, `MASK_GREEN`, `MASK_BLUE`,
+`MASK_ALPHA`, `MASK_DEPTH`, `IGNORE_DEPTH`
+
+==== MaterialStage.TexGenType
+
+`NORMAL`, `REFLECT`, `SCREEN`, `SKYBOX`, `WOBBLESKY`
+
+==== MaterialStage.ColourComponent
+
+`RED`, `GREEN`, `BLUE`, `ALPHA`, `RGB`, `RGBA`
+
+==== MaterialStage.VertexColourMode
+
+`NONE`, `MULTIPLY`, `INVERSE_MULTIPLY`
+
+==== MaterialStage.TransformType
+
+`TRANSLATE`, `SCALE`, `ROTATE`, `CENTERSCALE`, `SHEAR`
+
+=== GlobalDialogManager
+
+`Dialog createDialog(string title)`::
+  Creates a dialog window.
+`Dialog createMessageBox(string title, string text, Dialog.MessageType type)`::
+  Creates a message popup.
+
+==== Dialog
+
+`setTitle(string title)`:: Changes the window title.
+`Dialog.Result run()`:: Shows the dialog and blocks until dismissed.
+`Handle addLabel(string text)`:: Adds a label.
+`Handle addComboBox(string label, table options)`:: Adds a combo box; pass a Lua array of strings.
+`Handle addEntryBox(string label)`:: Adds a text entry box.
+`Handle addPathEntry(string label, bool foldersOnly)`:: Adds a file/folder browse field.
+`Handle addSpinButton(string label, float min, float max, float step, int digits)`:: Adds a spin button.
+`Handle addCheckbox(string label)`:: Adds a checkbox.
+`string getElementValue(Handle handle)`:: Gets the current value of an element.
+`setElementValue(Handle handle, string value)`:: Sets the value of an element.
+
+==== MessageType constants
+
+`Dialog.CONFIRM`:: OK button, notification icon.
+`Dialog.ASK`:: YES/NO buttons, question icon.
+`Dialog.WARNING`:: OK button, warning icon.
+`Dialog.ERROR`:: OK button, error icon.
+`Dialog.YESNOCANCEL`:: YES / NO / CANCEL buttons.
+
+==== Result constants
+
+`Dialog.CANCELLED`, `Dialog.OK`, `Dialog.NO`, `Dialog.YES`
+
+[source,lua]
+----
+-- Simple message box
+GlobalDialogManager:createMessageBox(
+    "Info", "Operation complete.", Dialog.CONFIRM):run()
+
+-- Dialog with inputs
+local dialog = GlobalDialogManager:createDialog("Export Settings")
+local fileHandle = dialog:addEntryBox("Filename:")
+local options    = { "OBJ", "ASE" }
+local fmtHandle  = dialog:addComboBox("Format:", options)
+
+if dialog:run() == Dialog.OK then
+    local filename = dialog:getElementValue(fileHandle)
+    local format   = dialog:getElementValue(fmtHandle)
+    print(filename .. " (" .. format .. ")")
+end
+----
+
+=== GlobalSoundManager
+
+`SoundShader getSoundShader(string name)`::
+  Finds a sound shader.
+`bool playSound(string fileName)`::
+  Plays a VFS sound file.
+`stopSound()`::
+  Stops playback.
+
+==== SoundShader
+
+`bool isNull()`:: True if not found.
+`string getName()`:: Shader name.
+`SoundRadii getRadii()`:: Returns the radii object.
+`table getSoundFileList()`:: Returns Lua array of VFS file paths.
+`string getShaderFilePath()`:: Mod-relative `.sndshd` file path.
+`string getDefinition()`:: Source text of the declaration.
+
+==== SoundRadii
+
+`float getMin(bool inMetres)` / `setMin(float value, bool inMetres)`::
+  Minimum radius. Pass `true` for metres, `false` for world units.
+`float getMax(bool inMetres)` / `setMax(float value, bool inMetres)`::
+  Maximum radius.
+
+=== GlobalCameraManager
+
+`CameraView getActiveView()`::
+  Returns the active camera.
+
+==== CameraView
+
+`Vector3 getCameraOrigin()` / `setCameraOrigin(Vector3 origin)`::
+  Gets or sets the camera position.
+`Vector3 getCameraAngles()` / `setCameraAngles(Vector3 angles)`::
+  Gets or sets camera orientation as Euler angles (pitch/yaw/roll in degrees).
+`setOriginAndAngles(Vector3 origin, Vector3 angles)`::
+  Sets position and orientation in one call.
+`Vector3 getRightVector()` / `Vector3 getUpVector()`::
+  Direction vectors relative to the camera's orientation.
+`float getFarClipPlaneDistance()` / `setFarClipPlaneDistance(float dist)`::
+  Gets or sets the far clip distance.
+`refresh()`::
+  Repaints the camera view.
+
+[source,lua]
+----
+local cam = GlobalCameraManager:getActiveView()
+print(tostring(cam:getCameraOrigin()))
+cam:setCameraOrigin(Vector3(50, 0, 50))
+----
+
+=== GlobalFxManager
+
+`FxDeclaration findFx(string name)`::
+  Finds an FX declaration (NULL if not found).
+
+==== FxDeclaration
+
+Inherits all `Declaration` methods, plus:
+
+`bool isNull()`:: True if not found.
+`string getBindTo()`:: Returns the declaration name.
+`int getNumActions()`:: Number of actions.
+`FxAction getAction(int index)`:: Returns the action at the given index (0-based).
+
+==== FxAction
+
+`FxAction.Type getActionType()`, `string getName()`::
+  Type and name of this action.
+`float getDelayInSeconds()` / `float getDurationInSeconds()`::
+  Delay and duration.
+`bool getIgnoreMaster()`::
+  True: don't shake the entity this effect is attached to.
+`float getShakeTimeInSeconds()`, `float getShakeAmplitude()`, `float getShakeDistance()`, `bool getShakeFalloff()`, `float getShakeImpulse()`::
+  Shake parameters.
+`bool getNoShadows()`::
+  True if this light doesn't cast shadows.
+`string getFireSiblingAction()`::
+  Causes the sibling action to happen simultaneously.
+`float getRandomDelay()`::
+  Random delay in seconds.
+`float getRotate()`, `bool getTrackOrigin()`, `bool getRestart()`::
+  Model behaviour parameters.
+`float getFadeInTimeInSeconds()` / `float getFadeOutTimeInSeconds()`::
+  Fade timing.
+`float getDecalSize()`::
+  Size of the decal.
+`Vector3 getOffset()`, `Vector3 getAxis()`, `Vector3 getAngle()`::
+  Spatial parameters.
+`string getUseLight()`, `string getUseModel()`, `string getAttachLight()`, `string getAttachEntity()`::
+  Entity and light binding.
+`string getLaunchProjectileDef()`::
+  Projectile entityDef name.
+`string getLightMaterialName()`, `Vector3 getLightRgbColour()`, `float getLightRadius()`::
+  Light parameters.
+`string getModelName()`, `string getDecalMaterialName()`::
+  Model and decal names.
+`bool getParticleTrackVelocity()`::
+  Unused according to the docs.
+`string getSoundShaderName()`::
+  Sound shader name for `Sound` actions.
+`string getShockwaveDefName()`::
+  Shockwave entityDef name.
+
+==== FxAction.Type
+
+`Undefined`, `Light`, `Particle`, `Decal`, `Model`, `Sound`, `Shake`,
+`AttachLight`, `AttachEntity`, `Launch`, `Shockwave`

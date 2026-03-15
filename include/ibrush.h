@@ -74,7 +74,6 @@ struct WindingVertex
 	std::size_t adjacent;	// The index of the adjacent WindingVertex
 
 	// greebo: This operator is needed to enable scripting support
-	// using boost::python's vector_indexing_suite.
 	bool operator==(const WindingVertex& other) const
 	{
 		return (vertex == other.vertex && texcoord == other.texcoord &&

@@ -9,7 +9,6 @@ struct VertexNT
     Vector2 texcoord;	// UV coordinates
     Vector3 normal;		// Normal vector
 
-    // Needed for boost::python::vectorindexing_suite
     bool operator==(const VertexNT& other) const
     {
         return (vertex == other.vertex 

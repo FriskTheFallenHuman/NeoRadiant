@@ -3,35 +3,16 @@
 #include "iscript.h"
 #include "iscriptinterface.h"
 #include "igame.h"
-#include <vector>
 
-namespace script 
+struct lua_State;
+
+namespace script
 {
-
-class ScriptGame
-{
-	game::IGamePtr _game;
-public:
-	ScriptGame(const game::IGamePtr& game);
-
-	std::string getKeyValue(const std::string& key) const;
-};
-
-class GameInterface :
-	public IScriptInterface
+class GameInterface : public IScriptInterface
 {
 public:
-	// Redefine the path list to be of type std::vector
-	typedef std::vector<std::string> PathList;
-
-	std::string getUserEnginePath();
-	std::string getModPath();
-	std::string getModBasePath();
-	ScriptGame currentGame();
-	PathList getVFSSearchPaths();
-
 	// IScriptInterface implementation
-	void registerInterface(py::module& scope, py::dict& globals) override;
+	void registerInterface( lua_State* L ) override;
 };
 
 } // namespace script

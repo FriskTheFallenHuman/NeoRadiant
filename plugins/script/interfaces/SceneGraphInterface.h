@@ -1,86 +1,33 @@
 #pragma once
 
-#include "inode.h"
-#include "iscript.h"
 #include "iscriptinterface.h"
-#include "iscenegraph.h"
+#include "inode.h"
 #include "math/AABB.h"
 
-#include <pybind11/pybind11.h>
+struct lua_State;
 
-namespace script 
+namespace script
 {
 
-class ScriptSceneNode
-{
-protected:
-	// The contained scene::INodePtr
-	const scene::INodeWeakPtr _node;
+constexpr const char* META_SCENENODE = "NeoRadiant.SceneNode";
 
-	AABB _emptyAABB;
-public:
-	ScriptSceneNode(const scene::INodePtr& node);
-
-	virtual ~ScriptSceneNode();
-
-	operator scene::INodePtr() const;
-
-	void removeFromParent();
-	void addToContainer(const ScriptSceneNode& container);
-
-	const AABB& getWorldAABB() const;
-
-	bool isNull() const;
-
-	ScriptSceneNode getParent();
-
-	std::string getNodeType();
-
-	void traverse(scene::NodeVisitor& visitor);
-
-	void traverseChildren(scene::NodeVisitor& visitor);
-
-	bool isSelected();
-
-	void setSelected(int selected);
-
-	void invertSelected();
+// Userdata type stored in Lua for scene::INode values.
+// Defined here so all interface .cpp files can use it.
+struct SceneNodeUD {
+	scene::INodePtr node; // shared ownership — node lives as long as the userdata
 };
 
-// Wrap around the scene::NodeVisitor interface
-class SceneNodeVisitorWrapper :
-	public scene::NodeVisitor
+// Push/check helpers used by all interfaces that deal with scene nodes.
+void			lua_pushscenenode( lua_State* L, const scene::INodePtr& node );
+scene::INodePtr lua_checkscenenode( lua_State* L, int idx );
+
+// Register the SceneNode metatable (called once by SceneGraphInterface).
+void			register_SceneNode( lua_State* L );
+
+class SceneGraphInterface : public IScriptInterface
 {
 public:
-    bool pre(const scene::INodePtr& node) override
-	{
-		// Wrap this method to python
-		PYBIND11_OVERLOAD_PURE(
-			int,			/* Return type */
-			NodeVisitor,    /* Parent class */
-			pre,			/* Name of function in C++ (must match Python name) */
-			ScriptSceneNode(node)			/* Argument(s) */
-		);
-	}
-
-	void post(const scene::INodePtr& node) override
-	{
-		PYBIND11_OVERLOAD(
-			void,			/* Return type */
-			NodeVisitor,    /* Parent class */
-			post,			/* Name of function in C++ (must match Python name) */
-			ScriptSceneNode(node)			/* Argument(s) */
-		);
-	}
-};
-
-class SceneGraphInterface :
-	public IScriptInterface
-{
-public:
-	ScriptSceneNode root();
-
-	void registerInterface(py::module& scope, py::dict& globals) override;
+	void registerInterface( lua_State* L ) override;
 };
 
 } // namespace script

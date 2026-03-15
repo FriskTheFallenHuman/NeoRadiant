@@ -1547,8 +1547,8 @@ msgid "Script"
 msgstr "Skript"
 
 #: ..\..\radiant\ui\script\ScriptWindow.cpp:37
-msgid "Python Script Input"
-msgstr "Python Skripteingabe"
+msgid "Lua Script Input"
+msgstr "Lua Skripteingabe"
 
 #: ..\..\radiant\ui\script\ScriptWindow.cpp:39
 msgid "Run Script"

@@ -1,82 +1,77 @@
 #include "FileSystemInterface.h"
-
-#include "generic/callback.h"
-#include "iarchive.h"
-#include "itextstream.h"
+#include "../LuaHelper.h"
 
 namespace script
 {
 
-void FileSystemInterface::forEachFile(const std::string& basedir,
-                                      const std::string& extension, 
-                                      VirtualFileSystemVisitor& visitor,
-                                      std::size_t depth)
+void FileSystemInterface::registerInterface( lua_State* L )
 {
-    GlobalFileSystem().forEachFile(
-        basedir, extension,
-        [&](const vfs::FileInfo& fileInfo) { visitor.visit(fileInfo.name); },
-        depth
-    );
-}
+	static const luaL_Reg methods[] = {
+		{ "forEachFile",
+			[](lua_State* L)->int {
+				std::string base = lua_checkstdstring( L, 2 );
+				std::string ext = lua_checkstdstring( L, 3 );
+				luaL_checktype( L, 4, LUA_TFUNCTION );
+				std::size_t depth = ( std::size_t )luaL_optinteger( L, 5, 99 );
 
-std::string FileSystemInterface::readTextFile(const std::string& filename)
-{
-	ArchiveTextFilePtr file = GlobalFileSystem().openTextFile(filename);
+				lua_pushvalue( L, 4 );
+				int ref = luaL_ref( L, LUA_REGISTRYINDEX );
 
-	if (file == NULL) return "";
+				GlobalFileSystem().forEachFile(
+					base,
+					ext,
+					[L, ref]( const vfs::FileInfo& fi ) {
+						lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+						lua_pushstdstring( L, fi.name );
+						if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+							lua_pop( L, 1 );
+					},
+					depth );
 
-	TextInputStream& istream = file->getInputStream();
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
 
-	const std::size_t READSIZE = 16384;
+		{ "readTextFile",
+			[](lua_State* L)->int {
+				auto f = GlobalFileSystem().openTextFile( lua_checkstdstring( L, 2 ) );
+				if( !f ) {
+					lua_pushstring( L, "" );
+					return 1;
+				}
+				TextInputStream& s = f->getInputStream();
+				std::string text;
+				char	  buf[4096];
+				std::size_t n;
+				while( ( n = s.read( buf, sizeof( buf ) ) ) > 0 )
+					text.append( buf, n );
+				lua_pushstdstring( L, text );
+				return 1;
+			} },
 
-	std::string text;
-	char buffer[READSIZE];
-	std::size_t bytesRead = READSIZE;
+		{ "getFileCount",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, GlobalFileSystem().getFileCount( lua_checkstdstring( L, 2 ) ) );
+				return 1;
+			} },
 
-	do 
-	{
-		bytesRead = istream.read(buffer, READSIZE);
+		{ "findFile",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, GlobalFileSystem().findFile( lua_checkstdstring( L, 2 ) ) );
+				return 1;
+			} },
 
-		// Copy the stuff to the string
-		text.append(buffer, bytesRead);
+		{ "findRoot",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, GlobalFileSystem().findRoot( lua_checkstdstring( L, 2 ) ) );
+				return 1;
+			} },
 
-	} while (bytesRead == READSIZE);
+		{ nullptr, nullptr }
+	};
+	lua_registerclass( L, "NeoRadiant.FileSystem", methods );
 
-	return text;
-}
-
-int FileSystemInterface::getFileCount(const std::string& filename)
-{
-	return GlobalFileSystem().getFileCount(filename);
-}
-
-std::string FileSystemInterface::findFile(const std::string& name)
-{
-	return GlobalFileSystem().findFile(name);
-}
-
-std::string FileSystemInterface::findRoot(const std::string& name)
-{
-	return GlobalFileSystem().findRoot(name);
-}
-
-void FileSystemInterface::registerInterface(py::module& scope, py::dict& globals) 
-{
-	// Expose the FileVisitor interface
-	py::class_<VirtualFileSystemVisitor, FileVisitorWrapper> visitor(scope, "FileVisitor");
-	visitor.def(py::init<>());
-	visitor.def("visit", &VirtualFileSystemVisitor::visit);
-
-	// Add the VFS module declaration to the given python namespace
-	py::class_<FileSystemInterface> filesystem(scope, "FileSystem");
-	filesystem.def("forEachFile", &FileSystemInterface::forEachFile);
-	filesystem.def("findFile", &FileSystemInterface::findFile);
-	filesystem.def("findRoot", &FileSystemInterface::findRoot);
-	filesystem.def("readTextFile", &FileSystemInterface::readTextFile);
-	filesystem.def("getFileCount", &FileSystemInterface::getFileCount);
-
-	// Now point the Python variable "GlobalFileSystem" to this instance
-	globals["GlobalFileSystem"] = this;
+	lua_setglobal_object( L, "GlobalFileSystem", this, "NeoRadiant.FileSystem" );
 }
 
 } // namespace script

@@ -296,7 +296,7 @@ void MainFrame::preDestructionCleanup()
 {
     saveWindowPosition();
 
-    // Clear up Python widgets
+    // Clear up script widgets
     GlobalUserInterface().unregisterControl(ScriptPanel::Name);
     _scriptsReloadedConn.disconnect();
     _scriptMenu.reset();
@@ -457,17 +457,17 @@ void MainFrame::createWidgets()
     addControl(UserControl::Console, ControlSettings{ Location::PropertyPanel, true });
     addControl(UserControl::EntityInspector, ControlSettings{ Location::PropertyPanel, true });
     addControl(UserControl::MediaBrowser, ControlSettings{ Location::PropertyPanel, true });
-    addPythonControls();
+    addScriptControls();
 
     // Load the previous window settings from the registry
     restoreWindowPosition();
 }
 
-void MainFrame::addPythonControls()
+void MainFrame::addScriptControls()
 {
     // Bind the reloadscripts command to the menu
     GlobalMenuManager().insert(
-        "main/file/reloadDecls",     // menu location path
+        "main/file/reload/reloadDecls",     // menu location path
         "ReloadScripts", // name
         menu::ItemType::Item,   // type
         _("Reload Scripts"),    // caption

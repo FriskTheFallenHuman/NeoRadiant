@@ -231,7 +231,7 @@ struct AutoCompletionInfo
  *
  * Commands are self-contained blocks of code (function calls or lambdas) which
  * can be invoked from menu items or from typing string commands in the
- * NeoRadiant console. They can also be called from Python.
+ * NeoRadiant console. They can also be called from Lua.
  *
  * Commands can be invoked programmatically via the executeCommand() method,
  * which is sometimes useful if the implementing function isn't exposed via a

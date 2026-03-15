@@ -96,14 +96,14 @@ public:
 };
 
 /**
- * A special class providing syntax highlighting for the Python
+ * A special class providing syntax highlighting for the Lua
  * scripting language.
  */
-class PythonSourceViewCtrl :
+class LuaSourceViewCtrl :
 	public SourceViewCtrl
 {
 public:
-	PythonSourceViewCtrl(wxWindow* parent);
+	LuaSourceViewCtrl(wxWindow* parent);
 };
 
 /**

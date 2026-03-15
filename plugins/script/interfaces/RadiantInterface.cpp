@@ -1,48 +1,42 @@
 #include "RadiantInterface.h"
 
-#include <pybind11/pybind11.h>
+#include "../LuaHelper.h"
 
 #include "iscenegraph.h"
 #include "entitylib.h"
 
-namespace script 
+namespace script
 {
 
-ScriptEntityNode RadiantInterface::findEntityByClassname(const std::string& name)
+void RadiantInterface::registerInterface( lua_State* L )
 {
-	EntityNodeFindByClassnameWalker walker(name);
-	GlobalSceneGraph().root()->traverse(walker);
+	static const luaL_Reg methods[] =
+		{ { "findEntityByClassname",
+			[](lua_State* L)->int {
+				EntityNodeFindByClassnameWalker walker( lua_checkstdstring( L, 2 ) );
+				GlobalSceneGraph().root()->traverse( walker );
+				lua_pushscenenode( L, walker.getEntityNode() );
+				return 1;
+			} },
+		{ "findEntityByName",
+			[](lua_State* L)->int {
+				std::string name		= lua_checkstdstring( L, 2 );
+				scene::INodePtr found;
+				GlobalSceneGraph().root()->foreachNode( [&]( const scene::INodePtr& n ) {
+					auto* e = n->tryGetEntity();
+					if( e && e->getKeyValue( "name" ) == name ) {
+						found = n;
+						return false;
+					}
+					return true;
+				} );
+				lua_pushscenenode( L, found );
+				return 1;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.Radiant", methods );
 
-	// Note: manage_new_object return value policy will take care of that raw pointer
-	return ScriptEntityNode(walker.getEntityNode());
-}
-
-ScriptEntityNode RadiantInterface::findEntityByName(const std::string& name)
-{
-    scene::INodePtr found;
-
-	GlobalSceneGraph().root()->foreachNode([&] (const scene::INodePtr& node)
-	{
-	    if (Node_isEntity(node) && node->tryGetEntity()->getKeyValue("name") == name)
-	    {
-            found = node;
-	    }
-
-        return true;
-	});
-
-	// Note: manage_new_object return value policy will take care of that raw pointer
-	return ScriptEntityNode(found);
-}
-
-void RadiantInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	py::class_<RadiantInterface> radiant(scope, "RadiantInterface");
-	radiant.def("findEntityByClassname", &RadiantInterface::findEntityByClassname);
-	radiant.def("findEntityByName", &RadiantInterface::findEntityByName);
-
-	// Point the radiant variable to this
-	globals["Radiant"] = this;
+	lua_setglobal_object( L, "Radiant", this, "NeoRadiant.Radiant" );
 }
 
 } // namespace script

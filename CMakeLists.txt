@@ -72,9 +72,6 @@ find_package(wxWidgets REQUIRED
              COMPONENTS base core stc adv gl xrc aui)
 include(${wxWidgets_USE_FILE})
 
-# Locate Python
-find_package(Python REQUIRED COMPONENTS Development)
-
 # Global includes and flags
 include_directories(libs libs/libfmt include)
 add_compile_options(${SIGC_CFLAGS})

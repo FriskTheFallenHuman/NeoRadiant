@@ -3,25 +3,19 @@
 #include "iscript.h"
 #include "iscriptinterface.h"
 
-namespace script 
+struct lua_State;
+
+namespace script
 {
 
 /**
  * greebo: This class provides the script interface for the GlobalGrid module.
  */
-class GridInterface :
-	public IScriptInterface
+class GridInterface : public IScriptInterface
 {
 public:
-	// Wrapped methods
-	void setGridSize(int gridSize);
-	float getGridSize();
-	int getGridPower();
-	void gridDown();
-	void gridUp();
-
 	// IScriptInterface implementation
-	void registerInterface(py::module& scope, py::dict& globals) override;
+	void registerInterface( lua_State* L ) override;
 };
 
 } // namespace script

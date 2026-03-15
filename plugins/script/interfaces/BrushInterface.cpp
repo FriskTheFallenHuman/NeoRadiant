@@ -1,264 +1,279 @@
 #include "BrushInterface.h"
+#include "SceneGraphInterface.h"
 
+#include "../LuaHelper.h"
 #include "../SceneNodeBuffer.h"
-#include <pybind11/stl_bind.h>
 
-PYBIND11_MAKE_OPAQUE(IWinding);
+#include "MathInterface.h"
 
 namespace script
 {
 
-ScriptFace::ScriptFace() :
-	_face(NULL)
-{}
-
-ScriptFace::ScriptFace(IFace& face) :
-	_face(&face)
-{}
-
-void ScriptFace::undoSave()
+// -----------------------------------------------------------------------
+// Face
+// -----------------------------------------------------------------------
+void lua_pushface( lua_State* L, IFace* face )
 {
-	if (_face == NULL) return;
-	_face->undoSave();
+	if( !face ) {
+		lua_pushnil( L );
+		return;
+	}
+	lua_pushobject( L, face, META_FACE );
 }
 
-const std::string& ScriptFace::getShader() const
+static void register_Face( lua_State* L )
 {
-	if (_face == NULL) return _emptyShader;
-	return _face->getShader();
+	static const luaL_Reg methods[] = {
+
+		{ "getShader",
+			[](lua_State* L)->int {
+				auto* face = lua_checkobject<IFace>( L, 1, META_FACE );
+				lua_pushstdstring( L, face->getShader() );
+				return 1;
+			} },
+
+		{ "setShader",
+			[](lua_State* L)->int {
+				auto* face = lua_checkobject<IFace>( L, 1, META_FACE );
+				face->setShader( lua_checkstdstring( L, 2 ) );
+				return 0;
+			} },
+
+		{ "shiftTexdef",
+			[](lua_State* L)->int {
+				auto* face = lua_checkobject<IFace>( L, 1, META_FACE );
+				face->shiftTexdef( ( float )luaL_checknumber( L, 2 ), ( float )luaL_checknumber( L, 3 ) );
+				return 0;
+			} },
+
+		{ "scaleTexdef",
+			[](lua_State* L)->int {
+				auto* face = lua_checkobject<IFace>( L, 1, META_FACE );
+				face->scaleTexdef( ( float )luaL_checknumber( L, 2 ), ( float )luaL_checknumber( L, 3 ) );
+				return 0;
+			} },
+
+		{ "rotateTexdef",
+			[](lua_State* L)->int {
+				auto* face = lua_checkobject<IFace>( L, 1, META_FACE );
+				face->rotateTexdef( ( float )luaL_checknumber( L, 2 ) );
+				return 0;
+			} },
+
+		{ "fitTexture",
+			[](lua_State* L)->int {
+				auto* face = lua_checkobject<IFace>( L, 1, META_FACE );
+				face->fitTexture( ( float )luaL_checknumber( L, 2 ), ( float )luaL_checknumber( L, 3 ) );
+				return 0;
+			} },
+
+		{ "flipTexture",
+			[](lua_State* L)->int {
+				auto* face = lua_checkobject<IFace>( L, 1, META_FACE );
+				face->flipTexture( ( unsigned int )luaL_checkinteger( L, 2 ) );
+				return 0;
+			} },
+
+		{ "normaliseTexture",
+			[](lua_State* L)->int {
+				lua_checkobject<IFace>( L, 1, META_FACE )->normaliseTexture();
+				return 0;
+			} },
+
+		{ "undoSave",
+			[](lua_State* L)->int {
+				lua_checkobject<IFace>( L, 1, META_FACE )->undoSave();
+				return 0;
+			} },
+
+		{ "getWinding",
+			[](lua_State* L)->int {
+				auto*			face = lua_checkobject<IFace>( L, 1, META_FACE );
+				const IWinding& w	 = face->getWinding();
+
+				lua_newtable( L ); // result table (1-indexed)
+				for( std::size_t i = 0; i < w.size(); ++i ) {
+					lua_newtable( L ); // individual vertex table
+
+					lua_pushvec3( L, w[i].vertex );
+					lua_setfield( L, -2, "vertex" );
+
+					lua_pushvec2( L, w[i].texcoord );
+					lua_setfield( L, -2, "texcoord" );
+
+					lua_pushvec3( L, w[i].normal );
+					lua_setfield( L, -2, "normal" );
+
+					lua_pushvec3( L, w[i].tangent );
+					lua_setfield( L, -2, "tangent" );
+
+					lua_pushvec3( L, w[i].bitangent );
+					lua_setfield( L, -2, "bitangent" );
+
+					lua_pushinteger( L, ( lua_Integer )w[i].adjacent );
+					lua_setfield( L, -2, "adjacent" );
+
+					lua_rawseti( L, -2, ( lua_Integer )( i + 1 ) ); // 1-based
+				}
+				return 1;
+			} },
+
+		{ nullptr, nullptr }
+	};
+
+	lua_registerclass( L, META_FACE, methods );
 }
 
-void ScriptFace::setShader(const std::string& name)
+// -----------------------------------------------------------------------
+// BrushNode
+// -----------------------------------------------------------------------
+
+// Helpers that extract the IBrush* from the SceneNode userdata.
+static IBrush* get_IBrush( lua_State* L, int idx )
 {
-	if (_face == NULL) return;
-	_face->setShader(name);
+	auto node = lua_checkscenenode( L, idx );
+	if( !node )
+		return nullptr;
+	auto* brushNode = dynamic_cast<IBrushNode*>( node.get() );
+	return brushNode ? &brushNode->getIBrush() : nullptr;
 }
 
-void ScriptFace::shiftTexdef(float s, float t)
+static void add_brush_methods_to_scenenode_meta( lua_State* L )
 {
-	if (_face == NULL) return;
-	_face->shiftTexdef(s, t);
+	// Extend the existing META_SCENENODE metatable with brush-specific methods.
+	luaL_getmetatable( L, META_SCENENODE );
+	if( lua_type( L, -1 ) != LUA_TTABLE ) {
+		lua_pop( L, 1 );
+		return; // SceneGraphInterface not yet registered; shouldn't happen.
+	}
+
+	auto set_method = [&]( const char* name, lua_CFunction fn ) {
+		lua_pushstring( L, name );
+		lua_pushcfunction( L, fn );
+		lua_rawset( L, -3 );
+	};
+
+	set_method( "isBrush", [](lua_State* L)->int {
+		auto node = lua_checkscenenode( L, 1 );
+		lua_pushboolean( L, node ? Node_isBrush( node ) : false );
+		return 1;
+	} );
+
+	set_method( "getBrush", [](lua_State* L)->int {
+		// Returns self if it's a brush, else nil.
+		auto node = lua_checkscenenode( L, 1 );
+		if( node && Node_isBrush( node ) )
+			lua_pushvalue( L, 1 );
+		else
+			lua_pushnil( L );
+		return 1;
+	} );
+
+	set_method( "getNumFaces", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		lua_pushinteger( L, b ? ( lua_Integer )b->getNumFaces() : 0 );
+		return 1;
+	} );
+
+	set_method( "getFace", [](lua_State* L)->int {
+		IBrush* b	= get_IBrush( L, 1 );
+		auto	idx = ( std::size_t )luaL_checkinteger( L, 2 ) - 1; // Lua 1-based → C++ 0-based
+		if( b && idx < b->getNumFaces() )
+			lua_pushface( L, &b->getFace( idx ) );
+		else
+			lua_pushnil( L );
+		return 1;
+	} );
+
+	set_method( "setShader", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		if( b )
+			b->setShader( lua_checkstdstring( L, 2 ) );
+		return 0;
+	} );
+
+	set_method( "hasShader", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		lua_pushboolean( L, b ? b->hasShader( lua_checkstdstring( L, 2 ) ) : false );
+		return 1;
+	} );
+
+	set_method( "hasVisibleMaterial", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		lua_pushboolean( L, b ? b->hasVisibleMaterial() : false );
+		return 1;
+	} );
+
+	set_method( "empty", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		lua_pushboolean( L, b ? b->empty() : true );
+		return 1;
+	} );
+
+	set_method( "hasContributingFaces", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		lua_pushboolean( L, b ? b->hasContributingFaces() : false );
+		return 1;
+	} );
+
+	set_method( "removeEmptyFaces", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		if( b )
+			b->removeEmptyFaces();
+		return 0;
+	} );
+
+	set_method( "undoSave", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		if( b )
+			b->undoSave();
+		return 0;
+	} );
+
+	set_method( "getDetailFlag", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		lua_pushinteger( L, b ? ( lua_Integer )b->getDetailFlag() : 0 );
+		return 1;
+	} );
+
+	set_method( "setDetailFlag", [](lua_State* L)->int {
+		IBrush* b = get_IBrush( L, 1 );
+		if( b )
+			b->setDetailFlag( static_cast<IBrush::DetailFlag>( luaL_checkinteger( L, 2 ) ) );
+		return 0;
+	} );
+
+	lua_pop( L, 1 ); // pop metatable
 }
 
-void ScriptFace::scaleTexdef(float s, float t)
+// -----------------------------------------------------------------------
+int BrushInterface::lua_createBrush( lua_State* L )
 {
-	if (_face == NULL) return;
-	_face->scaleTexdef(s, t);
-}
-
-void ScriptFace::rotateTexdef(float angle)
-{
-	if (_face == NULL) return;
-	_face->rotateTexdef(angle);
-}
-
-void ScriptFace::fitTexture(float s_repeat, float t_repeat)
-{
-	if (_face == NULL) return;
-	_face->fitTexture(s_repeat, t_repeat);
-}
-
-void ScriptFace::flipTexture(unsigned int flipAxis)
-{
-	if (_face == NULL) return;
-	_face->flipTexture(flipAxis);
-}
-
-void ScriptFace::normaliseTexture()
-{
-	if (_face == NULL) return;
-	_face->normaliseTexture();
-}
-
-IWinding& ScriptFace::getWinding()
-{
-	if (_face == NULL) return _emptyWinding;
-	return _face->getWinding();
-}
-
-std::string ScriptFace::_emptyShader;
-IWinding ScriptFace::_emptyWinding;
-
-ScriptBrushNode::ScriptBrushNode(const scene::INodePtr& node) :
-	ScriptSceneNode((node != NULL && Node_isBrush(node)) ? node : scene::INodePtr())
-{}
-
-std::size_t ScriptBrushNode::getNumFaces() {
-	// Sanity check
-	scene::INodePtr node = _node.lock();
-	if (node == NULL) return 0;
-
-	IBrush* brush = Node_getIBrush(node);
-
-	return (brush != NULL) ? brush->getNumFaces() : 0;
-}
-
-ScriptFace ScriptBrushNode::getFace(std::size_t index)
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return ScriptFace();
-
-	IBrush& brush = brushNode->getIBrush();
-	return (index < brush.getNumFaces()) ? ScriptFace(brush.getFace(index)) : ScriptFace();
-}
-
-bool ScriptBrushNode::empty() const
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return true;
-
-	return brushNode->getIBrush().empty();
-}
-
-bool ScriptBrushNode::hasContributingFaces() const
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return true;
-
-	return brushNode->getIBrush().hasContributingFaces();
-}
-
-void ScriptBrushNode::removeEmptyFaces()
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return;
-
-	brushNode->getIBrush().removeEmptyFaces();
-}
-
-void ScriptBrushNode::setShader(const std::string& newShader)
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return;
-
-	brushNode->getIBrush().setShader(newShader);
-}
-
-bool ScriptBrushNode::hasShader(const std::string& name)
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return false;
-
-	return brushNode->getIBrush().hasShader(name);
-}
-
-bool ScriptBrushNode::hasVisibleMaterial()
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return false;
-
-	return brushNode->getIBrush().hasVisibleMaterial();
-}
-
-ScriptBrushNode::DetailFlag ScriptBrushNode::getDetailFlag()
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return Structural;
-
-	return static_cast<DetailFlag>(brushNode->getIBrush().getDetailFlag());
-}
-
-void ScriptBrushNode::setDetailFlag(DetailFlag detailFlag)
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return;
-
-	brushNode->getIBrush().setDetailFlag(static_cast<IBrush::DetailFlag>(detailFlag));
-}
-
-void ScriptBrushNode::undoSave()
-{
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(_node.lock());
-	if (brushNode == NULL) return;
-
-	brushNode->getIBrush().undoSave();
-}
-
-// Checks if the given SceneNode structure is a BrushNode
-bool ScriptBrushNode::isBrush(const ScriptSceneNode& node) 
-{
-	return Node_isBrush(node);
-}
-
-ScriptBrushNode ScriptBrushNode::getBrush(const ScriptSceneNode& node)
-{
-	// Try to cast the node onto a brush
-	IBrushNodePtr brushNode = std::dynamic_pointer_cast<IBrushNode>(
-		static_cast<scene::INodePtr>(node)
-	);
-
-	// Construct a brushnode (contained node may be NULL)
-	return (brushNode != NULL) ? ScriptBrushNode(node) : ScriptBrushNode(scene::INodePtr());
-}
-
-ScriptSceneNode BrushInterface::createBrush()
-{
-	// Create a new brush and return the script scene node
 	scene::INodePtr node = GlobalBrushCreator().createBrush();
-
-	// Add the node to the buffer otherwise it will be deleted immediately,
-	// as ScriptSceneNodes are using weak_ptrs.
-	SceneNodeBuffer::Instance().push_back(node);
-
-	return ScriptSceneNode(node);
+	SceneNodeBuffer::Instance().push_back( node );
+	lua_pushscenenode( L, node );
+	return 1;
 }
 
-void BrushInterface::registerInterface(py::module& scope, py::dict& globals)
+// -----------------------------------------------------------------------
+void BrushInterface::registerInterface( lua_State* L )
 {
-	// Define a WindingVertex structure
-	py::class_<WindingVertex> vertex(scope, "WindingVertex");
-	vertex.def(py::init<>());
-	vertex.def_readonly("vertex", &WindingVertex::vertex);
-	vertex.def_readonly("texcoord", &WindingVertex::texcoord);
-	vertex.def_readonly("tangent", &WindingVertex::tangent);
-	vertex.def_readonly("bitangent", &WindingVertex::bitangent);
-	vertex.def_readonly("normal", &WindingVertex::normal);
-	vertex.def_readonly("adjacent", &WindingVertex::adjacent);
-	
-	// Declare the IWinding vector
-	py::bind_vector<IWinding>(scope, "Winding");
+	register_Face( L );
+	add_brush_methods_to_scenenode_meta( L );
 
-	// Define a "Face" interface
-	py::class_<ScriptFace> face(scope, "Face");
-	face.def(py::init<>());
-	face.def(py::init<IFace&>());
-	face.def("undoSave", &ScriptFace::undoSave);
-	face.def("getShader", &ScriptFace::getShader, py::return_value_policy::reference);
-	face.def("setShader", &ScriptFace::setShader);
-	face.def("shiftTexdef", &ScriptFace::shiftTexdef);
-	face.def("scaleTexdef", &ScriptFace::scaleTexdef);
-	face.def("rotateTexdef", &ScriptFace::rotateTexdef);
-	face.def("fitTexture", &ScriptFace::fitTexture);
-	face.def("flipTexture", &ScriptFace::flipTexture);
-	face.def("normaliseTexture", &ScriptFace::normaliseTexture);
-	face.def("getWinding", &ScriptFace::getWinding, py::return_value_policy::reference);
+	// GlobalBrushCreator table with createBrush()
+	lua_newtable( L );
+	lua_pushstring( L, "createBrush" );
+	lua_pushcfunction( L, lua_createBrush );
+	lua_rawset( L, -3 );
+	lua_setglobal( L, "GlobalBrushCreator" );
 
-	// Define a BrushNode interface
-	py::class_<ScriptBrushNode, ScriptSceneNode> brush(scope, "BrushNode");
-	brush.def(py::init<const scene::INodePtr&>());
-	brush.def("getNumFaces", &ScriptBrushNode::getNumFaces);
-	brush.def("empty", &ScriptBrushNode::empty);
-	brush.def("hasContributingFaces", &ScriptBrushNode::hasContributingFaces);
-	brush.def("removeEmptyFaces", &ScriptBrushNode::getNumFaces);
-	brush.def("setShader", &ScriptBrushNode::setShader);
-	brush.def("hasShader", &ScriptBrushNode::hasShader);
-	brush.def("hasVisibleMaterial", &ScriptBrushNode::hasVisibleMaterial);
-	brush.def("undoSave", &ScriptBrushNode::undoSave);
-	brush.def("getFace", &ScriptBrushNode::getFace);
-	brush.def("getDetailFlag", &ScriptBrushNode::getDetailFlag);
-	brush.def("setDetailFlag", &ScriptBrushNode::setDetailFlag);
+	// Expose detail flag constants
+	lua_pushinteger( L, ( lua_Integer )IBrush::Structural );
+	lua_setglobal( L, "BRUSH_STRUCTURAL" );
 
-	// Define the BrushCreator interface
-	py::class_<BrushInterface> brushCreator(scope, "BrushCreator");
-	brushCreator.def("createBrush", &BrushInterface::createBrush);
-
-	// Now point the Python variable "GlobalBrushCreator" to this instance
-	globals["GlobalBrushCreator"] = this;
-
-	py::enum_<ScriptBrushNode::DetailFlag>(scope, "BrushDetailFlag")
-		.value("Structural", ScriptBrushNode::Structural)
-		.value("Detail", ScriptBrushNode::Detail)
-		.export_values();
+	lua_pushinteger( L, ( lua_Integer )IBrush::Detail );
+	lua_setglobal( L, "BRUSH_DETAIL" );
 }
 
 } // namespace script

@@ -1,12 +1,8 @@
 for %%i in (..\..\install\*.dll) do del "%%i"
 
-del ..\..\install\python*.zip
-
 copy ..\..\windeps\openal\bin\OpenAL32.dll ..\..\install /Y
 copy ..\..\windeps\openal\bin\wrap_oal.dll ..\..\install /Y
 copy ..\..\windeps\glew\bin\glew32.dll ..\..\install /Y
-copy ..\..\windeps\python\bin\python3*.dll ..\..\install /Y
-copy ..\..\windeps\python\bin\python3*.zip ..\..\install /Y
 
 @rem Copy wxWidgets libraries (64 bit)
 

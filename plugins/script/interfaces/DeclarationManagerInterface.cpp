@@ -1,111 +1,139 @@
 #include "DeclarationManagerInterface.h"
+#include "../LuaHelper.h"
+#include "ideclmanager.h"
 
 namespace script
 {
 
-class DeclarationVisitorWrapper :
-    public DeclarationVisitor
-{
-public:
-    void visit(const decl::IDeclaration::Ptr& declaration) override
-    {
-        // Wrap this method to python
-        PYBIND11_OVERLOAD_PURE(
-            void,               // Return type
-            DeclarationVisitor, // Parent class
-            visit,              // Name of function in C++ (must match Python name)
-            ScriptDeclaration(declaration)  // Argument(s)
-        );
-    }
-};
+constexpr const char* META_DECL = "NeoRadiant.Declaration";
 
-ScriptDeclaration DeclarationManagerInterface::findDeclaration(decl::Type type, const std::string& name)
+void DeclarationManagerInterface::registerInterface( lua_State* L )
 {
-    return ScriptDeclaration(GlobalDeclarationManager().findDeclaration(type, name));
+	// IDeclaration wrapper
+	static luaL_Reg declMethods[] =
+		{ { "getDeclName",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<decl::IDeclaration>( L, 1, META_DECL )->getDeclName() );
+				return 1;
+			} },
+		{ "getDeclType",
+			[](lua_State* L)->int {
+				lua_pushinteger( L, ( lua_Integer )lua_checkobject<decl::IDeclaration>( L, 1, META_DECL )->getDeclType() );
+				return 1;
+			} },
+		{ "getDeclFilePath",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<decl::IDeclaration>( L, 1, META_DECL )->getDeclFilePath() );
+				return 1;
+			} },
+		{ "getDeclSource",
+			[](lua_State* L)->int {
+				const auto& bs			  = lua_checkobject<decl::IDeclaration>( L, 1, META_DECL )->getDeclSource();
+				lua_newtable( L );
+				lua_pushstdstring( L, bs.name );
+				lua_setfield( L, -2, "name" );
+				lua_pushstdstring( L, bs.typeName );
+				lua_setfield( L, -2, "typeName" );
+				lua_pushstdstring( L, bs.contents );
+				lua_setfield( L, -2, "contents" );
+				lua_pushstdstring( L, bs.fileInfo.name );
+				lua_setfield( L, -2, "filename" );
+				return 1;
+			} },
+		{ "setDeclSource",
+			[](lua_State* L)->int {
+				luaL_checktype( L, 2, LUA_TTABLE );
+				decl::DeclarationBlockSource bs;
+				lua_getfield( L, 2, "name" );
+				bs.name			  = lua_tostring( L, -1 ) ? lua_tostring( L, -1 ) : "";
+				lua_pop( L, 1 );
+				lua_getfield( L, 2, "typeName" );
+				bs.typeName		  = lua_tostring( L, -1 ) ? lua_tostring( L, -1 ) : "";
+				lua_pop( L, 1 );
+				lua_getfield( L, 2, "contents" );
+				bs.contents		  = lua_tostring( L, -1 ) ? lua_tostring( L, -1 ) : "";
+				lua_pop( L, 1 );
+				lua_checkobject<decl::IDeclaration>( L, 1, META_DECL )->setDeclSource( bs );
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_DECL, declMethods );
+
+	// decl::Type enum constants
+	lua_pushinteger( L, ( lua_Integer )decl::Type::Material );
+	lua_setglobal( L, "DECL_MATERIAL" );
+	lua_pushinteger( L, ( lua_Integer )decl::Type::SoundShader );
+	lua_setglobal( L, "DECL_SOUNDSHADER" );
+	lua_pushinteger( L, ( lua_Integer )decl::Type::EntityDef );
+	lua_setglobal( L, "DECL_ENTITYDEF" );
+	lua_pushinteger( L, ( lua_Integer )decl::Type::ModelDef );
+	lua_setglobal( L, "DECL_MODELDEF" );
+	lua_pushinteger( L, ( lua_Integer )decl::Type::Skin );
+	lua_setglobal( L, "DECL_SKIN" );
+	lua_pushinteger( L, ( lua_Integer )decl::Type::Particle );
+	lua_setglobal( L, "DECL_PARTICLE" );
+	lua_pushinteger( L, ( lua_Integer )decl::Type::Fx );
+	lua_setglobal( L, "DECL_FX" );
+	lua_pushinteger( L, ( lua_Integer )decl::Type::Table );
+	lua_setglobal( L, "DECL_TABLE" );
+
+	// DeclarationManager global
+	static luaL_Reg mgr[] = {
+		{ "findDeclaration",
+			[](lua_State* L)->int {
+				auto type = static_cast<decl::Type>( luaL_checkinteger( L, 2 ) );
+				auto decl  = GlobalDeclarationManager().findDeclaration( type, lua_checkstdstring( L, 3 ) );
+				if( !decl ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, decl.get(), META_DECL );
+				return 1;
+			} },
+		{ "foreachDeclaration",
+			[](lua_State* L)->int {
+				auto type  = static_cast<decl::Type>( luaL_checkinteger( L, 2 ) );
+				luaL_checktype( L, 3, LUA_TFUNCTION );
+				lua_pushvalue( L, 3 );
+				int ref	  = luaL_ref( L, LUA_REGISTRYINDEX );
+				GlobalDeclarationManager().foreachDeclaration( type, [&]( const decl::IDeclaration::Ptr& d ) {
+					lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+					lua_pushobject( L, d.get(), META_DECL );
+					if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+						lua_pop( L, 1 );
+				} );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ "reloadDeclarations",
+			[](lua_State* L)->int {
+				GlobalDeclarationManager().reloadDeclarations();
+				return 0;
+			} },
+		{ "saveDeclaration",
+			[](lua_State* L)->int {
+				auto* d	  = lua_checkobject<decl::IDeclaration>( L, 2, META_DECL );
+				auto decl  = GlobalDeclarationManager().findDeclaration( d->getDeclType(), d->getDeclName() );
+				if( decl )
+					GlobalDeclarationManager().saveDeclaration( decl );
+				return 0;
+			} },
+		{ "renameDeclaration",
+			[](lua_State* L)->int {
+				auto type  = static_cast<decl::Type>( luaL_checkinteger( L, 2 ) );
+				lua_pushboolean( L, GlobalDeclarationManager().renameDeclaration( type, lua_checkstdstring( L, 3 ), lua_checkstdstring( L, 4 ) ) );
+				return 1;
+			} },
+		{ "removeDeclaration",
+			[](lua_State* L)->int {
+				auto type  = static_cast<decl::Type>( luaL_checkinteger( L, 2 ) );
+				GlobalDeclarationManager().removeDeclaration( type, lua_checkstdstring( L, 3 ) );
+				return 0;
+			} },
+		{ nullptr, nullptr }
+	};
+	lua_registerclass( L, "NeoRadiant.DeclarationManager", mgr );
+	lua_setglobal_object( L, "GlobalDeclarationManager", this, "NeoRadiant.DeclarationManager" );
 }
 
-ScriptDeclaration DeclarationManagerInterface::findOrCreateDeclaration(decl::Type type, const std::string& name)
-{
-    return ScriptDeclaration(GlobalDeclarationManager().findOrCreateDeclaration(type, name));
-}
-
-void DeclarationManagerInterface::foreachDeclaration(decl::Type type, DeclarationVisitor& visitor)
-{
-    GlobalDeclarationManager().foreachDeclaration(type, [&](const decl::IDeclaration::Ptr& decl)
-    {
-        visitor.visit(decl);
-    });
-}
-
-bool DeclarationManagerInterface::renameDeclaration(decl::Type type, const std::string& oldName, const std::string& newName)
-{
-    return GlobalDeclarationManager().renameDeclaration(type, oldName, newName);
-}
-
-void DeclarationManagerInterface::removeDeclaration(decl::Type type, const std::string& name)
-{
-    GlobalDeclarationManager().removeDeclaration(type, name);
-}
-
-void DeclarationManagerInterface::reloadDeclarations()
-{
-    GlobalDeclarationManager().reloadDeclarations();
-}
-
-void DeclarationManagerInterface::saveDeclaration(const ScriptDeclaration& decl)
-{
-    if (!decl.get()) return;
-
-    GlobalDeclarationManager().saveDeclaration(decl.get());
-}
-
-void DeclarationManagerInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-    py::class_<ScriptDeclaration> declaration(scope, "Declaration");
-
-    py::enum_<decl::Type>(declaration, "Type")
-        .value("NullType", decl::Type::None) // None is a reserved word in Python
-        .value("Material", decl::Type::Material)
-        .value("Table", decl::Type::Table)
-        .value("EntityDef", decl::Type::EntityDef)
-        .value("SoundShader", decl::Type::SoundShader)
-        .value("ModelDef", decl::Type::ModelDef)
-        .value("Particle", decl::Type::Particle)
-        .value("Skin", decl::Type::Skin)
-        .value("Fx", decl::Type::Fx)
-        .export_values();
-
-    py::class_<decl::DeclarationBlockSource>(scope, "DeclarationBlockSyntax")
-        .def_readwrite("typeName", &decl::DeclarationBlockSource::typeName)
-        .def_readwrite("name", &decl::DeclarationBlockSource::name)
-        .def_readwrite("contents", &decl::DeclarationBlockSource::contents)
-        .def_readwrite("modName", &decl::DeclarationBlockSource::modName);
-
-    declaration.def(py::init<const decl::IDeclaration::Ptr&>());
-    declaration.def("isNull", &ScriptDeclaration::isNull);
-    declaration.def("getDeclName", &ScriptDeclaration::getDeclName);
-    declaration.def("getDeclType", &ScriptDeclaration::getDeclType);
-    declaration.def("getDeclSource", &ScriptDeclaration::getDeclSource);
-    declaration.def("setDeclSource", &ScriptDeclaration::setDeclSource);
-    declaration.def("getDeclFilePath", &ScriptDeclaration::getDeclFilePath);
-    declaration.def("setDeclFilePath", &ScriptDeclaration::setDeclFilePath);
-
-    py::class_<DeclarationVisitor, DeclarationVisitorWrapper>(scope, "DeclarationVisitor")
-        .def(py::init<>())
-        .def("visit", &DeclarationVisitor::visit);
-
-    // IDeclarationManager interface
-    py::class_<DeclarationManagerInterface>(scope, "DeclarationManager")
-        .def("findDeclaration", &DeclarationManagerInterface::findDeclaration)
-        .def("findOrCreateDeclaration", &DeclarationManagerInterface::findOrCreateDeclaration)
-        .def("foreachDeclaration", &DeclarationManagerInterface::foreachDeclaration)
-        .def("renameDeclaration", &DeclarationManagerInterface::renameDeclaration)
-        .def("removeDeclaration", &DeclarationManagerInterface::removeDeclaration)
-        .def("reloadDeclarations", &DeclarationManagerInterface::reloadDeclarations)
-        .def("saveDeclaration", &DeclarationManagerInterface::saveDeclaration);
-
-    // Now point the Python variable "GlobalDeclarationManager" to this instance
-    globals["GlobalDeclarationManager"] = this;
-}
-
-}
+} // namespace script

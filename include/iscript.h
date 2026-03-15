@@ -46,13 +46,13 @@ public:
 	virtual void addInterface(const std::string& name, const IScriptInterfacePtr& iface) = 0;
 
 	/**
-	 * greebo: Executes the given python script file. The filename is specified relatively
+	 * greebo: Executes the given lua script file. The filename is specified relatively
 	 * to the scripts/ folder.
 	 */
 	virtual void executeScriptFile(const std::string& filename) = 0;
 
 	/**
-	 * greebo: Interprets the given string as python script.
+	 * greebo: Interprets the given string as lua script.
 	 *
 	 * @returns: the result object.
 	 */

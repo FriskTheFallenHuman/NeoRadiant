@@ -2,10 +2,7 @@
 #pragma once
 
 // Include this first
-#include <pybind11/pybind11.h>
-#include <pybind11/operators.h>
-#include <pybind11/stl_bind.h>
-#include <pybind11/attr.h>
+#include "minilua.h"
 
 #define DR_PRECOMPILED_INTERFACES
 #define DR_PRECOMPILED_MATH

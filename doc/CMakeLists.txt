@@ -7,6 +7,14 @@ add_custom_command(
 )
 add_custom_target(doc ALL DEPENDS manual.html)
 
+add_custom_command(
+    OUTPUT scriptreference.html
+    COMMAND ${ASCIIDOCTOR}
+    ARGS -a stylesheet=manual.css -D ${DR_STAGING_DOCDIR} ${CMAKE_CURRENT_SOURCE_DIR}/scriptreference.adoc
+    DEPENDS scriptreference.adoc
+)
+add_custom_target(script ALL DEPENDS scriptreference.html)
+
 # Copy the images into the staging directory for local preview
 file(GLOB_RECURSE DOC_IMAGES img/*.png)
 execute_process(
@@ -17,4 +25,5 @@ execute_process(
 
 # Installation at package time
 install(FILES ${DR_STAGING_DOCDIR}/manual.html DESTINATION ${CMAKE_INSTALL_DOCDIR})
+install(FILES ${DR_STAGING_DOCDIR}/scriptreference.html DESTINATION ${CMAKE_INSTALL_DOCDIR})
 install(DIRECTORY img DESTINATION ${CMAKE_INSTALL_DOCDIR} FILES_MATCHING PATTERN "*.png")

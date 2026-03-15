@@ -1,98 +1,89 @@
 #include "CameraInterface.h"
-
-#include "math/Vector3.h"
-#include <pybind11/pybind11.h>
+#include "../LuaHelper.h"
+#include "MathInterface.h"
+#include "icameraview.h"
 
 namespace script
 {
 
-ScriptCameraView::ScriptCameraView(camera::ICameraView& cameraView) :
-	_cameraView(cameraView)
-{}
+constexpr const char* META_CAMVIEW = "NeoRadiant.CameraView";
 
-const Vector3& ScriptCameraView::getCameraOrigin() const
+void CameraInterface::registerInterface( lua_State* L )
 {
-	return _cameraView.getCameraOrigin();
-}
+	static const luaL_Reg methods[] =
+		{ { "getCameraOrigin",
+				[](lua_State* L)->int {
+				auto* c = lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW );
+				lua_pushvec3( L, c->getCameraOrigin() );
+				return 1;
+		} },
+		{ "setCameraOrigin",
+			[](lua_State* L)->int {
+				auto*	  c			= lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW );
+				c->setCameraOrigin( *lua_checkvec3( L, 2 ) );
+				return 0;
+			} },
+		{ "getCameraAngles",
+			[](lua_State* L)->int {
+				auto*	  c			= lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW );
+				lua_pushvec3( L, c->getCameraAngles() );
+				return 1;
+			} },
+		{ "setCameraAngles",
+			[](lua_State* L)->int {
+				auto*	  c			= lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW );
+				c->setCameraAngles( *lua_checkvec3( L, 2 ) );
+				return 0;
+			} },
+		{ "setOriginAndAngles",
+			[](lua_State* L)->int {
+				auto*	  c			= lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW );
+				c->setOriginAndAngles( *lua_checkvec3( L, 2 ), *lua_checkvec3( L, 3 ) );
+				return 0;
+			} },
+		{ "getRightVector",
+			[](lua_State* L)->int {
+				lua_pushvec3( L, lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW )->getRightVector() );
+				return 1;
+			} },
+		{ "getUpVector",
+			[](lua_State* L)->int {
+				lua_pushvec3( L, lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW )->getUpVector() );
+				return 1;
+			} },
+		{ "getForwardVector",
+			[](lua_State* L)->int {
+				lua_pushvec3( L, lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW )->getForwardVector() );
+				return 1;
+			} },
+		{ "getFarClipPlaneDistance",
+			[](lua_State* L)->int {
+				lua_pushnumber( L, lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW )->getFarClipPlaneDistance() );
+				return 1;
+			} },
+		{ "setFarClipPlaneDistance",
+			[](lua_State* L)->int {
+				lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW )->setFarClipPlaneDistance( ( float )luaL_checknumber( L, 2 ) );
+				return 0;
+			} },
+		{ "refresh",
+			[](lua_State* L)->int {
+				lua_checkobject<camera::ICameraView>( L, 1, META_CAMVIEW )->queueDraw();
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_CAMVIEW, methods );
 
-void ScriptCameraView::setCameraOrigin(const Vector3& newOrigin)
-{
-	_cameraView.setCameraOrigin(newOrigin);
-}
+	static const luaL_Reg mgr[] =
+		{ { "getActiveView",
+			[](lua_State* L)->int {
+			lua_pushobject( L, &GlobalCameraManager().getActiveView(), META_CAMVIEW );
+			return 1;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.CameraManager", mgr );
 
-const Vector3& ScriptCameraView::getCameraAngles() const
-{
-	return _cameraView.getCameraAngles();
-}
-
-void ScriptCameraView::setCameraAngles(const Vector3& newAngles)
-{
-	_cameraView.setCameraAngles(newAngles);
-}
-
-void ScriptCameraView::setOriginAndAngles(const Vector3& newOrigin, const Vector3& newAngles)
-{
-	_cameraView.setOriginAndAngles(newOrigin, newAngles);
-}
-
-const Vector3& ScriptCameraView::getRightVector() const
-{
-	return _cameraView.getRightVector();
-}
-
-const Vector3& ScriptCameraView::getUpVector() const
-{
-	return _cameraView.getUpVector();
-}
-
-const Vector3& ScriptCameraView::getForwardVector() const
-{
-	return _cameraView.getForwardVector();
-}
-
-float ScriptCameraView::getFarClipPlaneDistance() const
-{
-	return _cameraView.getFarClipPlaneDistance();
-}
-
-void ScriptCameraView::setFarClipPlaneDistance(float distance)
-{
-	_cameraView.setFarClipPlaneDistance(distance);
-}
-
-void ScriptCameraView::refresh()
-{
-    _cameraView.queueDraw();
-}
-
-ScriptCameraView CameraInterface::getActiveView()
-{
-	return ScriptCameraView(GlobalCameraManager().getActiveView());
-}
-
-void CameraInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	// Define a CameraView structure
-	py::class_<ScriptCameraView> camera(scope, "CameraView");
-	camera.def(py::init<camera::ICameraView&>());
-	camera.def("getCameraOrigin", &ScriptCameraView::getCameraOrigin, py::return_value_policy::reference);
-	camera.def("setCameraOrigin", &ScriptCameraView::setCameraOrigin);
-	camera.def("getCameraAngles", &ScriptCameraView::getCameraAngles, py::return_value_policy::reference);
-	camera.def("setCameraAngles", &ScriptCameraView::setCameraAngles);
-	camera.def("setOriginAndAngles", &ScriptCameraView::setOriginAndAngles);
-	camera.def("getRightVector", &ScriptCameraView::getRightVector, py::return_value_policy::reference);
-	camera.def("getUpVector", &ScriptCameraView::getUpVector, py::return_value_policy::reference);
-	camera.def("getForwardVector", &ScriptCameraView::getForwardVector, py::return_value_policy::reference);
-	camera.def("getFarClipPlaneDistance", &ScriptCameraView::getFarClipPlaneDistance);
-	camera.def("setFarClipPlaneDistance", &ScriptCameraView::setFarClipPlaneDistance);
-	camera.def("refresh", &ScriptCameraView::refresh);
-
-	// Define the BrushCreator interface
-	py::class_<CameraInterface> cameraManager(scope, "Camera");
-	cameraManager.def("getActiveView", &CameraInterface::getActiveView);
-
-	// Now point the Python variable "GlobalCameraManager" to this instance
-	globals["GlobalCameraManager"] = this;
+	lua_setglobal_object( L, "GlobalCameraManager", this, "NeoRadiant.CameraManager" );
 }
 
 }

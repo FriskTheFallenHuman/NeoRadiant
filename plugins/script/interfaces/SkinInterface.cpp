@@ -1,50 +1,81 @@
 #include "SkinInterface.h"
-
-#include <pybind11/pybind11.h>
-
-#include "modelskin.h"
+#include "../LuaHelper.h"
 
 namespace script
 {
 
-ScriptModelSkin ModelSkinCacheInterface::capture(const std::string& name)
+constexpr const char* META_SKIN = "NeoRadiant.ModelSkin";
+
+void SkinInterface::registerInterface( lua_State* L )
 {
-	return ScriptModelSkin(GlobalModelSkinCache().findSkin(name));
-}
+	static luaL_Reg skinMethods[] =
+		{ { "getName",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<decl::ISkin>( L, 1, META_SKIN )->getDeclName() );
+				return 1;
+			} },
+		{ "getRemap",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<decl::ISkin>( L, 1, META_SKIN )->getRemap( lua_checkstdstring( L, 2 ) ) );
+				return 1;
+			} },
+		{ "getAllRemappings",
+			[](lua_State* L)->int {
+				auto* s			  = lua_checkobject<decl::ISkin>( L, 1, META_SKIN );
+				const auto& remaps		  = s->getAllRemappings();
+				lua_newtable( L );
+				int i			  = 1;
+				for( const auto& r : remaps ) {
+					lua_newtable( L );
+					lua_pushstdstring( L, r.Original );
+					lua_setfield( L, -2, "original" );
+					lua_pushstdstring( L, r.Replacement );
+					lua_setfield( L, -2, "replacement" );
+					lua_rawseti( L, -2, i++ );
+				}
+				return 1;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_SKIN, skinMethods );
 
-StringList ModelSkinCacheInterface::getSkinsForModel(const std::string& model)
-{
-	return GlobalModelSkinCache().getSkinsForModel(model);
-}
+	static luaL_Reg lib[] =
+		{ { "findSkin",
+			[](lua_State* L)->int {
+				auto s = GlobalModelSkinCache().findSkin( lua_checkstdstring( L, 2 ) );
+				if( !s ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, s.get(), META_SKIN );
+				return 1;
+			} },
+		{ "getSkinsForModel",
+			[](lua_State* L)->int {
+				const auto& skins = GlobalModelSkinCache().getSkinsForModel( lua_checkstdstring( L, 2 ) );
+				lua_newtable( L );
+				int i	  = 1;
+				for( const auto& name : skins ) {
+					lua_pushstdstring( L, name );
+					lua_rawseti( L, -2, i++ );
+				}
+				return 1;
+			} },
+		{ "getAllSkins",
+			[](lua_State* L)->int {
+				const auto& skins = GlobalModelSkinCache().getAllSkins();
+				lua_newtable( L );
+				int i	  = 1;
+				for( const auto& name : skins ) {
+					lua_pushstdstring( L, name );
+					lua_rawseti( L, -2, i++ );
+				}
+				return 1;
+			} },
+		{ nullptr, nullptr }
+	};
+	lua_registerclass( L, "NeoRadiant.ModelSkinCache", lib );
 
-StringList ModelSkinCacheInterface::getAllSkins()
-{
-	return GlobalModelSkinCache().getAllSkins();
-}
-
-void ModelSkinCacheInterface::refresh()
-{
-	GlobalModelSkinCache().refresh();
-}
-
-void ModelSkinCacheInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	// Declare the model skin
-	py::class_<ScriptModelSkin> skin(scope, "ModelSkin");
-	skin.def(py::init<const decl::ISkin::Ptr&>());
-	skin.def("getName", &ScriptModelSkin::getName);
-	skin.def("getRemap", &ScriptModelSkin::getRemap);
-
-	// Add the module declaration to the given python namespace
-	py::class_<ModelSkinCacheInterface> cache(scope, "ModelSkinCache");
-
-	cache.def("getAllSkins", &ModelSkinCacheInterface::getAllSkins);
-	cache.def("capture", &ModelSkinCacheInterface::capture);
-	cache.def("getSkinsForModel", &ModelSkinCacheInterface::getSkinsForModel);
-	cache.def("refresh", &ModelSkinCacheInterface::refresh);
-
-	// Now point the Python variable "GlobalModelSkinCache" to this instance
-	globals["GlobalModelSkinCache"] = this;
+	lua_setglobal_object( L, "GlobalModelSkinCache", this, "NeoRadiant.ModelSkinCache" );
 }
 
 } // namespace script

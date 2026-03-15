@@ -47,7 +47,7 @@ private:
     void preDestructionCleanup();
     void updateTitle();
     void onTopLevelFrameClose(wxCloseEvent& ev);
-    void addPythonControls();
+    void addScriptControls();
     void onScriptsReloaded();
 
 public:

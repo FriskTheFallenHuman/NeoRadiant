@@ -174,10 +174,6 @@ private:
     using InternalAttrVisitor = std::function<void(const EntityClassAttribute&)>;
     void forEachAttributeInternal(InternalAttrVisitor visitor,
                                   bool editorKeys) const;
-
-    // Return attribute if found, possibly checking parents
-    EntityClassAttribute* getAttribute(const std::string&, bool includeInherited = true);
-
 public:
 
     /// Construct a named EntityClass
@@ -269,6 +265,11 @@ public:
 	 * given entity class name. className is treated case-sensitively.
 	 */
 	bool isOfType(const std::string& className);
+
+	/**
+	 * Return attribute if found, possibly checking parents.
+	 */
+    EntityClassAttribute* getAttribute(const std::string&, bool includeInherited = true);
 
     void emplaceAttribute(EntityClassAttribute&& attribute);
 

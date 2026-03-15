@@ -1,9 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
-<Project
-    DefaultTargets="Build"
-    ToolsVersion="15.0"
-    xmlns="http://schemas.microsoft.com/developer/msbuild/2003"
->
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -29,36 +25,24 @@
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
-  <PropertyGroup
-        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
-        Label="Configuration"
-    >
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup
-        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
-        Label="Configuration"
-    >
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup
-        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
-        Label="Configuration"
-    >
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <PlatformToolset>v143</PlatformToolset>
   </PropertyGroup>
-  <PropertyGroup
-        Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
-        Label="Configuration"
-    >
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <CharacterSet>Unicode</CharacterSet>
     <PlatformToolset>v143</PlatformToolset>
@@ -66,105 +50,47 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
-  <ImportGroup
-        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
-        Label="PropertySheets"
-    >
-    <Import
-            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
-            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
-            Label="LocalAppDataPlatform"
-        />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="properties\NeoRadiant Base Release Win32.props" />
     <Import Project="properties\NeoRadiant Module DLL.props" />
-    <Import Project="properties\Python.props" />
     <Import Project="properties\GLEW.props" />
   </ImportGroup>
-  <ImportGroup
-        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
-        Label="PropertySheets"
-    >
-    <Import
-            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
-            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
-            Label="LocalAppDataPlatform"
-        />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="properties\NeoRadiant Base Debug Win32.props" />
     <Import Project="properties\NeoRadiant Module DLL.props" />
-    <Import Project="properties\Python.props" />
     <Import Project="properties\GLEW.props" />
   </ImportGroup>
-  <ImportGroup
-        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
-        Label="PropertySheets"
-    >
-    <Import
-            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
-            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
-            Label="LocalAppDataPlatform"
-        />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="properties\NeoRadiant Base Release x64.props" />
     <Import Project="properties\NeoRadiant Module DLL.props" />
-    <Import Project="properties\Python.props" />
     <Import Project="properties\GLEW.props" />
   </ImportGroup>
-  <ImportGroup
-        Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
-        Label="PropertySheets"
-    >
-    <Import
-            Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props"
-            Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')"
-            Label="LocalAppDataPlatform"
-        />
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
     <Import Project="properties\NeoRadiant Base Debug x64.props" />
     <Import Project="properties\NeoRadiant Module DLL.props" />
-    <Import Project="properties\Python.props" />
     <Import Project="properties\GLEW.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup>
     <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
-    <CodeAnalysisRuleSet
-            Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
-        >AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules
-            Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
-        />
-    <CodeAnalysisRuleAssemblies
-            Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
-        />
-    <CodeAnalysisRuleSet
-            Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
-        >AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules
-            Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
-        />
-    <CodeAnalysisRuleAssemblies
-            Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
-        />
-    <CodeAnalysisRuleSet
-            Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
-        >AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules
-            Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
-        />
-    <CodeAnalysisRuleAssemblies
-            Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
-        />
-    <CodeAnalysisRuleSet
-            Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
-        >AllRules.ruleset</CodeAnalysisRuleSet>
-    <CodeAnalysisRules
-            Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
-        />
-    <CodeAnalysisRuleAssemblies
-            Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
-        />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|x64'" />
   </PropertyGroup>
-  <ItemDefinitionGroup
-        Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
-    >
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <CustomBuildStep>
       <Message>
       </Message>
@@ -181,8 +107,7 @@
       <ForcedIncludeFiles>%(PrecompiledHeaderFile)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies
-            >mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <DataExecutionPrevention>
@@ -213,8 +138,7 @@
       <ForcedIncludeFiles>%(PrecompiledHeaderFile)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies
-            >mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <DataExecutionPrevention>
@@ -227,9 +151,7 @@
       </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup
-        Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
-    >
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <CustomBuildStep>
       <Message>
       </Message>
@@ -243,8 +165,7 @@
       <ForcedIncludeFiles>%(PrecompiledHeaderFile)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies
-            >mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <FixedBaseAddress>
@@ -259,9 +180,7 @@
       </Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
-  <ItemDefinitionGroup
-        Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
-    >
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <CustomBuildStep>
       <Message>
       </Message>
@@ -277,8 +196,7 @@
       <ForcedIncludeFiles>%(PrecompiledHeaderFile)</ForcedIncludeFiles>
     </ClCompile>
     <Link>
-      <AdditionalDependencies
-            >mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>mathlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <ModuleDefinitionFile>
       </ModuleDefinitionFile>
       <FixedBaseAddress>
@@ -295,30 +213,23 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\plugins\script\interfaces\CameraInterface.h" />
-    <ClInclude
-            Include="..\..\plugins\script\interfaces\DeclarationManagerInterface.h"
-        />
+    <ClInclude Include="..\..\plugins\script\interfaces\DeclarationManagerInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\FxManagerInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\LayerInterface.h" />
-    <ClInclude
-            Include="..\..\plugins\script\interfaces\SelectionGroupInterface.h"
-        />
+    <ClInclude Include="..\..\plugins\script\interfaces\SelectionGroupInterface.h" />
+    <ClInclude Include="..\..\plugins\script\LuaHelper.h" />
+    <ClInclude Include="..\..\plugins\script\LuaModule.h" />
+    <ClInclude Include="..\..\plugins\script\minilua.h" />
     <ClInclude Include="..\..\plugins\script\precompiled.h" />
-    <ClInclude Include="..\..\plugins\script\PythonConsoleWriter.h" />
-    <ClInclude Include="..\..\plugins\script\PythonModule.h" />
     <ClInclude Include="..\..\plugins\script\SceneNodeBuffer.h" />
     <ClInclude Include="..\..\plugins\script\ScriptCommand.h" />
     <ClInclude Include="..\..\plugins\script\ScriptingSystem.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\BrushInterface.h" />
-    <ClInclude
-            Include="..\..\plugins\script\interfaces\CommandSystemInterface.h"
-        />
+    <ClInclude Include="..\..\plugins\script\interfaces\CommandSystemInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\DialogInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\EClassInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\EntityInterface.h" />
-    <ClInclude
-            Include="..\..\plugins\script\interfaces\FileSystemInterface.h"
-        />
+    <ClInclude Include="..\..\plugins\script\interfaces\FileSystemInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\GameInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\GridInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\MapInterface.h" />
@@ -327,63 +238,39 @@
     <ClInclude Include="..\..\plugins\script\interfaces\PatchInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\RadiantInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\RegistryInterface.h" />
-    <ClInclude
-            Include="..\..\plugins\script\interfaces\SceneGraphInterface.h"
-        />
+    <ClInclude Include="..\..\plugins\script\interfaces\SceneGraphInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\SelectionInterface.h" />
-    <ClInclude
-            Include="..\..\plugins\script\interfaces\SelectionSetInterface.h"
-        />
-    <ClInclude
-            Include="..\..\plugins\script\interfaces\ShaderSystemInterface.h"
-        />
+    <ClInclude Include="..\..\plugins\script\interfaces\SelectionSetInterface.h" />
+    <ClInclude Include="..\..\plugins\script\interfaces\ShaderSystemInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\SkinInterface.h" />
     <ClInclude Include="..\..\plugins\script\interfaces\SoundInterface.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\plugins\script\interfaces\CameraInterface.cpp" />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\DeclarationManagerInterface.cpp"
-        />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\FxManagerInterface.cpp"
-        />
+    <ClCompile Include="..\..\plugins\script\interfaces\DeclarationManagerInterface.cpp" />
+    <ClCompile Include="..\..\plugins\script\interfaces\FxManagerInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\LayerInterface.cpp" />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\SceneGraphInterface.cpp"
-        />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\SelectionGroupInterface.cpp"
-        />
+    <ClCompile Include="..\..\plugins\script\interfaces\RegistryInterface.cpp" />
+    <ClCompile Include="..\..\plugins\script\interfaces\SceneGraphInterface.cpp" />
+    <ClCompile Include="..\..\plugins\script\interfaces\SelectionGroupInterface.cpp" />
+    <ClCompile Include="..\..\plugins\script\LuaModule.cpp" />
+    <ClCompile Include="..\..\plugins\script\lua_impl.cpp" />
     <ClCompile Include="..\..\plugins\script\precompiled.cpp">
-      <PrecompiledHeader
-                Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"
-            >Create</PrecompiledHeader>
-      <PrecompiledHeader
-                Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"
-            >Create</PrecompiledHeader>
-      <PrecompiledHeader
-                Condition="'$(Configuration)|$(Platform)'=='Debug|x64'"
-            >Create</PrecompiledHeader>
-      <PrecompiledHeader
-                Condition="'$(Configuration)|$(Platform)'=='Release|x64'"
-            >Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\plugins\script\PythonModule.cpp" />
     <ClCompile Include="..\..\plugins\script\SceneNodeBuffer.cpp" />
     <ClCompile Include="..\..\plugins\script\ScriptCommand.cpp" />
     <ClCompile Include="..\..\plugins\script\ScriptingSystem.cpp" />
     <ClCompile Include="..\..\plugins\script\ScriptModule.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\BrushInterface.cpp" />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\CommandSystemInterface.cpp"
-        />
+    <ClCompile Include="..\..\plugins\script\interfaces\CommandSystemInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\DialogInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\EClassInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\EntityInterface.cpp" />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\FileSystemInterface.cpp"
-        />
+    <ClCompile Include="..\..\plugins\script\interfaces\FileSystemInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\GameInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\GridInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\MapInterface.cpp" />
@@ -391,15 +278,9 @@
     <ClCompile Include="..\..\plugins\script\interfaces\ModelInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\PatchInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\RadiantInterface.cpp" />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\SelectionInterface.cpp"
-        />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\SelectionSetInterface.cpp"
-        />
-    <ClCompile
-            Include="..\..\plugins\script\interfaces\ShaderSystemInterface.cpp"
-        />
+    <ClCompile Include="..\..\plugins\script\interfaces\SelectionInterface.cpp" />
+    <ClCompile Include="..\..\plugins\script\interfaces\SelectionSetInterface.cpp" />
+    <ClCompile Include="..\..\plugins\script\interfaces\ShaderSystemInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\SkinInterface.cpp" />
     <ClCompile Include="..\..\plugins\script\interfaces\SoundInterface.cpp" />
   </ItemGroup>

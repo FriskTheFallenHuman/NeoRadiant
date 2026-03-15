@@ -3,18 +3,14 @@
 #include "iscript.h"
 #include "iscriptinterface.h"
 
+struct lua_State;
+
 namespace script
 {
-
-class CommandSystemInterface :
-	public IScriptInterface
+class CommandSystemInterface : public IScriptInterface
 {
 public:
-	void execute(const std::string& buffer);
-	void addStatement(const std::string& statementName, const std::string& string);
-	void removeCommand(const std::string& name);
-
-	void registerInterface(py::module& scope, py::dict& globals) override;
+	void registerInterface( lua_State* L ) override;
 };
 
 } // namespace script

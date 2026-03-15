@@ -1,57 +1,88 @@
 #include "SoundInterface.h"
-
-#include <pybind11/pybind11.h>
+#include "../LuaHelper.h"
+#include "isound.h"
 
 namespace script
 {
 
-ScriptSoundShader SoundManagerInterface::getSoundShader(const std::string& shaderName)
+constexpr const char* META_SOUNDSHADER = "NeoRadiant.SoundShader";
+
+void SoundInterface::registerInterface( lua_State* L )
 {
-	return ScriptSoundShader(GlobalSoundManager().getSoundShader(shaderName));
-}
+	static luaL_Reg shaderMethods[] =
+		{ { "getName",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<ISoundShader>( L, 1, META_SOUNDSHADER )->getDeclName() );
+				return 1;
+			} },
+		{ "getRadiusMin",
+			[](lua_State* L)->int {
+				lua_pushnumber( L, lua_checkobject<ISoundShader>( L, 1, META_SOUNDSHADER )->getRadii().getMin() );
+				return 1;
+			} },
+		{ "getRadiusMax",
+			[](lua_State* L)->int {
+				lua_pushnumber( L, lua_checkobject<ISoundShader>( L, 1, META_SOUNDSHADER )->getRadii().getMax() );
+				return 1;
+			} },
+		{ "getSoundFiles",
+			[](lua_State* L)->int {
+				const auto& files = lua_checkobject<ISoundShader>( L, 1, META_SOUNDSHADER )->getSoundFileList();
+				lua_newtable( L );
+				int i				= 1;
+				for( const auto& f : files ) {
+					lua_pushstdstring( L, f );
+					lua_rawseti( L, -2, i++ );
+				}
+				return 1;
+			} },
+		{ "getDisplayFolder",
+			[](lua_State* L)->int {
+				lua_pushstdstring( L, lua_checkobject<ISoundShader>( L, 1, META_SOUNDSHADER )->getDisplayFolder() );
+				return 1;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, META_SOUNDSHADER, shaderMethods );
 
-bool SoundManagerInterface::playSound(const std::string& fileName)
-{
-	return GlobalSoundManager().playSound(fileName);
-}
+	static luaL_Reg mgr[] =
+		{ { "getSoundShader",
+			[](lua_State* L)->int {
+				auto s = GlobalSoundManager().getSoundShader( lua_checkstdstring( L, 2 ) );
+				if( !s ) {
+					lua_pushnil( L );
+					return 1;
+				}
+				lua_pushobject( L, s.get(), META_SOUNDSHADER );
+				return 1;
+			} },
+		{ "playSound",
+			[](lua_State* L)->int {
+				lua_pushboolean( L, GlobalSoundManager().playSound( lua_checkstdstring( L, 2 ) ) );
+				return 1;
+			} },
+		{ "stopSound",
+			[](lua_State* L)->int {
+				GlobalSoundManager().stopSound();
+				return 0;
+			} },
+		{ "forEachShader",
+			[](lua_State* L)->int {
+				luaL_checktype( L, 2, LUA_TFUNCTION );
+				lua_pushvalue( L, 2 );
+				int ref	  = luaL_ref( L, LUA_REGISTRYINDEX );
+				GlobalSoundManager().forEachShader( [&]( const ISoundShader::Ptr& s ) {
+					lua_rawgeti( L, LUA_REGISTRYINDEX, ref );
+					lua_pushobject( L, s.get(), META_SOUNDSHADER );
+					if( lua_pcall( L, 1, 0, 0 ) != LUA_OK )
+						lua_pop( L, 1 );
+				} );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ nullptr, nullptr } };
+	lua_registerclass( L, "NeoRadiant.SoundManager", mgr );
 
-void SoundManagerInterface::stopSound()
-{
-	GlobalSoundManager().stopSound();
-}
-
-// IScriptInterface implementation
-void SoundManagerInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	// Add the declaration for SoundRadii
-	py::class_<ScriptSoundRadii> radii(scope, "SoundRadii");
-
-	radii.def(py::init<const SoundRadii&>());
-	radii.def("setMin", &ScriptSoundRadii::setMin);
-	radii.def("setMax", &ScriptSoundRadii::setMax);
-	radii.def("getMin", &ScriptSoundRadii::getMin);
-	radii.def("getMax", &ScriptSoundRadii::getMax);
-
-	// Add the declaration for a SoundShader
-	py::class_<ScriptSoundShader> shader(scope, "SoundShader");
-
-	shader.def(py::init<const ISoundShader::Ptr&>());
-	shader.def("isNull", &ScriptSoundShader::isNull);
-	shader.def("getName", &ScriptSoundShader::getName);
-	shader.def("getRadii", &ScriptSoundShader::getRadii);
-	shader.def("getSoundFileList", &ScriptSoundShader::getSoundFileList);
-	shader.def("getShaderFilePath", &ScriptSoundShader::getShaderFilePath);
-	shader.def("getDefinition", &ScriptSoundShader::getDefinition);
-
-	// Add the module declaration to the given python namespace
-	py::class_<SoundManagerInterface> soundManager(scope, "SoundManager");
-
-	soundManager.def("getSoundShader", &SoundManagerInterface::getSoundShader);
-	soundManager.def("playSound", &SoundManagerInterface::playSound);
-	soundManager.def("stopSound", &SoundManagerInterface::stopSound);
-
-	// Now point the Python variable "GlobalSoundManager" to this instance
-	globals["GlobalSoundManager"] = this;
+	lua_setglobal_object( L, "GlobalSoundManager", this, "NeoRadiant.SoundManager" );
 }
 
 } // namespace script

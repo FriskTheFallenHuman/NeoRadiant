@@ -37,7 +37,7 @@ ScriptWindow::ScriptWindow(wxWindow* parent) :
 	auto editPanel = new wxPanel(_paned, wxID_ANY);
 	editPanel->SetSizer(new wxBoxSizer(wxVERTICAL));
 
-	auto editLabel = new wxStaticText(editPanel, wxID_ANY, _("Python Script Input"));
+	auto editLabel = new wxStaticText(editPanel, wxID_ANY, _("Lua Script Input"));
 
     auto buttonPanel = new wxFlexGridSizer(1, 2, 6, 6);
     buttonPanel->AddGrowableCol(1);
@@ -55,7 +55,7 @@ ScriptWindow::ScriptWindow(wxWindow* parent) :
         buttonPanel->Add(referenceButton, 0, wxALIGN_RIGHT);
     }
 
-    _view = new wxutil::PythonSourceViewCtrl(editPanel);
+    _view = new wxutil::LuaSourceViewCtrl(editPanel);
 
 	editPanel->GetSizer()->Add(editLabel, 0);
 	editPanel->GetSizer()->Add(_view, 1, wxEXPAND);
@@ -68,13 +68,13 @@ ScriptWindow::ScriptWindow(wxWindow* parent) :
 	_paned->SplitHorizontally(editPanel, _outView);
 	_paned->SetSashPosition(150);
 
-    // Add the initial import statement
-    _view->SetValue(fmt::format(R"(import neoradiant as dr
-
-# Enter your script code here. For reference, see
-# {0}
-# or the scripts/test.py in NeoRadiant installation folder.
-)", scriptReferenceUrl));
+    // Add the initial lua code
+    _view->SetValue(fmt::format(
+        "-- NeoRadiant Lua Script\n"
+        "-- For reference, see\n"
+        "-- {0}\n"
+        "-- or the scripts/test.lua in the NeoRadiant installation folder.\n"
+        "\n", scriptReferenceUrl));
 }
 
 ScriptWindow::~ScriptWindow()
@@ -94,7 +94,7 @@ void ScriptWindow::onRunScript(wxCommandEvent& ev)
 
 	UndoableCommand cmd("runScript");
 
-	// wxWidgets on Windows might produce \r\n, these confuse the python interpreter
+	// wxWidgets on Windows might produce \r\n; normalise to \n for the Lua interpreter
 	string::replace_all(scriptString, "\r\n", "\n");
 
 	// Run the script

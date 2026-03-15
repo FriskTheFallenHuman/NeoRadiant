@@ -10,9 +10,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\plugins\script\PythonConsoleWriter.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\plugins\script\SceneNodeBuffer.h">
       <Filter>src</Filter>
     </ClInclude>
@@ -88,9 +85,6 @@
     <ClInclude Include="..\..\plugins\script\interfaces\SelectionGroupInterface.h">
       <Filter>src\interfaces</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\plugins\script\PythonModule.h">
-      <Filter>src</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\plugins\script\interfaces\CameraInterface.h">
       <Filter>src\interfaces</Filter>
     </ClInclude>
@@ -102,6 +96,15 @@
     </ClInclude>
     <ClInclude Include="..\..\plugins\script\interfaces\FxManagerInterface.h">
       <Filter>src\interfaces</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\plugins\script\LuaHelper.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\plugins\script\LuaModule.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\plugins\script\minilua.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -180,9 +183,6 @@
     <ClCompile Include="..\..\plugins\script\interfaces\SelectionGroupInterface.cpp">
       <Filter>src\interfaces</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\plugins\script\PythonModule.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\plugins\script\interfaces\CameraInterface.cpp">
       <Filter>src\interfaces</Filter>
     </ClCompile>
@@ -193,6 +193,15 @@
       <Filter>src\interfaces</Filter>
     </ClCompile>
     <ClCompile Include="..\..\plugins\script\interfaces\FxManagerInterface.cpp">
+      <Filter>src\interfaces</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\plugins\script\lua_impl.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\plugins\script\LuaModule.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\plugins\script\interfaces\RegistryInterface.cpp">
       <Filter>src\interfaces</Filter>
     </ClCompile>
   </ItemGroup>

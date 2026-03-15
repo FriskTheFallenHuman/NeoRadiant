@@ -1505,7 +1505,7 @@ msgid "Script"
 msgstr ""
 
 #: ..\..\radiant\ui\script\ScriptWindow.cpp:37
-msgid "Python Script Input"
+msgid "Lua Script Input"
 msgstr ""
 
 #: ..\..\radiant\ui\script\ScriptWindow.cpp:39

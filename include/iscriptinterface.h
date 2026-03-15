@@ -3,8 +3,9 @@
 #include <memory>
 #include <vector>
 #include <utility>
-#include <pybind11/pybind11.h>
-namespace py = pybind11;
+
+// Forward-declare lua_State
+struct lua_State;
 
 namespace script
 {
@@ -16,11 +17,11 @@ public:
 
     virtual ~IScriptInterface() {}
 
-	/**
-	* This method is called by the Scripting System to let this class
-	* add its objects to the Python context.
-	*/
-	virtual void registerInterface(py::module& scope, py::dict& globals) = 0;
+    /**
+     * Called by the scripting system to let this interface register its
+     * types and globals into the given Lua state.
+     */
+    virtual void registerInterface(lua_State* L) = 0;
 };
 
 using NamedInterface = std::pair<std::string, IScriptInterface::Ptr>;

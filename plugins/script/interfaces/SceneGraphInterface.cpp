@@ -1,169 +1,201 @@
 #include "SceneGraphInterface.h"
 
-#include "imodel.h"
-#include "scenelib.h"
+#include "../LuaHelper.h"
+#include "MathInterface.h"
+
+#include "iscenegraph.h"
 #include "iselection.h"
+#include "scenelib.h"
 #include "debugging/ScenegraphUtils.h"
 
-#include "ModelInterface.h"
-#include "BrushInterface.h"
-#include "EntityInterface.h"
-#include "PatchInterface.h"
+#include <memory>
 
 namespace script
 {
-
-ScriptSceneNode::ScriptSceneNode(const scene::INodePtr& node) :
-	_node(node)
-{}
-
-ScriptSceneNode::~ScriptSceneNode()
-{}
-
-ScriptSceneNode::operator scene::INodePtr() const
+void lua_pushscenenode( lua_State* L, const scene::INodePtr& node )
 {
-	return _node.lock();
-}
-
-void ScriptSceneNode::removeFromParent()
-{
-	scene::INodePtr node = _node.lock();
-	if (node != NULL) {
-		scene::removeNodeFromParent(node);
+	if( !node ) {
+		lua_pushnil( L );
+		return;
 	}
+	auto* ud = static_cast<SceneNodeUD*>( lua_newuserdata( L, sizeof( SceneNodeUD ) ) );
+	new( ud ) SceneNodeUD { node };
+	luaL_setmetatable( L, META_SCENENODE );
 }
 
-void ScriptSceneNode::addToContainer(const ScriptSceneNode& container)
+scene::INodePtr lua_checkscenenode( lua_State* L, int idx )
 {
-	scene::INodePtr node = _node.lock();
-	if (node != NULL) {
-		scene::addNodeToContainer(node, container);
-	}
+	auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, idx, META_SCENENODE ) );
+	return ud->node;
 }
 
-const AABB& ScriptSceneNode::getWorldAABB() const
+// -----------------------------------------------------------------------
+void register_SceneNode( lua_State* L )
 {
-	scene::INodePtr node = _node.lock();
-	return node != NULL ? node->worldAABB() : _emptyAABB;
+	static const luaL_Reg methods[] = {
+
+		{ "isNull",
+			[](lua_State* L)->int {
+				auto* ud = static_cast<SceneNodeUD*>( luaL_checkudata( L, 1, META_SCENENODE ) );
+				lua_pushboolean( L, ud->node == nullptr );
+				return 1;
+			} },
+
+		{ "getNodeType",
+			[](lua_State* L)->int {
+				auto node = lua_checkscenenode( L, 1 );
+				lua_pushstdstring( L, node ? getNameForNodeType( node->getNodeType() ) : "null" );
+				return 1;
+			} },
+
+		{ "getWorldAABB",
+			[](lua_State* L)->int {
+				auto		node = lua_checkscenenode( L, 1 );
+				static AABB empty;
+				lua_pushaabb( L, node ? node->worldAABB() : empty );
+				return 1;
+			} },
+
+		{ "getParent",
+			[](lua_State* L)->int {
+				auto node = lua_checkscenenode( L, 1 );
+				lua_pushscenenode( L, node ? node->getParent() : scene::INodePtr() );
+				return 1;
+			} },
+
+		{ "removeFromParent",
+			[](lua_State* L)->int {
+				auto node = lua_checkscenenode( L, 1 );
+				if( node )
+					scene::removeNodeFromParent( node );
+				return 0;
+			} },
+
+		{ "addToContainer",
+			[](lua_State* L)->int {
+				auto node	   = lua_checkscenenode( L, 1 );
+				auto container = lua_checkscenenode( L, 2 );
+				if( node && container )
+					scene::addNodeToContainer( node, container );
+				return 0;
+			} },
+
+		{ "isSelected",
+			[](lua_State* L)->int {
+				auto node = lua_checkscenenode( L, 1 );
+				if( !node ) {
+					lua_pushboolean( L, 0 );
+					return 1;
+				}
+				auto sel = scene::node_cast<ISelectable>( node );
+				lua_pushboolean( L, sel ? sel->isSelected() : false );
+				return 1;
+			} },
+
+		{ "setSelected",
+			[](lua_State* L)->int {
+				auto node = lua_checkscenenode( L, 1 );
+				bool val  = lua_toboolean( L, 2 ) != 0;
+				if( node ) {
+					auto sel = scene::node_cast<ISelectable>( node );
+					if( sel )
+						sel->setSelected( val );
+				}
+				return 0;
+			} },
+
+		{ "invertSelected",
+			[](lua_State* L)->int {
+				auto node = lua_checkscenenode( L, 1 );
+				if( node ) {
+					auto sel = scene::node_cast<ISelectable>( node );
+					if( sel )
+						sel->setSelected( !sel->isSelected() );
+				}
+				return 0;
+			} },
+		{ "traverse",
+			[](lua_State* L)->int {
+				auto node = lua_checkscenenode( L, 1 );
+				luaL_checktype( L, 2, LUA_TFUNCTION );
+
+				if( !node )
+					return 0;
+
+				// Build a C++ visitor that calls the Lua function.
+				struct LuaVisitor : public scene::NodeVisitor {
+					lua_State* L;
+					int		   funcRef;
+
+					LuaVisitor( lua_State* l, int ref ) :
+						L( l ),
+						funcRef( ref )
+					{
+					}
+
+					bool pre( const scene::INodePtr& child ) override
+					{
+						lua_rawgeti( L, LUA_REGISTRYINDEX, funcRef );
+						lua_pushscenenode( L, child );
+						if( lua_pcall( L, 1, 1, 0 ) != LUA_OK ) {
+							lua_pop( L, 1 );
+							return false;
+						}
+						bool cont = lua_toboolean( L, -1 ) != 0;
+						lua_pop( L, 1 );
+						return cont;
+					}
+				};
+
+				lua_pushvalue( L, 2 );
+				int		   ref = luaL_ref( L, LUA_REGISTRYINDEX );
+				LuaVisitor visitor( L, ref );
+				node->traverse( visitor );
+				luaL_unref( L, LUA_REGISTRYINDEX, ref );
+				return 0;
+			} },
+		{ "__tostring",
+			[](lua_State* L)->int {
+				auto node = lua_checkscenenode( L, 1 );
+				if( !node ) {
+					lua_pushstring( L, "SceneNode(null)" );
+					return 1;
+				}
+				lua_pushfstring( L, "SceneNode(%s)", getNameForNodeType( node->getNodeType() ).c_str() );
+				return 1;
+			} },
+		{ "__gc",
+			[](lua_State* L)->int {
+				auto* ud = static_cast<SceneNodeUD*>( lua_touserdata( L, 1 ) );
+				if( ud )
+					ud->~SceneNodeUD();
+				return 0;
+			} },
+
+		{ nullptr, nullptr }
+	};
+
+	lua_registerclass( L, META_SCENENODE, methods );
 }
 
-bool ScriptSceneNode::isNull() const
+// SceneGraphInterface
+constexpr const char* META_SCENEGRAPH = "NeoRadiant.SceneGraph";
+
+void SceneGraphInterface::registerInterface( lua_State* L )
 {
-	return _node.lock() == NULL;
-}
+	register_SceneNode( L );
 
-ScriptSceneNode ScriptSceneNode::getParent()
-{
-	scene::INodePtr node = _node.lock();
-	return node != NULL ? ScriptSceneNode(node->getParent()) : ScriptSceneNode(scene::INodePtr());
-}
+	static const luaL_Reg sgMethods[] =
+		{ { "root",
+			[](lua_State* L)->int {
+				lua_pushscenenode( L, GlobalSceneGraph().root() );
+				return 1;
+			} },
+		{ nullptr, nullptr } };
 
-std::string ScriptSceneNode::getNodeType()
-{
-	scene::INodePtr node = _node.lock();
-	return node != NULL ? getNameForNodeType(node->getNodeType()) : "null";
-}
+	lua_registerclass( L, META_SCENEGRAPH, sgMethods );
 
-void ScriptSceneNode::traverse(scene::NodeVisitor& visitor)
-{
-	scene::INodePtr node = _node.lock();
-	if (node != NULL) {
-		node->traverse(visitor);
-	}
-}
-
-void ScriptSceneNode::traverseChildren(scene::NodeVisitor& visitor)
-{
-	scene::INodePtr node = _node.lock();
-	if (node != NULL) {
-		node->traverseChildren(visitor);
-	}
-}
-
-bool ScriptSceneNode::isSelected()
-{
-	scene::INodePtr node = _node.lock();
-	if (node == NULL) return false;
-
-	ISelectablePtr selectable = scene::node_cast<ISelectable>(node);
-
-	return (selectable != NULL) ? selectable->isSelected() : false;
-}
-
-void ScriptSceneNode::setSelected(int selected)
-{
-	scene::INodePtr node = _node.lock();
-	if (node == NULL) return;
-
-	ISelectablePtr selectable = scene::node_cast<ISelectable>(node);
-
-	if (selectable != NULL) {
-		selectable->setSelected(static_cast<bool>(selected));
-	}
-}
-
-void ScriptSceneNode::invertSelected()
-{
-	scene::INodePtr node = _node.lock();
-	if (node == NULL) return;
-
-	ISelectablePtr selectable = scene::node_cast<ISelectable>(node);
-
-	if (selectable != NULL) {
-		selectable->setSelected(!selectable->isSelected());
-	}
-}
-
-ScriptSceneNode SceneGraphInterface::root()
-{
-	return ScriptSceneNode(GlobalSceneGraph().root());
-}
-
-void SceneGraphInterface::registerInterface(py::module& scope, py::dict& globals)
-{
-	// Expose the scene::Node interface
-	py::class_<ScriptSceneNode> sceneNode(scope, "SceneNode");
-
-	sceneNode.def(py::init<const scene::INodePtr&>());
-	sceneNode.def("addToContainer", &ScriptSceneNode::addToContainer);
-	sceneNode.def("removeFromParent", &ScriptSceneNode::removeFromParent);
-	sceneNode.def("getWorldAABB", &ScriptSceneNode::getWorldAABB, py::return_value_policy::reference);
-	sceneNode.def("isNull", &ScriptSceneNode::isNull);
-	sceneNode.def("getParent", &ScriptSceneNode::getParent);
-	sceneNode.def("getNodeType", &ScriptSceneNode::getNodeType);
-	sceneNode.def("traverse", &ScriptSceneNode::traverse);
-	sceneNode.def("traverseChildren", &ScriptSceneNode::traverseChildren);
-	sceneNode.def("setSelected", &ScriptSceneNode::setSelected);
-	sceneNode.def("invertSelected", &ScriptSceneNode::invertSelected);
-	sceneNode.def("isSelected", &ScriptSceneNode::isSelected);
-
-	// Add the "isModel" and "getModel" methods to all ScriptSceneNodes
-	sceneNode.def("isModel", &ScriptModelNode::isModel);
-	sceneNode.def("getModel", &ScriptModelNode::getModel);
-
-	// Add the "is/get" brush methods
-	sceneNode.def("isBrush", &ScriptBrushNode::isBrush);
-	sceneNode.def("getBrush", &ScriptBrushNode::getBrush);
-
-	// Add the "is/get" entity methods
-	sceneNode.def("isEntity", &ScriptEntityNode::isEntity);
-	sceneNode.def("getEntity", &ScriptEntityNode::getEntity);
-
-	// Add the "is/get" patch methods
-	sceneNode.def("isPatch", &ScriptPatchNode::isPatch);
-	sceneNode.def("getPatch", &ScriptPatchNode::getPatch);
-
-	py::class_<scene::NodeVisitor, SceneNodeVisitorWrapper> visitor(scope, "SceneNodeVisitor");
-	visitor.def(py::init<>());
-	visitor.def("pre", &scene::NodeVisitor::pre);
-	visitor.def("post", &scene::NodeVisitor::post);
-
-	// Add the module declaration to the given python namespace
-	py::class_<SceneGraphInterface> sceneGraphInterface(scope, "SceneGraph");
-	sceneGraphInterface.def("root", &SceneGraphInterface::root);
-
-	// Now point the Python variable "GlobalSceneGraph" to this instance
-	globals["GlobalSceneGraph"] = this;
+	lua_setglobal_object( L, "GlobalSceneGraph", this, META_SCENEGRAPH );
 }
 
 } // namespace script
