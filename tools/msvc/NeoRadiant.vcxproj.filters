@@ -762,7 +762,7 @@
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\texturebrowser\TextureBrowserPanel.cpp">
       <Filter>src\ui\texturebrowser</Filter>
-    </ClCompile>
+    </ClCompile><ClCompile Include="..\..\radiant\ui\stairs\StairsGeneratorDialog.cpp">
     <ClCompile Include="..\..\radiant\ui\skin\SkinEditor.cpp">
       <Filter>src\ui\skin</Filter>
     </ClCompile>
@@ -777,6 +777,24 @@
     </ClCompile>
     <ClCompile Include="..\..\radiant\ui\stairs\StairsGeneratorDialog.cpp">
       <Filter>src\ui\stairs</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\radiant\ui\arch\ArchGeneratorDialog.cpp">
+      <Filter>src\ui\arch</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\radiant\ui\building\BuildingGeneratorDialog.cpp">
+      <Filter>src\ui\building</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\radiant\ui\mapconversion\MapConversionDialog.cpp">
+      <Filter>src\ui\mapconversion</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\radiant\ui\osm\OsmImporterDialog.cpp">
+      <Filter>src\ui\osm</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\radiant\ui\sweep\SweepDialog.cpp">
+      <Filter>src\ui\sweep</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\radiant\ui\tilemap\TileMapDialog.cpp">
+      <Filter>src\ui\tilemap</Filter>
     </ClCompile>
     <ClCompile Include="..\..\radiant\xyview\OrthoView.cpp">
       <Filter>src\xyview</Filter>
