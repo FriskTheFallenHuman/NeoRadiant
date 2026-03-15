@@ -56,13 +56,11 @@ public:
 
 	// Map expressions
 	MapExpressionPtr _lightFalloff;
-    IShaderLayer::MapType _lightFalloffCubeMapType;
 
 	/* Light type booleans */
 	bool fogLight;
 	bool ambientLight;
 	bool blendLight;
-	bool _cubicLight;
 
 	// The description tag of the material
 	std::string description;
@@ -107,9 +105,6 @@ public:
     // The string value specified by the guisurf keyword, if other than entity[2]3]
     std::string _guiDeclName;
 
-    // The three ambient rim colour expressions (empty if not defined)
-    IShaderExpression::Ptr _ambientRimColour[3];
-
     // Private copy ctor, used for cloning
     ShaderTemplate(const ShaderTemplate& other);
 
@@ -123,11 +118,9 @@ public:
         decl::EditableDeclaration<IShaderTemplate>(decl::Type::Material, name),
         _name(name),
         _suppressChangeSignal(false),
-        _lightFalloffCubeMapType(IShaderLayer::MapType::Map),
         fogLight(false),
         ambientLight(false),
         blendLight(false),
-        _cubicLight(false),
         _materialFlags(0),
         _cullType(Material::CULL_BACK),
         _clampType(CLAMP_REPEAT),
@@ -361,12 +354,6 @@ public:
 		return blendLight;
 	}
 
-    bool isCubicLight()
-	{
-		ensureParsed();
-		return _cubicLight;
-	}
-
     void setIsAmbientLight(bool newValue)
     {
         ensureParsed();
@@ -387,14 +374,6 @@ public:
     {
         ensureParsed();
         fogLight = newValue;
-
-        onTemplateChanged();
-    }
-
-    void setIsCubicLight(bool newValue)
-    {
-        ensureParsed();
-        _cubicLight = newValue;
 
         onTemplateChanged();
     }
@@ -483,20 +462,6 @@ public:
         onTemplateChanged();
     }
 
-    IShaderLayer::MapType getLightFalloffCubeMapType()
-    {
-        ensureParsed();
-        return _lightFalloffCubeMapType;
-    }
-
-    void setLightFalloffCubeMapType(IShaderLayer::MapType type)
-    {
-        ensureParsed();
-        _lightFalloffCubeMapType = type;
-
-        onTemplateChanged();
-    }
-
     std::size_t addLayer(IShaderLayer::Type type);
     void removeLayer(std::size_t index);
     void swapLayerPosition(std::size_t first, std::size_t second);
@@ -521,12 +486,6 @@ public:
     {
         ensureParsed();
         return _guiDeclName;
-    }
-
-    IShaderExpression::Ptr getAmbientRimColourExpression(std::size_t index)
-    {
-        assert(index < 3);
-        return _ambientRimColour[index];
     }
 
     void onTemplateChanged()

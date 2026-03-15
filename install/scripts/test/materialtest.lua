@@ -59,7 +59,6 @@ print("DecalInfo.fade: "        .. tostring(newMaterial:getDecalInfo().fadeMilli
 print("DecalInfo.startColour: " .. tostring(newMaterial:getDecalInfo().startColour))
 print("DecalInfo.endColour: "   .. tostring(newMaterial:getDecalInfo().endColour))
 print("Coverage: "              .. tostring(newMaterial:getCoverage()))
-print("LightFalloffCubeMap: "   .. tostring(newMaterial:getLightFalloffCubeMapType()))
 print("RenderBumpArgs: "        .. tostring(newMaterial:getRenderBumpArguments()))
 
 newMaterial:setSortRequest(Material.SortRequest.NEAREST)

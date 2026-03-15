@@ -81,7 +81,6 @@ public:
 		FLAG_MASK_BLUE				= 1 << 8,
 		FLAG_MASK_ALPHA				= 1 << 9,
 		FLAG_MASK_DEPTH				= 1 << 10,
-		FLAG_IGNORE_DEPTH			= 1 << 11,  // use depthfunc always
 	};
 
 	enum TexGenType

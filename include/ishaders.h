@@ -322,15 +322,9 @@ public:
 	 */
 	virtual bool isFogLight() const = 0;
 
-    /** Determine whether this is a cubic light shader, i.e. the
-     * material def contains the global "cubicLight" keyword.
-     */
-    virtual bool isCubicLight() const = 0;
-
     virtual void setIsAmbientLight(bool newValue) = 0;
     virtual void setIsBlendLight(bool newValue) = 0;
     virtual void setIsFogLight(bool newValue) = 0;
-    virtual void setIsCubicLight(bool newValue) = 0;
 
 	/**
 	 * For light shaders: implicitly no-shadows lights (ambients, fogs, etc)
@@ -397,14 +391,6 @@ public:
 
     // Set the lightFallOff expression to define the image/cubemap to use
     virtual void setLightFalloffExpressionFromString(const std::string& expressionString) = 0;
-
-    // Return the type of the light fall off image
-    // (can be MapType::Map (lightFalloffImage or MapType::CameraCubeMap for lightFalloffCubeMap)
-    virtual IShaderLayer::MapType getLightFalloffCubeMapType() = 0;
-
-    // Set the type of the light fall off image
-    // (can be MapType::Map (lightFalloffImage or MapType::CameraCubeMap for lightFalloffCubeMap)
-    virtual void setLightFalloffCubeMapType(IShaderLayer::MapType type) = 0;
 
 	// greebo: Returns the description as defined in the material
 	virtual std::string getDescription() const = 0;

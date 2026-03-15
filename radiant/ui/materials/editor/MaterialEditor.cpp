@@ -892,17 +892,6 @@ void MaterialEditor::setupMaterialProperties()
     createDecalColourBinding("MaterialDecalInfoEndBlue", [](const MaterialPtr& material) { return material->getDecalInfo().endColour.z(); });
     createDecalColourBinding("MaterialDecalInfoEndAlpha", [](const MaterialPtr& material) { return material->getDecalInfo().endColour.w(); });
 
-    // For light fall off images, only cameracubemap and map are allowed
-    auto lightFallOffCubeMapType = getControl<wxChoice>("MaterialLightFalloffCubeMapType");
-    lightFallOffCubeMapType->AppendString(shaders::getStringForMapType(IShaderLayer::MapType::Map));
-    lightFallOffCubeMapType->AppendString(shaders::getStringForMapType(IShaderLayer::MapType::CameraCubeMap));
-
-    lightFallOffCubeMapType->Bind(wxEVT_CHOICE, [this, lightFallOffCubeMapType] (wxCommandEvent& ev)
-    {
-        if (_materialUpdateInProgress || !_material) return;
-        _material->setLightFalloffCubeMapType(shaders::getMapTypeForString(lightFallOffCubeMapType->GetStringSelection().ToStdString()));
-    });
-
     auto lightFalloffMap = getControl<MapExpressionEntry>("MaterialLightFalloffMap");
     _materialBindings.emplace(std::make_shared<ExpressionBinding<MaterialPtr>>(lightFalloffMap->GetTextCtrl(),
         [](const MaterialPtr& material)
@@ -989,36 +978,11 @@ void MaterialEditor::setupMaterialLightFlags()
             updateMaterialPropertiesFromMaterial();
         }));
 
-    _materialBindings.emplace(std::make_shared<CheckBoxBinding<MaterialPtr>>(getControl<wxCheckBox>("MaterialIsAmbientCubicLight"),
-        [](const MaterialPtr& material) { return material->isAmbientLight() && material->isCubicLight(); },
-        [=](const MaterialPtr& material, const bool& newValue)
-        {
-            material->setIsAmbientLight(newValue);
-            material->setIsCubicLight(newValue);
-        },
-        [this]() // post-update
-        {
-            onMaterialChanged();
-            updateMaterialPropertiesFromMaterial();
-        }));
-
     _materialBindings.emplace(std::make_shared<CheckBoxBinding<MaterialPtr>>(getControl<wxCheckBox>("MaterialIsFogLight"),
         [](const MaterialPtr& material) { return material->isFogLight(); },
         [=](const MaterialPtr& material, const bool& newValue)
         {
             material->setIsFogLight(newValue);
-        },
-        [this]() // post-update
-        {
-            onMaterialChanged();
-            updateMaterialPropertiesFromMaterial();
-        }));
-
-    _materialBindings.emplace(std::make_shared<CheckBoxBinding<MaterialPtr>>(getControl<wxCheckBox>("MaterialIsCubicLight"),
-        [](const MaterialPtr& material) { return material->isCubicLight(); },
-        [=](const MaterialPtr& material, const bool& newValue)
-        {
-            material->setIsCubicLight(newValue);
         },
         [this]() // post-update
         {
@@ -1407,7 +1371,6 @@ void MaterialEditor::setupMaterialStageProperties()
     setupStageFlag("MaterialStageHighQuality", IShaderLayer::FLAG_HIGHQUALITY);
     setupStageFlag("MaterialStageForceHighQuality", IShaderLayer::FLAG_FORCE_HIGHQUALITY);
     setupStageFlag("MaterialStageNoPicMip", IShaderLayer::FLAG_NO_PICMIP);
-    setupStageFlag("MaterialStageIgnoreDepth", IShaderLayer::FLAG_IGNORE_DEPTH);
 
     auto texgenDropdown = getControl<wxChoice>("MaterialStageTexGenType");
     texgenDropdown->AppendString("");
@@ -2287,10 +2250,6 @@ void MaterialEditor::updateMaterialPropertiesFromMaterial()
         auto cullTypeString = shaders::getStringForCullType(_material->getCullType());
         cullTypes->SetStringSelection(cullTypeString);
 
-        // Light Falloff type
-        auto lightFalloffCubeMapType = _material->getLightFalloffCubeMapType();
-        getControl<wxChoice>("MaterialLightFalloffCubeMapType")->SetStringSelection(shaders::getStringForMapType(lightFalloffCubeMapType));
-
         // Spectrum
         bool hasSpectrum = (_material->getParseFlags() & Material::PF_HasSpectrum) != 0 || _material->getSpectrum() != 0;
         getControl<wxCheckBox>("MaterialHasSpectrum")->SetValue(hasSpectrum);
@@ -2301,14 +2260,6 @@ void MaterialEditor::updateMaterialPropertiesFromMaterial()
         bool hasDecalInfo = _material->getParseFlags() & Material::PF_HasDecalInfo;
         getControl<wxCheckBox>("MaterialHasDecalInfo")->SetValue(hasDecalInfo);
         getControl<wxPanel>("MaterialDecalInfoPanel")->Enable(hasDecalInfo);
-
-        getControl<wxCheckBox>("MaterialHasRenderBump")->SetValue(!_material->getRenderBumpArguments().empty());
-        //getControl<wxTextCtrl>("MaterialRenderBumpArguments")->Enable(!_material->getRenderBumpArguments().empty());
-        getControl<wxTextCtrl>("MaterialRenderBumpArguments")->SetValue(_material->getRenderBumpArguments());
-
-        getControl<wxCheckBox>("MaterialHasRenderBumpFlat")->SetValue(!_material->getRenderBumpFlatArguments().empty());
-        //getControl<wxTextCtrl>("MaterialRenderBumpFlatArguments")->Enable(!_material->getRenderBumpFlatArguments().empty());
-        getControl<wxTextCtrl>("MaterialRenderBumpFlatArguments")->SetValue(_material->getRenderBumpFlatArguments());
 
         // guisurf
         auto guisurfArgument = _material->getGuiSurfArgument();
@@ -2328,12 +2279,6 @@ void MaterialEditor::updateMaterialPropertiesFromMaterial()
     {
         getControl<wxPanel>("MaterialEditorSaveNotePanel")->Hide();
         getControl<wxTextCtrl>("MaterialGuiSurfPath")->SetValue("");
-
-        getControl<wxCheckBox>("MaterialHasRenderBump")->SetValue(false);
-        getControl<wxTextCtrl>("MaterialRenderBumpArguments")->SetValue("");
-
-        getControl<wxCheckBox>("MaterialHasRenderBumpFlat")->SetValue(false);
-        getControl<wxTextCtrl>("MaterialRenderBumpFlatArguments")->SetValue("");
 
         getControl<wxCheckBox>("MaterialHasDecalInfo")->SetValue(false);
         getControl<wxSpinCtrlDouble>("MaterialEditorDecalInfoStaySeconds")->SetValue(0);

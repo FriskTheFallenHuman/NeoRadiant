@@ -89,12 +89,10 @@ public:
 	std::string getDefinition() override;
 	bool isAmbientLight() const override;
 	bool isBlendLight() const override;
-	bool isCubicLight() const override;
 	bool isFogLight() const override;
     void setIsAmbientLight(bool newValue) override;
     void setIsBlendLight(bool newValue) override;
     void setIsFogLight(bool newValue) override;
-    void setIsCubicLight(bool newValue) override;
 	bool lightCastsShadows() const override;
 	bool surfaceCastsShadow() const override;
 	bool isDrawn() const override;
@@ -112,8 +110,6 @@ public:
 
     IMapExpression::Ptr getLightFalloffExpression() override;
     void setLightFalloffExpressionFromString(const std::string& expressionString) override;
-    IShaderLayer::MapType getLightFalloffCubeMapType() override;
-    void setLightFalloffCubeMapType(IShaderLayer::MapType type) override;
     std::string getRenderBumpArguments() override;
     std::string getRenderBumpFlatArguments() override;
 

@@ -132,17 +132,6 @@ void CShader::setLightFalloffExpressionFromString(const std::string& expressionS
     _template->setLightFalloffExpressionFromString(expressionString);
 }
 
-IShaderLayer::MapType CShader::getLightFalloffCubeMapType()
-{
-    return _template->getLightFalloffCubeMapType();
-}
-
-void CShader::setLightFalloffCubeMapType(IShaderLayer::MapType type)
-{
-    ensureTemplateCopy();
-    _template->setLightFalloffCubeMapType(type);
-}
-
 /*
  * Return the light falloff texture (Z dimension).
  */
@@ -498,11 +487,6 @@ bool CShader::isFogLight() const {
 	return _template->isFogLight();
 }
 
-bool CShader::isCubicLight() const
-{
-    return _template->isCubicLight();
-}
-
 void CShader::setIsAmbientLight(bool newValue)
 {
     ensureTemplateCopy();
@@ -520,13 +504,6 @@ void CShader::setIsFogLight(bool newValue)
     ensureTemplateCopy();
     _template->setIsFogLight(newValue);
 }
-
-void CShader::setIsCubicLight(bool newValue)
-{
-    ensureTemplateCopy();
-    _template->setIsCubicLight(newValue);
-}
-
 
 bool CShader::lightCastsShadows() const
 {

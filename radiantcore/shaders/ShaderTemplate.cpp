@@ -30,11 +30,9 @@ ShaderTemplate::ShaderTemplate(const ShaderTemplate& other) :
     _currentLayer(new Doom3ShaderLayer(*this)),
     _suppressChangeSignal(false),
     _lightFalloff(other._lightFalloff),
-    _lightFalloffCubeMapType(other._lightFalloffCubeMapType),
     fogLight(other.fogLight),
     ambientLight(other.ambientLight),
     blendLight(other.blendLight),
-    _cubicLight(other._cubicLight),
     description(other.description),
     _materialFlags(other._materialFlags),
     _cullType(other._cullType),
@@ -55,10 +53,6 @@ ShaderTemplate::ShaderTemplate(const ShaderTemplate& other) :
     _guiDeclName(other._guiDeclName)
 {
     _editorTex = other._editorTex ? MapExpression::createForString(other._editorTex->getExpressionString()) : MapExpressionPtr();
-
-    _ambientRimColour[0] = other._ambientRimColour[0];
-    _ambientRimColour[1] = other._ambientRimColour[1];
-    _ambientRimColour[2] = other._ambientRimColour[2];
 
     // Clone the layers
     for (const auto& otherLayer : other._layers)
@@ -454,23 +448,8 @@ bool ShaderTemplate::parseLightKeywords(parser::DefTokeniser& tokeniser, const s
 	{
         fogLight = true;
     }
-    else if (token == "cubliclight")
-    {
-        _cubicLight = true;
-    }
-    else if (token == "ambientcubiclight")
-    {
-        ambientLight = true;
-        _cubicLight = true;
-    }
     else if (!fogLight && token == "lightfalloffimage")
 	{
-        _lightFalloffCubeMapType = IShaderLayer::MapType::Map;
-        _lightFalloff = MapExpression::createForToken(tokeniser);
-    }
-    else if (token == "lightfalloffcubemap")
-    {
-        _lightFalloffCubeMapType = IShaderLayer::MapType::CameraCubeMap;
         _lightFalloff = MapExpression::createForToken(tokeniser);
     }
 	else if (token == "spectrum")
@@ -1036,10 +1015,6 @@ bool ShaderTemplate::parseStageModifiers(parser::DefTokeniser& tokeniser,
 	{
 		_currentLayer->setStageFlag(IShaderLayer::FLAG_MASK_DEPTH);
 	}
-    else if (token == "ignoredepth")
-    {
-        _currentLayer->setStageFlag(IShaderLayer::FLAG_IGNORE_DEPTH);
-    }
 	else if (token == "privatepolygonoffset")
 	{
 		_currentLayer->setPrivatePolygonOffset(string::convert<float>(tokeniser.nextToken()));
@@ -1178,11 +1153,9 @@ void ShaderTemplate::clear()
 
     description.clear();
     _suppressChangeSignal = false;
-    _lightFalloffCubeMapType = IShaderLayer::MapType::Map;
     fogLight = false;
     ambientLight = false;
     blendLight = false;
-    _cubicLight = false;
     _materialFlags = 0;
     _cullType = Material::CULL_BACK;
     _clampType = CLAMP_REPEAT;

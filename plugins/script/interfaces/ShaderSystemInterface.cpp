@@ -336,11 +336,6 @@ void ShaderSystemInterface::registerInterface( lua_State* L )
 				lua_pushboolean( L, lua_checkobject<Material>( L, 1, META_MATERIAL )->isFogLight() );
 				return 1;
 			} },
-		{ "isCubicLight",
-			[](lua_State* L)->int {
-				lua_pushboolean( L, lua_checkobject<Material>( L, 1, META_MATERIAL )->isCubicLight() );
-				return 1;
-			} },
 		{ "getSortRequest",
 			[](lua_State* L)->int {
 				lua_pushnumber( L, lua_checkobject<Material>( L, 1, META_MATERIAL )->getSortRequest() );
@@ -431,11 +426,6 @@ void ShaderSystemInterface::registerInterface( lua_State* L )
 		{ "getCoverage",
 			[](lua_State* L)->int {
 				lua_pushinteger( L, ( lua_Integer )lua_checkobject<Material>( L, 1, META_MATERIAL )->getCoverage() );
-				return 1;
-			} },
-		{ "getLightFalloffCubeMapType",
-			[](lua_State* L)->int {
-				lua_pushinteger( L, ( lua_Integer )lua_checkobject<Material>( L, 1, META_MATERIAL )->getLightFalloffCubeMapType() );
 				return 1;
 			} },
 		{ "getRenderBumpArguments",
@@ -562,11 +552,6 @@ void ShaderSystemInterface::registerInterface( lua_State* L )
 		{ "setIsFogLight",
 			[](lua_State* L)->int {
 				lua_checkobject<Material>( L, 1, META_MATERIAL )->setIsFogLight( lua_toboolean( L, 2 ) != 0 );
-				return 0;
-			} },
-		{ "setIsCubicLight",
-			[](lua_State* L)->int {
-				lua_checkobject<Material>( L, 1, META_MATERIAL )->setIsCubicLight( lua_toboolean( L, 2 ) != 0 );
 				return 0;
 			} },
 		{ "addStage",
@@ -889,8 +874,6 @@ void ShaderSystemInterface::registerInterface( lua_State* L )
 	lua_setfield( L, -2, "MASK_ALPHA" );
 	lua_pushinteger( L, ( lua_Integer )IShaderLayer::FLAG_MASK_DEPTH );
 	lua_setfield( L, -2, "MASK_DEPTH" );
-	lua_pushinteger( L, ( lua_Integer )IShaderLayer::FLAG_IGNORE_DEPTH );
-	lua_setfield( L, -2, "IGNORE_DEPTH" );
 	lua_setfield( L, -2, "Flag" );
 
 	lua_setglobal( L, "MaterialStage" );
