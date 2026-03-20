@@ -4,7 +4,7 @@
     <Import Project="NeoRadiant Base.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <PlatformDepsDir>$(NeoRadiantRoot)w32deps\</PlatformDepsDir>
+    <PlatformDepsDir>$(NeoRadiantRoot)\w32deps\</PlatformDepsDir>
     <LibSuffix />
     <WxWidgetsLibDir>vc14x_dll</WxWidgetsLibDir>
   </PropertyGroup>

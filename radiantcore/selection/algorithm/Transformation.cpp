@@ -1525,7 +1525,7 @@ void scatterObjects(ScatterDensityMethod densityMethod,
         }
 
         // Add random rotation around the surface normal
-        float localZRotation = degrees_to_radians(rotationDist(gen));
+        double localZRotation = degrees_to_radians(rotationDist(gen));
         Quaternion localZRot = Quaternion::createForZ(localZRotation);
         rotation = rotation.getMultipliedBy(localZRot);
 

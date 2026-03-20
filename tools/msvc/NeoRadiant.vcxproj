@@ -114,9 +114,6 @@
       <DataExecutionPrevention>
       </DataExecutionPrevention>
     </Link>
-    <PostBuildEvent>
-      <Command>$(NeoRadiantRoot)\tools\msvc\post_build_event.cmd $(Configuration) vc$(PlatformToolsetVersion)</Command>
-    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Midl>
@@ -156,7 +153,7 @@
       </DataExecutionPrevention>
     </Link>
     <PostBuildEvent>
-      <Command>$(NeoRadiantRoot)\tools\msvc\post_build_event.cmd $(Configuration) vc$(PlatformToolsetVersion)</Command>
+      <Command>$(NeoRadiantRoot)\tools\msvc\post_build_event_x86.cmd $(Configuration) vc$(PlatformToolsetVersion)</Command>
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

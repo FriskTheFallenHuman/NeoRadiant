@@ -5,7 +5,7 @@
     <NeoRadiantRoot>$(SolutionDir)</NeoRadiantRoot>
     <W32DepsDir>$(NeoRadiantRoot)w32deps\</W32DepsDir>
     <W64DepsDir>$(NeoRadiantRoot)w64deps\</W64DepsDir>
-    <WinDepsDir>$(NeoRadiantRoot)windeps\</WinDepsDir>
+    <WinDepsDir>$(NeoRadiantRoot)winincludes\</WinDepsDir>
   </PropertyGroup>
   <PropertyGroup>
     <IntDir>$(NeoRadiantRoot)build\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>

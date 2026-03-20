@@ -1,0 +1,1 @@
+powershell.exe .\compile_release_package.ps1 x86

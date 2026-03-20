@@ -28,6 +28,7 @@ tags
 # Windows directories
 w32deps
 w64deps
+winincludes
 build
 
 # Windows build files

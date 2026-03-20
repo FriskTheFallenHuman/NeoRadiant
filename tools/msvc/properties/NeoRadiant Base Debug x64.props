@@ -4,7 +4,7 @@
     <Import Project="NeoRadiant Base.props" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros">
-    <PlatformDepsDir>$(NeoRadiantRoot)\windeps\</PlatformDepsDir>
+    <PlatformDepsDir>$(NeoRadiantRoot)\w64deps\</PlatformDepsDir>
     <LibSuffix>-d</LibSuffix>
     <WxWidgetsLibDir>vc14x_x64_dll</WxWidgetsLibDir>
   </PropertyGroup>
@@ -12,8 +12,6 @@
     <LinkIncremental>true</LinkIncremental>
   </PropertyGroup>
   <ItemDefinitionGroup>
-    <Link />
-    <Link />
     <ResourceCompile>
       <PreprocessorDefinitions>_WIN64;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ResourceCompile>

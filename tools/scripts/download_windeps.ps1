@@ -11,7 +11,7 @@ try
         $headers.Add("Authorization", "Bearer " + $env:GITHUB_API_TOKEN)
     }
 
-    $uri = "https://api.github.com/repos/codereader/DarkRadiant_windeps/releases"
+    $uri = "https://api.github.com/repos/FriskTheFallenHuman/NeoRadiant_WinDeps/releases"
     $releases = Invoke-RestMethod -Headers $headers -Uri $uri
 
     $latest = $releases | sort created_at -Descending | select -First 1
@@ -45,15 +45,25 @@ try
 
     Remove-Item (Join-Path $target_folder "w32deps") -Recurse -ErrorAction SilentlyContinue
     Remove-Item (Join-Path $target_folder "w64deps") -Recurse -ErrorAction SilentlyContinue
-    Remove-Item (Join-Path $target_folder "windeps") -Recurse -ErrorAction SilentlyContinue
+    Remove-Item (Join-Path $target_folder "winincludes") -Recurse -ErrorAction SilentlyContinue
 
     Write-Host ("Extracting dependencies package...")
 
     & ..\7z\7za.exe x $package_path -o"$target_folder" -aoa
 
-    if ((Get-ChildItem "..\..\windeps" -ErrorAction SilentlyContinue) -eq $null)
+    if ((Get-ChildItem "..\..\w32deps" -ErrorAction SilentlyContinue) -eq $null)
     {
-        throw "windeps folder still not present after download... cannot continue"
+        throw "w32deps folder still not present after download... cannot continue"
+    }
+	
+    if ((Get-ChildItem "..\..\w64deps" -ErrorAction SilentlyContinue) -eq $null)
+    {
+        throw "w64deps folder still not present after download... cannot continue"
+    }
+	
+    if ((Get-ChildItem "..\..\winincludes" -ErrorAction SilentlyContinue) -eq $null)
+    {
+        throw "winincludes folder still not present after download... cannot continue"
     }
 }
 catch

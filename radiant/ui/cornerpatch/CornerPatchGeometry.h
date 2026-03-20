@@ -79,10 +79,10 @@ inline CornerDetection detectCornerFromSelection()
         double combMin_j = std::min(aMin[j], bMin[j]);
         double combMax_j = std::max(aMax[j], bMax[j]);
 
-        double overlapMin_i = std::max(aMin[i], bMin[i]);
-        double overlapMax_i = std::min(aMax[i], bMax[i]);
-        double overlapMin_j = std::max(aMin[j], bMin[j]);
-        double overlapMax_j = std::min(aMax[j], bMax[j]);
+        //double overlapMin_i = std::max(aMin[i], bMin[i]);
+        //double overlapMax_i = std::min(aMax[i], bMax[i]);
+        //double overlapMin_j = std::max(aMin[j], bMin[j]);
+        //double overlapMax_j = std::min(aMax[j], bMax[j]);
 
         auto tryCorner = [&](double vi, double vj, double dir_i, double dir_j,
                              double r1, double r2,
