@@ -2,27 +2,58 @@
 
 NeoRadiant is a fork of [DarkRadiant](https://www.darkradiant.net), a level editor for idTech4-based games. While DarkRadiant focuses primarily on The Dark Mod, NeoRadiant is tailored for editing generic maps targeting Idtech4 game engines.
 
-## Changes from DarkRadiant
+## Changes from HellForge
 
 NeoRadiant has very opinionated features, keybindings and a different workflow such as:
 
+- Lua Scripting instead of Python
 - Create and manipulate brushes directly in the 3D camera view
-- Visual preview mode for browsing textures
-- `modelscale` spawnarg handling, replacing the old scaled model export workflow
-- Quickly creates a sealing brush enclosing the selection bounding box
+- Shift+scroll creates a trim brush from a face and resizes it
+- Ctrl+scroll resizes hit face and opposite face symmetrically
 - Dark UI by default, with a theme manager system
-- Control the opacity/transparency of utility textures (clip, caulk) in the viewport
+- Game configuration manager for managing multiple game setups
+- Quickly create a sealing brush enclosing any selection
+- Control the opacity of utility textures (clip, caulk) in the viewport
 - Settings panel to configure anti-aliasing and other visual options across all viewports
+- Command palette for quickly running and discovering operations
+- Insert palette for quickly adding entties to the map
+- Goto mode, similar to Sublime Text, for quick entity navigation
+- Visual preview mode for browsing textures
+- Thumbnail browser in the Media panel
+- AAS file visualization with data exposed to Lua scripting
+- Position input fields on the entity tab for precise adjustments
+- Polygon tool also works in the 3D viewport
+  
+  
 
-### New tools
+## New tools
+
 - **Array Modifier**: Duplicates selected brushes/entities in configurable array patterns.
 - **Scatter Tool**: Scatters copies of selected objects across surfaces with configurable parameters.
 - **Polygon Tool**: Draw arbitrary polygon shapes in the 2D ortho views, allowing for a Doom 1-map editing workflow.
 - **Decal Shooter**: Point-and-click tool for placing decal textures onto surfaces directly from the 3D camera view.
-- **Terrain Generator**: Procedural terrain generation using Perlin and Simplex noise algorithms.
 - **CSG Intersect**: Computes the intersection of selected brushes, keeping only the overlapping volume.
 - **CSG Passable**: Turns solid volumes into wall shells and carves away interior geometry.
 - **CSG Shell**: Similar to Passable but repositions brushes to avoid overlap.
+- **CSG Bridge Tool**: Creates bridge geometry connecting two selected faces from different brushes.
+- **Corner Patch Generator**: Generates corner patch meshes.
+- **Sweep Tool**: Extrudes a brush profile along a curve.
+- **Tile-based Map Designer**: Layout-based map design using a tile grid.
+- **OSM Importer**: Experimental import of OpenStreetMap data into maps.
+
+### Procedural generation
+
+- **Terrain Generator**: Procedural terrain generation using Perlin and Simplex noise algorithms.
+- **Stairs Generator**: Generates staircases with straight, spiral, L-shaped and U-shaped configurations.
+- **Cable Generator**: Creates cable/rope geometry between points.
+- **Arch Generator**: Generates arch geometry with configurable parameters.
+- **Building Generator**: Generates building structures, can work with or without a reference brush.
+
+### Engine support
+
+- `modelscale` spawnarg handling, replacing the old scaled model export workflow
+- Improved Quake 4 decl support, including guide()
+- Import support for Valve VMF, Quake 1, Quake 2 and Valve 220 MAP formats
 
 ## Getting started
 
@@ -86,13 +117,11 @@ sources (use sudo apt-get install git for that). One possible set of packages mi
 ## Build
 
 To build NeoRadiant the standard CMake build process is used:
-
     $ cmake .
     $ make
     $ sudo make install
 
 To install somewhere other than the default of `/usr/local`, use the `CMAKE_INSTALL_PREFIX` variable.
-
     $ cmake -DCMAKE_INSTALL_PREFIX=/opt/NeoRadiant
     $ make
     $ sudo make install
