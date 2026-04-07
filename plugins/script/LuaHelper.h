@@ -12,7 +12,7 @@ namespace script
 // Generic userdata wrapper
 // Stores a raw C++ pointer together with an ownership flag.
 // When owned == true the __gc metamethod will call delete on the pointer
-// (cast via the supplied deleter).  For objects owned by DarkRadiant's own
+// (cast via the supplied deleter).  For objects owned by NeoRadiant's own
 // C++ side (most things) owned == false and GC is a no-op.
 // -----------------------------------------------------------------------
 struct LuaObjectWrapper {
