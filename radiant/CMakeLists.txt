@@ -37,6 +37,7 @@ add_executable(NeoRadiant
                ui/brush/FindBrush.cpp
                ui/brush/QuerySidesDialog.cpp
                ui/commandlist/CommandList.cpp
+               ui/commandlist/ImportKeybindings.cpp
                ui/commandlist/ShortcutChooser.cpp
                ui/commandpalette/CommandPalette.cpp
                ui/commandpalette/InsertPalette.cpp
