@@ -1,5 +1,6 @@
 #include "UserInterfaceModule.h"
 
+#include <algorithm>
 #include <cctype>
 #include <sigc++/functors/ptr_fun.h>
 
@@ -72,6 +73,8 @@
 #include "ui/scatter/ScatterDialog.h"
 #include "ui/stairs/StairsGeneratorDialog.h"
 #include "ui/terrain/TerrainGeneratorDialog.h"
+#include "ui/terrain/TerrainSculptControl.h"
+#include "selection/TerrainSculptTool.h"
 #include "ui/tilemap/TileMapDialog.h"
 #include "ui/sweep/SweepDialog.h"
 #include "ui/osm/OsmImporterDialog.h"
@@ -283,6 +286,7 @@ void UserInterfaceModule::initialiseModule(const IApplicationContext& ctx)
     registerControl(std::make_shared<FindShaderControl>());
     registerControl(std::make_shared<OrthoBackgroundControl>());
     registerControl(std::make_shared<DecalShooterControl>());
+    registerControl(std::make_shared<TerrainSculptControl>());
 
     GlobalMainFrame().signal_MainFrameConstructed().connect([&]()
     {
@@ -323,6 +327,9 @@ void UserInterfaceModule::initialiseModule(const IApplicationContext& ctx)
         );
         GlobalMainFrame().addControl(
             UserControl::DecalShooter, ControlSettings::floating(300, 200)
+        );
+        GlobalMainFrame().addControl(
+            UserControl::TerrainSculpt, ControlSettings::floating(320, 260)
         );
 
         _viewMenu = std::make_unique<ViewMenu>();
@@ -594,6 +601,29 @@ void UserInterfaceModule::registerUICommands()
 
     // Terrain generator dialog for creating patch terrains
     GlobalCommandSystem().addCommand("TerrainGeneratorDialog", TerrainGeneratorDialog::Show);
+
+    // Terrain sculpt brush size / strength shortcuts
+    auto adjustRadius = [](float delta)
+    {
+        auto& s = TerrainSculptSettings::Instance();
+        s.radius = std::clamp(s.radius + delta, 1.0f, 4096.0f);
+        s.signal_settingsChanged.emit();
+        GlobalMainFrame().updateAllWindows();
+    };
+    auto adjustStrength = [](float delta)
+    {
+        auto& s = TerrainSculptSettings::Instance();
+        s.strength = std::clamp(s.strength + delta, 0.01f, 1024.0f);
+        s.signal_settingsChanged.emit();
+    };
+    GlobalCommandSystem().addCommand("TerrainSculptRadiusUp",
+        [adjustRadius](const cmd::ArgumentList&) { adjustRadius(+4.0f); });
+    GlobalCommandSystem().addCommand("TerrainSculptRadiusDown",
+        [adjustRadius](const cmd::ArgumentList&) { adjustRadius(-4.0f); });
+    GlobalCommandSystem().addCommand("TerrainSculptStrengthUp",
+        [adjustStrength](const cmd::ArgumentList&) { adjustStrength(+0.5f); });
+    GlobalCommandSystem().addCommand("TerrainSculptStrengthDown",
+        [adjustStrength](const cmd::ArgumentList&) { adjustStrength(-0.5f); });
 
     // Tile map editor for quick 2D block-based level design
     GlobalCommandSystem().addCommand("TileMapDialog", TileMapDialog::Show);
