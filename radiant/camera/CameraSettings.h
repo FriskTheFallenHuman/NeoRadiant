@@ -34,7 +34,6 @@ namespace
     const std::string RKEY_CAMERA_FONT_SIZE = RKEY_CAMERA_ROOT + "/fontSize";
     const std::string RKEY_CAMERA_FONT_STYLE = RKEY_CAMERA_ROOT + "/fontStyle";
     const std::string RKEY_CAMERA_GRID_ENABLED = RKEY_CAMERA_ROOT + "/gridEnabled";
-    const std::string RKEY_CAMERA_GRID_SPACING = RKEY_CAMERA_ROOT + "/gridSpacing";
     const std::string RKEY_CAMERA_LEARNER_MODE = RKEY_CAMERA_ROOT + "/learnerMode";
 }
 
@@ -71,7 +70,6 @@ class CameraSettings: public sigc::trackable
 	bool _toggleFreelook;
 
 	bool _gridEnabled;
-	int _gridSpacing;
 
     // Signals
     sigc::signal<void> _sigRenderModeChanged;
@@ -97,7 +95,6 @@ public:
     bool showCameraToolbar() const;
 
     bool gridEnabled() const;
-    int gridSpacing() const;
 
     /// Whether to show keyboard shortcut hints in the 3D viewport
     bool learnerModeEnabled() const;

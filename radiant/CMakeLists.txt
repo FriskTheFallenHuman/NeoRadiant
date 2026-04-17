@@ -88,6 +88,7 @@ add_executable(NeoRadiant
                ui/fx/FxChooser.cpp
                ui/gl/WxGLWidgetManager.cpp
                ui/grid/GridUserInterface.cpp
+               ui/rotation/RotationSnapUserInterface.cpp
                ui/layers/CreateLayerDialog.cpp
                ui/layers/LayerContextMenu.cpp
                ui/layers/LayerControlPanel.cpp
