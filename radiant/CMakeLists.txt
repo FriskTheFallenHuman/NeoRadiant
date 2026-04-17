@@ -180,6 +180,7 @@ add_executable(NeoRadiant
                selection/VertexPaintTool.cpp
                selection/VertexPaintAlgorithm.cpp
                ui/tilemap/TileMapDialog.cpp
+               ui/cityplanner/CityPlannerDialog.cpp
                ui/sweep/SweepDialog.cpp
                ui/osm/OsmImporterDialog.cpp
                ui/script/ScriptMenu.cpp
