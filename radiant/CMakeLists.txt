@@ -175,6 +175,10 @@ add_executable(NeoRadiant
                ui/terrain/TerrainSculptPreview.cpp
                selection/TerrainSculptTool.cpp
                selection/TerrainSculptAlgorithm.cpp
+               ui/vertexpaint/VertexPaintPanel.cpp
+               ui/vertexpaint/VertexPaintPreview.cpp
+               selection/VertexPaintTool.cpp
+               selection/VertexPaintAlgorithm.cpp
                ui/tilemap/TileMapDialog.cpp
                ui/sweep/SweepDialog.cpp
                ui/osm/OsmImporterDialog.cpp
