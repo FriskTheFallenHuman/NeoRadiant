@@ -187,6 +187,7 @@ add_executable(NeoRadiant
                ui/osm/OsmImporterDialog.cpp
                ui/script/ScriptMenu.cpp
                ui/script/ScriptWindow.cpp
+               ui/selectiongroup/SelectionGroupPanel.cpp
                ui/selectionset/SelectionSetToolmenu.cpp
                ui/skin/SkinEditor.cpp
                ui/skin/SkinEditorTreeView.cpp
