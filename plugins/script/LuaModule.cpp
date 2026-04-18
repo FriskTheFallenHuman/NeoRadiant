@@ -209,7 +209,7 @@ ScriptCommand::Ptr LuaModule::createScriptCommand( const std::string& scriptBase
 	if( cmdDisplayName.empty() )
 		cmdDisplayName = cmdName;
 
-	return std::make_shared<ScriptCommand>( cmdName, cmdDisplayName, relativeScriptPath );
+	return std::make_shared<ScriptCommand>( cmdName, cmdDisplayName, relativeScriptPath, scriptBasePath );
 }
 
 // Static callbacks

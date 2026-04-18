@@ -297,9 +297,9 @@ void UserInterfaceModule::initialiseModule(const IApplicationContext& ctx)
     registerControl(std::make_shared<FindShaderControl>());
     registerControl(std::make_shared<OrthoBackgroundControl>());
     registerControl(std::make_shared<DecalShooterControl>());
-	registerControl(std::make_shared<SelectionGroupControl>());
-	registerControl(std::make_shared<TerrainSculptControl>());
+    registerControl(std::make_shared<TerrainSculptControl>());
     registerControl(std::make_shared<VertexPaintControl>());
+    registerControl(std::make_shared<SelectionGroupControl>());
 
     GlobalMainFrame().signal_MainFrameConstructed().connect([&]()
     {

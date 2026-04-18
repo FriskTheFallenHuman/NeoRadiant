@@ -84,6 +84,7 @@ void EventManager::shutdownModule()
 	saveEventListToRegistry();
 
 	_accelerators.clear();
+	_deferredAccelerators.clear();
 	_events.clear();
 }
 
@@ -108,6 +109,7 @@ void EventManager::resetAcceleratorBindings()
 	}
 
 	_accelerators.clear();
+	_deferredAccelerators.clear();
 
 	for (const auto& pair : _menuItems)
 	{
@@ -407,7 +409,9 @@ Accelerator& EventManager::connectAccelerator(int keyCode, unsigned int modifier
 	}
 	else
 	{
-		return _emptyAccelerator;
+		rMessage() << "EventManager: Deferring shortcut for not-yet-registered command: " << command << std::endl;
+		_deferredAccelerators.emplace(command, accelerator);
+		return *accelerator;
 	}
 
 	auto result = _accelerators.emplace(command, accelerator);
@@ -644,6 +648,50 @@ void EventManager::saveEventListToRegistry()
 		if (pair.second->isEmpty()) continue;
 
 		shortcutSaver.visit(pair.first, *pair.second);
+	}
+
+	for (const auto& pair : _deferredAccelerators)
+	{
+		if (pair.second->isEmpty()) continue;
+
+		shortcutSaver.visit(pair.first, *pair.second);
+	}
+}
+
+void EventManager::connectDeferredAccelerators()
+{
+	auto it = _deferredAccelerators.begin();
+
+	while (it != _deferredAccelerators.end())
+	{
+		const auto& command = it->first;
+		auto& accelerator = it->second;
+
+		auto event = findEvent(command);
+
+		if (!event->empty())
+		{
+			accelerator->setEvent(event);
+		}
+		else if (GlobalCommandSystem().commandExists(command))
+		{
+			accelerator->setStatement(command);
+		}
+		else
+		{
+			++it;
+			continue;
+		}
+
+		rMessage() << "EventManager: Resolved deferred shortcut for " << command << std::endl;
+
+		_accelerators.emplace(command, accelerator);
+
+		std::string acceleratorStr = accelerator->getString(true);
+		setMenuItemAccelerator(command, acceleratorStr);
+		setToolItemAccelerator(command, acceleratorStr);
+
+		it = _deferredAccelerators.erase(it);
 	}
 }
 

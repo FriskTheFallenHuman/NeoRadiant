@@ -16,8 +16,9 @@ class ScriptingSystem : public IScriptingSystem
 	bool									  _initialised = false;
 	std::unique_ptr<LuaModule>				  _luaModule;
 
-	// The path where the script files are hosted
-	std::string								  _scriptPath;
+    // The path where the script files are hosted
+    std::string _scriptPath;
+    std::string _userScriptPath;
 
 	// All named script commands (pointing to .lua files)
 	std::map<std::string, ScriptCommand::Ptr> _commands;
@@ -69,7 +70,7 @@ public:
 private:
 	void executeScriptFile( const std::string& filename, bool setExecuteCommandAttr );
 	void reloadScripts();
-	void loadCommandScript( const std::string& scriptFilename );
+	void loadCommandScript( const std::string& basePath, const std::string& scriptFilename );
 };
 
 typedef std::shared_ptr<ScriptingSystem> ScriptingSystemPtr;

@@ -31,9 +31,10 @@
 #include "interfaces/AasFileInterface.h"
 
 #include "SceneNodeBuffer.h"
-
+#include "ui/ieventmanager.h"
 #include "os/path.h"
 #include "string/case_conv.h"
+#include "settings/SettingsManager.h"
 
 namespace script
 {
@@ -94,6 +95,8 @@ void ScriptingSystem::initialise()
 
 	// Search script folder for commands
 	reloadScripts();
+
+	GlobalEventManager().connectDeferredAccelerators();
 }
 
 void ScriptingSystem::runScriptFile( const cmd::ArgumentList& args )
@@ -136,12 +139,12 @@ void ScriptingSystem::executeCommand( const std::string& name )
 	UndoableCommand cmd( "runScriptCommand " + name );
 
 	// Execute the script file behind this command
-	executeScriptFile( found->second->getFilename(), true );
+	_luaModule->executeScriptFile( found->second->getBasePath(), found->second->getFilename(), true );
 }
 
-void ScriptingSystem::loadCommandScript( const std::string& scriptFilename )
+void ScriptingSystem::loadCommandScript( const std::string& basePath, const std::string& scriptFilename )
 {
-	auto command = _luaModule->createScriptCommand( _scriptPath, scriptFilename );
+	auto command = _luaModule->createScriptCommand( basePath, scriptFilename );
 
 	if( !command ) {
 		// The lua module already emitted some errors to the log, just exit
@@ -165,28 +168,37 @@ void ScriptingSystem::reloadScripts()
 	_commands.clear();
 
 	// Initialise the search's starting point
-	fs::path start = fs::path( _scriptPath ) / COMMAND_PATH;
+	auto scanDirectory = [&](const std::string& basePath)
+	{
+		fs::path start = fs::path(basePath) / COMMAND_PATH;
 
-	if( !fs::exists( start ) ) {
-		rWarning() << "Couldn't find scripts folder: " << start.string() << std::endl;
-		return;
-	}
+		if (!fs::exists(start))
+		{
+			return;
+		}
 
-	for( fs::recursive_directory_iterator it( start ); it != fs::recursive_directory_iterator(); ++it ) {
-		// Get the candidate
-		const fs::path& candidate = *it;
+		for (fs::recursive_directory_iterator it(start);
+			 it != fs::recursive_directory_iterator(); ++it)
+		{
+			const fs::path& candidate = *it;
 
-		if( fs::is_directory( candidate ) )
-			continue;
+			if (fs::is_directory(candidate)) continue;
 
-		std::string extension = os::getExtension( candidate.string() );
-		string::to_lower( extension );
+			std::string extension = os::getExtension(candidate.string());
+			string::to_lower(extension);
 
-		if( extension != LUA_FILE_EXTENSION )
-			continue;
+			if (extension != LUA_FILE_EXTENSION) continue;
 
-		// Script file found, construct a new command
-		loadCommandScript( os::getRelativePath( candidate.generic_string(), _scriptPath ) );
+			// Script file found, construct a new command
+			loadCommandScript(basePath, os::getRelativePath(candidate.generic_string(), basePath));
+		}
+	};
+
+	scanDirectory(_scriptPath);
+
+	if (!_userScriptPath.empty())
+	{
+		scanDirectory(_userScriptPath);
 	}
 
 	rMessage() << "ScriptModule: Found " << _commands.size() << " commands." << std::endl;
@@ -198,6 +210,9 @@ void ScriptingSystem::initialiseModule( const IApplicationContext& ctx )
 {
 	// Construct the script path
 	_scriptPath = ctx.getRuntimeDataPath() + SCRIPT_PATH;
+
+    settings::SettingsManager manager(ctx);
+    _userScriptPath = manager.getCurrentVersionSettingsFolder() + SCRIPT_PATH;
 
 	// Set up the lua interpreter
 	_luaModule = std::make_unique<LuaModule>();
@@ -255,6 +270,7 @@ void ScriptingSystem::shutdownModule()
 
 	_commands.clear();
 	_scriptPath.clear();
+    _userScriptPath.clear();
 	_luaModule.reset();
 }
 
