@@ -762,6 +762,8 @@ bool Face::is_bounded() const {
 
 void Face::normaliseTexture()
 {
+    if (!contributes()) return;
+
     selection::algorithm::TextureNormaliser::NormaliseFace(*this);
 }
 
