@@ -302,6 +302,7 @@
     <ClCompile Include="..\..\radiant\ui\commandlist\ImportKeybindings.cpp" />
     <ClCompile Include="..\..\radiant\ui\commandlist\ShortcutChooser.cpp" />
     <ClCompile Include="..\..\radiant\ui\common\EntityChooser.cpp" />
+    <ClCompile Include="..\..\radiant\ui\common\GuiChooser.cpp" />
     <ClCompile Include="..\..\radiant\ui\common\MapPreview.cpp" />
     <ClCompile Include="..\..\radiant\ui\common\TexturePreviewCombo.cpp" />
     <ClCompile Include="..\..\radiant\ui\einspector\AddPropertyDialog.cpp" />
@@ -558,6 +559,7 @@
     <ClInclude Include="..\..\radiant\ui\commandlist\ImportKeybindings.h" />
     <ClInclude Include="..\..\radiant\ui\commandlist\ShortcutChooser.h" />
     <ClInclude Include="..\..\radiant\ui\common\EntityChooser.h" />
+    <ClInclude Include="..\..\radiant\ui\common\GuiChooser.h" />
     <ClInclude Include="..\..\radiant\ui\common\MapPreview.h" />
     <ClInclude Include="..\..\radiant\ui\common\TexturePreviewCombo.h" />
     <ClInclude Include="..\..\radiant\ui\einspector\AddPropertyDialog.h" />
